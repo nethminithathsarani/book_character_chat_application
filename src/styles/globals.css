@@ -1,0 +1,22 @@
+:root {
+  --bg: #0f1217;
+  --panel: #151a22;
+  --panel-alt: #1a202b;
+  --text: #e6e8eb;
+  --muted: #9aa3ad;
+  --primary: #5b9cff;
+  --accent: #8b5cf6;
+  --danger: #ff5b6b;
+  --border: #222836;
+  --bubble-user: #2a3342;
+  --bubble-character: #1f2733;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color: var(--text);
+}

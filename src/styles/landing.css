@@ -1,0 +1,112 @@
+/* src/styles/landing.css */
+/*.landing {
+  background: linear-gradient(to bottom right, #6b4eff, #a94eff);
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  font-family: 'Inter', sans-serif;
+}
+
+.header {
+  text-align: center;
+  max-width: 600px;
+}
+
+.header .icon {
+  font-size: 40px;
+}
+
+.upload-box {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px dashed white;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  width: 360px;
+}
+
+.drop-area {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.upload-btn {
+  background: linear-gradient(to right, #ff6ec4, #7873f5);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+*/
+
+
+
+body {
+  margin: 0;
+  padding: 0;
+  animation: gradientShift 15s ease infinite;
+  background: linear-gradient(-45deg, #6b4eff, #a94eff, #ff6ec4, #7873f5);
+  background-size: 400% 400%;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.landing {
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  font-family: 'Inter', sans-serif;
+  padding: 20px;
+  text-align: center;
+}
+
+.upload-box {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px dashed white;
+  border-radius: 16px;
+  padding: 40px;
+  width: 360px;
+  transition: border-color 0.3s ease;
+}
+
+.drag-active .upload-box {
+  border-color: #ff6ec4;
+}
+
+.drop-area {
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.upload-btn {
+  background: linear-gradient(to right, #ff6ec4, #7873f5);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.file-preview {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #d0ffea;
+}
