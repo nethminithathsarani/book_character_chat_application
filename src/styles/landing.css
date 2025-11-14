@@ -1,58 +1,25 @@
-/* src/styles/landing.css */
-/*.landing {
-  background: linear-gradient(to bottom right, #6b4eff, #a94eff);
-  color: white;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  font-family: 'Inter', sans-serif;
+:root {
+  --gradient-start: #6b4eff;
+  --gradient-mid1: #a94eff;
+  --gradient-mid2: #ff6ec4;
+  --gradient-end: #7873f5;
+  --text-color: white;
+  --accent-color: #ff6ec4;
+  --button-gradient: linear-gradient(to right, #ff6ec4, #7873f5);
+  --upload-box-bg: rgba(255, 255, 255, 0.15);
+  --upload-border: white;
+  --upload-border-active: #ff6ec4;
+  --preview-color: #d0ffea;
 }
-
-.header {
-  text-align: center;
-  max-width: 600px;
-}
-
-.header .icon {
-  font-size: 40px;
-}
-
-.upload-box {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px dashed white;
-  border-radius: 16px;
-  padding: 40px;
-  text-align: center;
-  width: 360px;
-}
-
-.drop-area {
-  margin-bottom: 20px;
-  font-size: 16px;
-}
-
-.upload-btn {
-  background: linear-gradient(to right, #ff6ec4, #7873f5);
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-*/
-
-
 
 body {
   margin: 0;
   padding: 0;
+  font-family: 'Inter', sans-serif;
   animation: gradientShift 15s ease infinite;
-  background: linear-gradient(-45deg, #6b4eff, #a94eff, #ff6ec4, #7873f5);
+  background: linear-gradient(-45deg, var(--gradient-start), var(--gradient-mid1), var(--gradient-mid2), var(--gradient-end));
   background-size: 400% 400%;
+  color: var(--text-color);
 }
 
 @keyframes gradientShift {
@@ -62,21 +29,21 @@ body {
 }
 
 .landing {
-  color: white;
-  height: 100vh;
+  padding-top: 80px; 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 40px;
-  font-family: 'Inter', sans-serif;
-  padding: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
   text-align: center;
+  min-height: 100vh;
 }
 
 .upload-box {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px dashed white;
+  background: var(--upload-box-bg);
+  border: 2px dashed var(--upload-border);
   border-radius: 16px;
   padding: 40px;
   width: 360px;
@@ -84,7 +51,7 @@ body {
 }
 
 .drag-active .upload-box {
-  border-color: #ff6ec4;
+  border-color: var(--upload-border-active);
 }
 
 .drop-area {
@@ -95,18 +62,24 @@ body {
 }
 
 .upload-btn {
-  background: linear-gradient(to right, #ff6ec4, #7873f5);
+  background: var(--button-gradient);
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
-  color: white;
+  color: var(--text-color);
   font-weight: bold;
   cursor: pointer;
   margin-top: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.upload-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px var(--accent-color);
 }
 
 .file-preview {
   margin-top: 16px;
   font-size: 14px;
-  color: #d0ffea;
+  color: var(--preview-color);
 }

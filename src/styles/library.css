@@ -1,5 +1,6 @@
 .library {
   padding: 40px;
+  padding-top: 80px;
   background: linear-gradient(to bottom right, #6b4eff, #a94eff);
   color: white;
   min-height: 100vh;
