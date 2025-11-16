@@ -24,7 +24,7 @@ export const extractCharacters = async (documentId, maxCharacters = 10) => {
     body: JSON.stringify({
       document_id: documentId,
       max_characters: maxCharacters,
-      include_personality: false
+      include_personality: false  // Disable personality to avoid timeout
     })
   });
 
@@ -72,4 +72,119 @@ export const sendChatMessage = async (documentId, characterId, message, conversa
   }
 
   return response.json();
+};
+
+export const sendChatMessageStream = async (documentId, characterId, message, conversationHistory = [], onChunk) => {
+  const response = await fetch(`${API_BASE_URL}/chat/stream`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      document_id: documentId,
+      character_id: characterId,
+      message: message,
+      conversation_history: conversationHistory
+    })
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || 'Chat streaming failed');
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let accumulatedText = '';
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    const chunk = decoder.decode(value, { stream: true });
+    const lines = chunk.split('\n');
+
+    for (const line of lines) {
+      if (line.startsWith('data: ')) {
+        try {
+          const data = JSON.parse(line.substring(6));
+          
+          if (data.error) {
+            throw new Error(data.error);
+          }
+          
+          if (data.done) {
+            return accumulatedText;
+          }
+          
+          if (data.text) {
+            accumulatedText += data.text;
+            if (onChunk) {
+              onChunk(data.text, accumulatedText);
+            }
+          }
+        } catch (e) {
+          console.error('Parse error:', e);
+        }
+      }
+    }
+  }
+
+  return accumulatedText;
+};
+
+export const getDocumentStatus = async (documentId) => {
+  const response = await fetch(`${API_BASE_URL}/documents/${documentId}/status`);
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || 'Failed to get document status');
+  }
+
+  return response.json();
+};
+
+export const listDocuments = async () => {
+  const response = await fetch(`${API_BASE_URL}/documents`);
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || 'Failed to list documents');
+  }
+
+  return response.json();
+};
+
+export const listAllCharacters = async () => {
+  const response = await fetch(`${API_BASE_URL}/characters`);
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || 'Failed to list characters');
+  }
+
+  return response.json();
+};
+
+export const pollDocumentStatus = async (documentId, onProgress, maxAttempts = 60) => {
+  let attempts = 0;
+  
+  while (attempts < maxAttempts) {
+    const status = await getDocumentStatus(documentId);
+    
+    if (onProgress) {
+      onProgress(status);
+    }
+    
+    if (status.status.toLowerCase() === 'ready') {
+      return status;
+    }
+    
+    if (status.status.toLowerCase() === 'error') {
+      throw new Error(status.message || 'Document processing failed');
+    }
+    
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    attempts++;
+  }
+  
+  throw new Error('Document processing timeout');
 };

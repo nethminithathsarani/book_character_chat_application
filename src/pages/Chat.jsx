@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import CharacterCard from '../components/CharacterCard';
 import ChatMessage from '../components/ChatMessage';
-import { extractCharacters, getCharacterGreeting, sendChatMessage } from '../services/api';
+import { extractCharacters, getCharacterGreeting, sendChatMessageStream, pollDocumentStatus } from '../services/api';
 import '../styles/Chat.css';
 
 function Chat({ book, documentId, onBack }) {
@@ -11,15 +11,28 @@ function Chat({ book, documentId, onBack }) {
   const [inputMessage, setInputMessage] = useState('');
   const [extracting, setExtracting] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
 
   const handleExtractCharacters = async () => {
     setExtracting(true);
+    setStatusMessage('Checking document status...');
+    
     try {
-      const result = await extractCharacters(documentId);
+      // Wait for document to be ready
+      await pollDocumentStatus(documentId, (status) => {
+        setStatusMessage(`Processing: ${status.status} (${status.progress}%)`);
+      });
+      
+      setStatusMessage('Extracting characters...');
+      
+      // Extract fewer characters to avoid timeout
+      const result = await extractCharacters(documentId, 5);
       setCharacters(result.characters);
+      setStatusMessage('');
     } catch (error) {
       console.error('Character extraction failed:', error);
       alert('Failed to extract characters: ' + error.message);
+      setStatusMessage('');
     } finally {
       setExtracting(false);
     }
@@ -47,6 +60,11 @@ function Chat({ book, documentId, onBack }) {
     setInputMessage('');
     
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    
+    // Add empty assistant message that will be filled with streaming text
+    const assistantMessageIndex = messages.length + 1;
+    setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+    
     setChatLoading(true);
 
     try {
@@ -55,23 +73,34 @@ function Chat({ book, documentId, onBack }) {
         content: msg.content
       }));
 
-      const result = await sendChatMessage(
+      // Use streaming API with real-time updates
+      await sendChatMessageStream(
         documentId,
         selectedCharacter.character_id,
         userMessage,
-        conversationHistory
+        conversationHistory,
+        (chunk, fullText) => {
+          // Update the assistant message with accumulated text
+          setMessages(prev => {
+            const newMessages = [...prev];
+            newMessages[assistantMessageIndex] = {
+              role: 'assistant',
+              content: fullText
+            };
+            return newMessages;
+          });
+        }
       );
-      
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: result.response 
-      }]);
     } catch (error) {
       console.error('Chat failed:', error);
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: 'Sorry, I had trouble responding. Please try again.' 
-      }]);
+      setMessages(prev => {
+        const newMessages = [...prev];
+        newMessages[assistantMessageIndex] = {
+          role: 'assistant',
+          content: 'Sorry, I had trouble responding. Please try again.'
+        };
+        return newMessages;
+      });
     } finally {
       setChatLoading(false);
     }
@@ -92,12 +121,15 @@ function Chat({ book, documentId, onBack }) {
             <div className="extract-icon">🎭</div>
             <h3>Discover Characters</h3>
             <p>Extract characters from this book to start chatting</p>
+            {statusMessage && (
+              <p className="status-message">{statusMessage}</p>
+            )}
             <button 
               className="extract-button"
               onClick={handleExtractCharacters}
               disabled={extracting}
             >
-              {extracting ? 'Extracting...' : 'Extract Characters'}
+              {extracting ? 'Processing...' : 'Extract Characters'}
             </button>
           </div>
         </div>
