@@ -1,5 +1,5 @@
 import BookCard from '../components/BookCard';
-import '../styles/Home.css';
+import '../styles/BookLibrary.css';
 
 function BookLibrary({ onBookSelect, onBack }) {
   const allBooks = [

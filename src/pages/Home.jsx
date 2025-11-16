@@ -36,7 +36,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
         <div className="books-section">
           <div className="section-header">
             <h2 className="section-title">
-              <span className="sparkle">⭐</span>
+             
               Featured Books
             </h2>
             <button className="view-all-btn" onClick={onGoToLibrary}>
@@ -56,11 +56,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
         </div>
       </div>
 
-      <div className="floating-elements">
-        <div className="float-star">⭐</div>
-        <div className="float-heart">💖</div>
-        <div className="float-book">📖</div>
-      </div>
+     
     </div>
   );
 }

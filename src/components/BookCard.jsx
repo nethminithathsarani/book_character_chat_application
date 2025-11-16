@@ -10,7 +10,7 @@ function BookCard({ book, onClick }) {
       <div className="book-cover">
         <img src={book.cover} alt={book.title} />
         <div className="book-overlay">
-          <span className="chat-icon">💬</span>
+         
         </div>
       </div>
       <div className="book-info">

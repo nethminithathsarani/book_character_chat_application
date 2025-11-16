@@ -5,7 +5,7 @@ function Header() {
     <div className="home-header">
       <div className="header-content">
         <h1 className="title">
-          <span className="book-emoji">📚</span>
+          <img src="/src/assets/book-logo.png" alt="Book" className="book-logo" />
           Storybook Chat
         </h1>
         <p className="subtitle">Chat with your favorite book characters!</p>

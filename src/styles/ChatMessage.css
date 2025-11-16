@@ -31,37 +31,133 @@
   font-weight: 700;
   color: white;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 
+    0 2px 8px rgba(0,0,0,0.3),
+    0 0 20px rgba(102, 126, 234, 0.4),
+    0 0 40px rgba(118, 75, 162, 0.3);
+  border: 2px solid rgba(102, 126, 234, 0.5);
+  animation: avatarGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes avatarGlow {
+  from {
+    box-shadow: 
+      0 2px 8px rgba(0,0,0,0.3),
+      0 0 20px rgba(102, 126, 234, 0.4),
+      0 0 40px rgba(118, 75, 162, 0.3);
+  }
+  to {
+    box-shadow: 
+      0 2px 8px rgba(0,0,0,0.3),
+      0 0 30px rgba(102, 126, 234, 0.6),
+      0 0 60px rgba(118, 75, 162, 0.5);
+  }
 }
 
 .user-avatar {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-size: 0.9rem;
+  text-shadow: 
+    0 0 5px rgba(255, 255, 255, 0.5),
+    0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .message-bubble {
   max-width: 70%;
   padding: 1.2rem 1.5rem;
   border-radius: 20px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  box-shadow: 
+    0 2px 10px rgba(0,0,0,0.2),
+    0 0 20px rgba(102, 126, 234, 0.2);
+  position: relative;
+  backdrop-filter: blur(10px);
 }
 
 .message.assistant .message-bubble {
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
   border-bottom-left-radius: 5px;
   color: #333;
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  box-shadow: 
+    0 2px 10px rgba(0,0,0,0.2),
+    0 0 20px rgba(102, 126, 234, 0.3),
+    0 0 40px rgba(118, 75, 162, 0.2),
+    inset 0 0 20px rgba(102, 126, 234, 0.05);
+}
+
+.message.assistant .message-bubble::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #667eea, #764ba2, #667eea);
+  border-radius: 20px;
+  z-index: -1;
+  opacity: 0.3;
+  filter: blur(8px);
+  animation: assistantGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes assistantGlow {
+  from {
+    opacity: 0.3;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 0.5;
+    filter: blur(12px);
+  }
 }
 
 .message.user .message-bubble {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-bottom-right-radius: 5px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 2px 10px rgba(0,0,0,0.3),
+    0 0 25px rgba(102, 126, 234, 0.5),
+    0 0 50px rgba(118, 75, 162, 0.4),
+    inset 0 0 30px rgba(255, 255, 255, 0.1);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.message.user .message-bubble::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
 }
 
 .message-content {
   line-height: 1.6;
   font-size: 1rem;
   color: inherit;
+  position: relative;
+  z-index: 1;
 }
 
 .typing-indicator {
@@ -74,8 +170,11 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #999;
-  animation: typing 1.4s infinite;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  animation: typing 1.4s infinite, typingGlow 1.4s ease-in-out infinite;
+  box-shadow: 
+    0 0 10px rgba(102, 126, 234, 0.6),
+    0 0 20px rgba(118, 75, 162, 0.4);
 }
 
 .typing-indicator span:nth-child(2) {
@@ -87,8 +186,25 @@
 }
 
 @keyframes typing {
-  0%, 60%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-10px); }
+  0%, 60%, 100% { 
+    transform: translateY(0);
+  }
+  30% { 
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes typingGlow {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px rgba(102, 126, 234, 0.6),
+      0 0 20px rgba(118, 75, 162, 0.4);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px rgba(102, 126, 234, 0.8),
+      0 0 40px rgba(118, 75, 162, 0.6);
+  }
 }
 
 @media (max-width: 768px) {
