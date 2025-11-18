@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CharacterCard from '../components/CharacterCard';
 import ChatMessage from '../components/ChatMessage';
-import { extractCharacters, getCharacterGreeting, sendChatMessageStream, pollDocumentStatus } from '../services/api';
+import { extractCharacters, getCharacterGreeting, sendChatMessageStream, pollDocumentStatus, getBookCharacters } from '../services/api';
 import '../styles/Chat.css';
 
-function Chat({ book, documentId, onBack }) {
+function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const [characters, setCharacters] = useState([]);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -12,6 +12,35 @@ function Chat({ book, documentId, onBack }) {
   const [extracting, setExtracting] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
+
+  // Check if this is a default book
+  const isDefaultBook = book?.book_id && book.book_id.includes('_');
+
+  useEffect(() => {
+    // If it's a default book, load characters from API
+    if (isDefaultBook && book.book_id) {
+      loadDefaultBookCharacters();
+    }
+  }, [book, isDefaultBook]);
+
+  useEffect(() => {
+    // If a character is preselected, auto-select it
+    if (preselectedCharacterId && characters.length > 0) {
+      const character = characters.find(c => c.character_id === preselectedCharacterId);
+      if (character) {
+        handleSelectCharacter(character);
+      }
+    }
+  }, [preselectedCharacterId, characters]);
+
+  const loadDefaultBookCharacters = async () => {
+    try {
+      const response = await getBookCharacters(book.book_id);
+      setCharacters(response.characters);
+    } catch (error) {
+      console.error('Failed to load default book characters:', error);
+    }
+  };
 
   const handleExtractCharacters = async () => {
     setExtracting(true);
@@ -115,7 +144,7 @@ function Chat({ book, documentId, onBack }) {
         <h2 style={{ color: book.color }}>{book.title}</h2>
       </div>
 
-      {characters.length === 0 ? (
+      {characters.length === 0 && !isDefaultBook ? (
         <div className="character-select-screen">
           <div className="extract-card">
             <div className="extract-icon">🎭</div>

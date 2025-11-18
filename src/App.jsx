@@ -7,10 +7,12 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedBook, setSelectedBook] = useState(null);
   const [documentId, setDocumentId] = useState(null);
+  const [preselectedCharacterId, setPreselectedCharacterId] = useState(null);
 
-  const handleBookSelect = (book, docId) => {
+  const handleBookSelect = (book, docId, characterId = null) => {
     setSelectedBook(book);
     setDocumentId(docId);
+    setPreselectedCharacterId(characterId);
     setCurrentPage('chat');
   };
 
@@ -18,6 +20,7 @@ function App() {
     setCurrentPage('home');
     setSelectedBook(null);
     setDocumentId(null);
+    setPreselectedCharacterId(null);
   };
 
   const handleGoToLibrary = () => {
@@ -42,6 +45,7 @@ function App() {
         <Chat 
           book={selectedBook} 
           documentId={documentId}
+          preselectedCharacterId={preselectedCharacterId}
           onBack={handleBackToHome} 
         />
       )}

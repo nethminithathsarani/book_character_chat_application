@@ -1,5 +1,22 @@
 const API_BASE_URL = 'http://localhost:8000/api/v1';
 
+// Default Books API
+export const getDefaultBooks = async () => {
+  const response = await fetch(`${API_BASE_URL}/default-books`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch default books');
+  }
+  return response.json();
+};
+
+export const getBookCharacters = async (bookId) => {
+  const response = await fetch(`${API_BASE_URL}/default-books/${bookId}/characters`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch characters');
+  }
+  return response.json();
+};
+
 export const uploadBook = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
