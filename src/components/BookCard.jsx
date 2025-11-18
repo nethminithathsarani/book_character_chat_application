@@ -1,6 +1,10 @@
 import '../styles/BookCard.css';
 
 function BookCard({ book, onClick }) {
+  // Remove cloud emoji from title and author
+  const cleanTitle = book.title ? book.title.replace(/☁️|☁/g, '').trim() : '';
+  const cleanAuthor = book.author ? book.author.replace(/☁️|☁/g, '').trim() : '';
+  
   return (
     <div 
       className="book-card"
@@ -8,14 +12,12 @@ function BookCard({ book, onClick }) {
       style={{ '--book-color': book.color }}
     >
       <div className="book-cover">
-        <img src={book.cover} alt={book.title} />
-        <div className="book-overlay">
-          <span className="chat-icon">💬</span>
-        </div>
+        <img src={book.cover} alt={cleanTitle} />
+        <div className="book-overlay"></div>
       </div>
       <div className="book-info">
-        <h3>{book.title}</h3>
-        {book.author && <p className="book-author">{book.author}</p>}
+        <h3>{cleanTitle}</h3>
+        {cleanAuthor && <p className="book-author">{cleanAuthor}</p>}
       </div>
     </div>
   );

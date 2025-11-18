@@ -255,7 +255,9 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
                 {selectedCharacter.name.charAt(0)}
               </div>
               <h3>{selectedCharacter.name}</h3>
-              <p className="character-desc">{selectedCharacter.description}</p>
+              <p className="character-desc">
+                {selectedCharacter.description ? selectedCharacter.description.replace(/☁️|☁/g, '').trim() : ''}
+              </p>
             </div>
             <button 
               className="change-character-btn"

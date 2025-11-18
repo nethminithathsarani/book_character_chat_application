@@ -1,52 +1,97 @@
 .character-card {
   background: white;
   border-radius: 20px;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.character-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .character-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  transform: translateY(-8px);
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.12),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.character-card:hover::before {
+  opacity: 1;
 }
 
 .character-avatar {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 700;
   color: white;
-  margin: 0 auto 1rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  margin: 0 auto 1.5rem;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2);
+  transition: transform 0.4s ease;
+  position: relative;
+}
+
+.character-card:hover .character-avatar {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .character-card h4 {
-  font-size: 1.4rem;
-  color: #333;
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  color: var(--color-ink);
+  margin-bottom: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .character-card p {
-  color: #666;
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
-  line-height: 1.5;
+  color: var(--color-ink-light);
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.7;
+  font-family: var(--font-serif);
+  font-style: italic;
 }
 
 .character-role {
   display: inline-block;
-  padding: 0.4rem 1rem;
-  background: #FFE5E9;
-  color: #FF6B9D;
+  padding: 0.5rem 1.25rem;
+  background: linear-gradient(135deg, var(--color-dusty-rose) 0%, #B89A97 100%);
+  color: white;
   border-radius: 50px;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 600;
   text-transform: capitalize;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(201, 169, 166, 0.3);
+  transition: all 0.3s ease;
+}
+
+.character-card:hover .character-role {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(201, 169, 166, 0.4);
 }

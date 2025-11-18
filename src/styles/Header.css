@@ -1,36 +1,68 @@
 .home-header {
-  background: linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 50%, #FFD1FF 100%);
-  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #8B6F47 0%, #A67C52 30%, #C9A9A6 70%, #D4B5A0 100%);
+  padding: 4rem 2rem;
   text-align: center;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.home-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.03) 2px,
+      rgba(255, 255, 255, 0.03) 4px
+    );
+  pointer-events: none;
 }
 
 .header-content {
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .title {
-  font-size: 3rem;
+  font-size: 3.5rem;
   color: #fff;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
   font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2), 0 0 20px rgba(212, 175, 55, 0.3);
+  letter-spacing: 0.02em;
+  font-family: var(--font-display);
 }
 
 .book-emoji {
   display: inline-block;
-  animation: bounce 2s infinite;
+  animation: gentleFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+@keyframes gentleFloat {
+  0%, 100% { 
+    transform: translateY(0) rotate(0deg); 
+  }
+  50% { 
+    transform: translateY(-8px) rotate(5deg); 
+  }
 }
 
 .subtitle {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   color: #fff;
-  opacity: 0.95;
+  opacity: 0.98;
+  font-weight: 400;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+  font-style: italic;
+  letter-spacing: 0.01em;
 }
