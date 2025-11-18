@@ -20,6 +20,13 @@ function Home({ onBookSelect, onGoToLibrary }) {
     'the_hobbit': '#10B981'
   };
 
+  // Local cover images mapping
+  const localCovers = {
+    'harry_potter_1': '/src/assets/books_images/Harry Potter.png',
+    'chronicles_narnia': '/src/assets/books_images/Narnia.png',
+    'the_hobbit': '/src/assets/books_images/The Hobbits.png'
+  };
+
   useEffect(() => {
     loadDefaultBooks();
   }, []);
@@ -27,11 +34,11 @@ function Home({ onBookSelect, onGoToLibrary }) {
   const loadDefaultBooks = async () => {
     try {
       const response = await getDefaultBooks();
-      // Map API books to existing format with colors
+      // Map API books to existing format with colors and local images
       const booksWithColors = response.books.map(book => ({
         ...book,
         id: book.book_id,
-        cover: book.cover_image,
+        cover: localCovers[book.book_id] || book.cover_image,
         color: bookColors[book.book_id] || '#8B5CF6'
       }));
       setFeaturedBooks(booksWithColors);

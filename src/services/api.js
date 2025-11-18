@@ -1,5 +1,37 @@
 const API_BASE_URL = 'http://localhost:8000/api/v1';
 
+// Chat Session Management API
+export const getChatHistory = async (documentId, characterId) => {
+  const response = await fetch(
+    `${API_BASE_URL}/chat/session/history?document_id=${documentId}&character_id=${characterId}`
+  );
+  if (!response.ok) {
+    throw new Error('Failed to fetch chat history');
+  }
+  return response.json();
+};
+
+export const clearChatHistory = async (documentId, characterId) => {
+  const response = await fetch(
+    `${API_BASE_URL}/chat/session/clear?document_id=${documentId}&character_id=${characterId}`,
+    { method: 'DELETE' }
+  );
+  if (!response.ok) {
+    throw new Error('Failed to clear chat history');
+  }
+  return response.json();
+};
+
+export const listActiveSessions = async (documentId) => {
+  const response = await fetch(
+    `${API_BASE_URL}/chat/session/list?document_id=${documentId}`
+  );
+  if (!response.ok) {
+    throw new Error('Failed to fetch active sessions');
+  }
+  return response.json();
+};
+
 // Default Books API
 export const getDefaultBooks = async () => {
   const response = await fetch(`${API_BASE_URL}/default-books`);
