@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import CharacterCard from '../components/CharacterCard';
 import ChatMessage from '../components/ChatMessage';
-import { extractCharacters, getCharacterGreeting, sendChatMessageStream, pollDocumentStatus, getBookCharacters, getChatHistory, clearChatHistory } from '../services/api';
+import { extractCharacters, getCharacterGreeting, sendChatMessageStream, pollDocumentStatus, getBookCharacters, getMovieCharacters, getChatHistory, clearChatHistory } from '../services/api';
 import '../styles/Chat.css';
 
 function Chat({ book, documentId, preselectedCharacterId, onBack }) {
@@ -14,15 +14,21 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const [statusMessage, setStatusMessage] = useState('');
   const [loadingHistory, setLoadingHistory] = useState(false);
 
-  // Check if this is a default book
-  const isDefaultBook = book?.book_id && book.book_id.includes('_');
+  // Check if this is default content (book or movie) by checking document_id
+  const isDefaultContent = documentId?.startsWith('default_');
+  const isDefaultMovie = documentId?.includes('movie');
+  const isDefaultBook = isDefaultContent && !isDefaultMovie;
 
   useEffect(() => {
-    // If it's a default book, load characters from API
-    if (isDefaultBook && book.book_id) {
-      loadDefaultBookCharacters();
+    // If it's default content, load characters from API
+    if (isDefaultContent) {
+      if (isDefaultMovie && book.movie_id) {
+        loadDefaultMovieCharacters();
+      } else if (isDefaultBook && book.book_id) {
+        loadDefaultBookCharacters();
+      }
     }
-  }, [book, isDefaultBook]);
+  }, [book, documentId, isDefaultContent, isDefaultMovie, isDefaultBook]);
 
   useEffect(() => {
     // If a character is preselected, auto-select it
@@ -40,6 +46,15 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
       setCharacters(response.characters);
     } catch (error) {
       console.error('Failed to load default book characters:', error);
+    }
+  };
+
+  const loadDefaultMovieCharacters = async () => {
+    try {
+      const response = await getMovieCharacters(book.movie_id);
+      setCharacters(response.characters);
+    } catch (error) {
+      console.error('Failed to load default movie characters:', error);
     }
   };
 
@@ -71,15 +86,17 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const handleSelectCharacter = async (character) => {
     console.log('🎯 Selecting character:', character.name, character.character_id);
     console.log('📚 Document ID:', documentId);
-    console.log('📖 Is default book:', isDefaultBook);
+    console.log('📖 Is default content:', isDefaultContent);
+    console.log('🎬 Is default movie:', isDefaultMovie);
+    console.log('📚 Is default book:', isDefaultBook);
     
     setSelectedCharacter(character);
     setMessages([]);
     setLoadingHistory(true);
 
     try {
-      // Load previous chat history for default books only
-      if (isDefaultBook && documentId) {
+      // Load previous chat history for default content (books and movies)
+      if (isDefaultContent && documentId) {
         console.log('🔍 Loading chat history from backend...');
         try {
           const historyData = await getChatHistory(documentId, character.character_id);
@@ -100,7 +117,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
           console.log('➡️ Continuing to greeting...');
         }
       } else {
-        console.log('⏭️ Skipping history load (not a default book or no documentId)');
+        console.log('⏭️ Skipping history load (not default content or no documentId)');
       }
 
       // First time chatting or not a default book - get greeting
@@ -215,7 +232,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
         <h2 style={{ color: book.color }}>{book.title}</h2>
       </div>
 
-      {characters.length === 0 && !isDefaultBook ? (
+      {characters.length === 0 && !isDefaultContent ? (
         <div className="character-select-screen">
           <div className="extract-card">
             <div className="extract-icon">🎭</div>
