@@ -1,0 +1,44 @@
+.movie-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.movie-cover {
+  position: relative;
+  overflow: hidden;
+}
+
+.movie-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.movie-card:hover .movie-cover img {
+  transform: scale(1.1);
+}
+
+.movie-info {
+  padding: 0.8rem 0;
+  text-align: center;
+}
+
+.movie-info h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #333;
+}
+
+.movie-director {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.2rem;
+}
+
+.movie-year {
+  font-size: 0.8rem;
+  color: #999;
+}

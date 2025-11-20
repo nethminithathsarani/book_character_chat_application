@@ -49,6 +49,23 @@ export const getBookCharacters = async (bookId) => {
   return response.json();
 };
 
+// Default Movies API
+export const getDefaultMovies = async () => {
+  const response = await fetch(`${API_BASE_URL}/default-movies`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch default movies');
+  }
+  return response.json();
+};
+
+export const getMovieCharacters = async (movieId) => {
+  const response = await fetch(`${API_BASE_URL}/default-movies/${movieId}/characters`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch movie characters');
+  }
+  return response.json();
+};
+
 export const uploadBook = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
