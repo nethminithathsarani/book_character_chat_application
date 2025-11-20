@@ -30,12 +30,16 @@ function BookLibrary({ onBookSelect, onBack }) {
     <div className="home-container library-page">
       <div className="library-header">
         <button className="back-button" onClick={onBack}>
-          ← Back to Home
+          ←
         </button>
+
         <h1 className="library-title">
           <span className="book-emoji">📚</span>
-          Book Library
+          Featured Books
         </h1>
+
+        <button className="view-all">View All</button>
+
         <p className="library-subtitle">Choose a book and start chatting with characters</p>
       </div>
 
@@ -46,6 +50,7 @@ function BookLibrary({ onBookSelect, onBack }) {
               <BookCard 
                 key={book.id} 
                 book={book}
+                variant="parchment"
                 onClick={() => onBookSelect(book, book.id)}
               />
             ))}

@@ -37,31 +37,33 @@ function UploadSection({ onBookSelect }) {
   return (
     <div className="upload-section">
       <div className="upload-card">
-        <div className="upload-icon">✨</div>
-        <h2>Upload Your Own Book</h2>
-        <p>Share your story and chat with characters</p>
-        
-        <label className="upload-button">
-          <input 
-            type="file" 
-            accept=".pdf" 
-            onChange={handleFileUpload}
-            disabled={uploading}
-            style={{ display: 'none' }}
-          />
-          {uploading ? (
-            <span className="loading">Uploading...</span>
-          ) : (
-            <>
-              <span className="upload-text">Choose PDF File</span>
-              <span className="upload-icon-small">📄</span>
-            </>
+        <div className="left">
+          <div className="upload-icon">⬆️</div>
+          <h2>Upload Your Own Book</h2>
+          <p>Choose PDF File and share your story</p>
+
+          <label className="upload-button">
+            <input 
+              type="file" 
+              accept=".pdf" 
+              onChange={handleFileUpload}
+              disabled={uploading}
+              style={{ display: 'none' }}
+            />
+            {uploading ? (
+              <span className="loading">Uploading...</span>
+            ) : (
+              <>
+                <span className="upload-text">Choose PDF File</span>
+                <span className="upload-icon-small">📄</span>
+              </>
+            )}
+          </label>
+
+          {uploadError && (
+            <div className="error-message">{uploadError}</div>
           )}
-        </label>
-        
-        {uploadError && (
-          <div className="error-message">{uploadError}</div>
-        )}
+        </div>
       </div>
     </div>
   );

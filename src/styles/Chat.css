@@ -1,4 +1,4 @@
-.chat-container {
+/*.chat-container {
   min-height: 100vh;
   width: 100vw;
   background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0f0f23 100%);
@@ -8,6 +8,29 @@
   overflow: hidden;
 }
 
+  align-items: center;
+  gap: 2rem;
+  border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+/* Root chat container: background image with dark overlay and subtle tint */
+.chat-container {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+
+  /* layered backgrounds: dark overlay above base gradient and photo */
+  background-image:
+    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+    linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0f0f23 100%),
+    url('/assets/chat-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Soft radial color accents on top of background */
 .chat-container::before {
   content: '';
   position: absolute;
@@ -15,11 +38,19 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+  background:
+    radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.06) 0%, transparent 50%);
   pointer-events: none;
+  z-index: 0;
 }
+
+/* Ensure UI content sits above overlays */
+.chat-container > * {
+  position: relative;
+  z-index: 1;
+}
+
 
 .chat-header {
   background: rgba(10, 10, 26, 0.95);
