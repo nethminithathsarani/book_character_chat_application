@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import FrontPage from './pages/FrontPage';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import BookLibrary from './pages/BookLibrary';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState('frontpage');
   const [selectedBook, setSelectedBook] = useState(null);
   const [documentId, setDocumentId] = useState(null);
   const [preselectedCharacterId, setPreselectedCharacterId] = useState(null);
@@ -27,8 +28,17 @@ function App() {
     setCurrentPage('library');
   };
 
+  const handleGoToHome = () => {
+    setCurrentPage('home');
+  };
+
   return (
     <div className="app">
+      {currentPage === 'frontpage' && (
+        <FrontPage 
+          onGoToHome={handleGoToHome}
+        />
+      )}
       {currentPage === 'home' && (
         <Home 
           onBookSelect={handleBookSelect}
