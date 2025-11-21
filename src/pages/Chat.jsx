@@ -4,6 +4,8 @@ import ChatMessage from '../components/ChatMessage';
 import { extractCharacters, getCharacterGreeting, sendChatMessageStream, pollDocumentStatus, getBookCharacters, getMovieCharacters, getChatHistory, clearChatHistory } from '../services/api';
 import '../styles/Chat.css';
 
+const API_BASE_URL = 'http://localhost:8000/api/v1';
+
 function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const [characters, setCharacters] = useState([]);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
@@ -14,10 +16,10 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const [statusMessage, setStatusMessage] = useState('');
   const [loadingHistory, setLoadingHistory] = useState(false);
 
-  // Check if this is default content (book or movie) by checking document_id
-  const isDefaultContent = documentId?.startsWith('default_');
-  const isDefaultMovie = documentId?.includes('movie');
-  const isDefaultBook = isDefaultContent && !isDefaultMovie;
+  // Determine default content: prefer explicit is_default flag, then documentId prefix
+  const isDefaultContent = (book?.is_default === true) || documentId?.startsWith('default_');
+  const isDefaultMovie = isDefaultContent && !!book?.movie_id;
+  const isDefaultBook = isDefaultContent && !!book?.book_id && !book?.movie_id;
 
   useEffect(() => {
     // If it's default content, load characters from API
@@ -95,8 +97,8 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
     setLoadingHistory(true);
 
     try {
-      // Load previous chat history for default content (books and movies)
-      if (isDefaultContent && documentId) {
+      // Load previous chat history for ALL books (not just default)
+      if (documentId) {
         console.log('🔍 Loading chat history from backend...');
         try {
           const historyData = await getChatHistory(documentId, character.character_id);
@@ -117,7 +119,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
           console.log('➡️ Continuing to greeting...');
         }
       } else {
-        console.log('⏭️ Skipping history load (not default content or no documentId)');
+        console.log('⏭️ Skipping history load (no documentId)');
       }
 
       // First time chatting or not a default book - get greeting
@@ -141,7 +143,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   };
 
   const handleClearChat = async () => {
-    if (!selectedCharacter || !isDefaultBook) return;
+    if (!selectedCharacter || !documentId) return;
     
     const confirmClear = window.confirm('Are you sure you want to clear this chat history? This cannot be undone.');
     if (!confirmClear) return;
@@ -191,7 +193,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
       }));
 
       // Use streaming API with real-time updates
-      await sendChatMessageStream(
+      const assistantResponse = await sendChatMessageStream(
         documentId,
         selectedCharacter.character_id,
         userMessage,
@@ -208,6 +210,26 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
           });
         }
       );
+      
+      // Save chat exchange to backend for ALL books
+      if (documentId && assistantResponse) {
+        try {
+          const params = new URLSearchParams({
+            document_id: documentId,
+            character_id: selectedCharacter.character_id,
+            character_name: selectedCharacter.name,
+            user_message: userMessage,
+            assistant_response: assistantResponse
+          });
+          await fetch(`${API_BASE_URL}/chat/session/save?${params}`, {
+            method: 'POST'
+          });
+          console.log('💾 Chat message saved to backend');
+        } catch (saveError) {
+          console.error('Failed to save chat message:', saveError);
+          // Don't block UI on save errors
+        }
+      }
     } catch (error) {
       console.error('Chat failed:', error);
       setMessages(prev => {
@@ -282,7 +304,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
             >
               Change Character
             </button>
-            {isDefaultBook && (
+            {documentId && (
               <button 
                 className="clear-chat-btn"
                 onClick={handleClearChat}
