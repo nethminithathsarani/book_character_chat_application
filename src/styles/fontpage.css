@@ -1,0 +1,215 @@
+/* src/components/frontpage.css */
+.frontpage {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  color: #150202e3;
+  overflow-x: hidden;
+}
+
+/* Hero Section with Background Image */
+.hero {
+  position: relative;
+  height: 100vh;
+  background-image: url('../assets/font_images/background.png'); /* path relative to src/styles */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Parallax effect for subtle movement */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Dark overlay for readability */
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-family: 'Henny Penny', cursive;
+  /*font-weight: 600;*/
+  color: #fff;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: fadeInUp 1s ease-out;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  color: #f0f0f0;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+.hero-quote {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #ddd;
+  margin-bottom: 2rem;
+  animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.explore-btn {
+  background: #8B4513; /* Brown button to match theme */
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+.explore-btn:hover {
+  background: #A0522D;
+  transform: scale(1.05);
+}
+
+/* Animated Image Map Section - Full-Width Carousel */
+.image-map-section {
+  position: relative;
+  height: 60vh;
+  background: #855502; /* Light beige background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  width: 100vw; /* Full viewport width */
+  margin: 0; /* Ensure no margins */
+  padding: 0; /* Remove any padding to ensure full width */
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease-in-out; /* Smooth slide animation */
+  width: calc(100% * 5 / 3); /* For 5 images, showing 3: total width = (images.length / visible) * 100% */
+  margin: 0;
+  padding: 0;
+}
+
+.carousel-slide {
+  flex: 0 0 calc(100% / 3); /* Each slide takes 1/3 of the visible area (for 3 visible) */
+  height: 100%;
+  margin: 0; /* Remove any margins */
+  padding: 0; /* Remove padding to eliminate space between images */
+}
+
+.map-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Maintain aspect ratio, no stretching */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: block; /* Ensure no extra space below images */
+}
+
+/* Carousel Indicators */
+.carousel-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+}
+
+.carousel-indicators button {
+  background: rgba(139, 69, 19, 0.5); /* Semi-transparent brown */
+  color: #fff;
+  border: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.carousel-indicators button.active,
+.carousel-indicators button:hover {
+  background: #8B4513;
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Below Section */
+.below-section {
+  padding: 60px 20px;
+  background: #6c532e;
+  text-align: center;
+}
+
+.below-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.below-section p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  color: rgb(165, 163, 163);
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .carousel-track {
+    width: calc(100% * 5 / 2); /* For mobile, show 2 images if desired */
+  }
+
+  .carousel-slide {
+    flex: 0 0 50%; /* Show 2 on mobile */
+  }
+
+  /* Optional: Hide indicators on small screens */
+  .carousel-indicators {
+    display: none;
+  }
+}
