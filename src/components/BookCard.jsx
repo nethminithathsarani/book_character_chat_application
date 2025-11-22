@@ -4,7 +4,7 @@ function BookCard({ book, onClick }) {
   // Remove cloud emoji from title and author
   const cleanTitle = book.title ? book.title.replace(/☁️|☁/g, '').trim() : '';
   const cleanAuthor = book.author ? book.author.replace(/☁️|☁/g, '').trim() : '';
-  const coverSrc = book.cover || '/src/assets/books_images/placeholder.png';
+  const coverSrc = book.cover || '/books_images/placeholder.png';
   
   return (
     <div 
@@ -16,7 +16,7 @@ function BookCard({ book, onClick }) {
         <img 
           src={coverSrc} 
           alt={cleanTitle} 
-          onError={(e) => { e.target.onerror = null; e.target.src = '/src/assets/books_images/placeholder.png'; }}
+          onError={(e) => { e.target.onerror = null; e.target.src = '/books_images/placeholder.png'; }}
         />
         <div className="book-overlay"></div>
       </div>

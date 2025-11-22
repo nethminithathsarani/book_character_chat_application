@@ -21,14 +21,30 @@ function Home({ onBookSelect, onGoToLibrary }) {
   const bookColors = {
     'harry_potter_1': '#8B5CF6',
     'chronicles_narnia': '#F59E0B',
-    'the_hobbit': '#10B981'
+    'the_hobbit': '#10B981',
+    'lotr': '#4F46E5',
+    'frankenstein': '#6366F1',
+    'percy_jackson': '#0EA5E9',
+    'dracula': '#DC2626',
+    'sherlock_holmes': '#2563EB',
+    'dune': '#B45309',
+    'diary_wimpy_kid': '#6D28D9',
+    'hunger_games': '#EA580C'
   };
 
   // Local cover images mapping
   const localCovers = {
-    'harry_potter_1': '/src/assets/books_images/Harry Potter.png',
-    'chronicles_narnia': '/src/assets/books_images/Narnia.png',
-    'the_hobbit': '/src/assets/books_images/The Hobbits.png'
+    'harry_potter_1': '/books_images/Harry Potter.png',
+    'chronicles_narnia': '/books_images/Narnia.png',
+    'the_hobbit': '/books_images/The Hobbits.png',
+    'lotr': '/books_images/LOTR.png',
+    'frankenstein': '/books_images/Frankenstein.png',
+    'percy_jackson': '/books_images/Percy Jackson.png',
+    'dracula': '/books_images/Dracula.jpg',
+    'sherlock_holmes': '/books_images/Sherlock Holmes.png',
+    'dune': '/books_images/Dune.png',
+    'diary_wimpy_kid': '/books_images/Diary of a Wimpy Kid.png',
+    'hunger_games': '/books_images/Hunger Games.png'
   };
 
   // Movie color and cover mapping
@@ -69,7 +85,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
           id: 'harry_potter_1',
           book_id: 'harry_potter_1',
           title: 'Harry Potter',
-          cover: '/src/assets/books_images/Harry Potter.png',
+          cover: '/books_images/Harry Potter.png',
           color: '#8B5CF6',
           type: 'book'
         },
@@ -77,7 +93,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
           id: 'chronicles_narnia',
           book_id: 'chronicles_narnia',
           title: 'The Chronicles of Narnia',
-          cover: '/src/assets/books_images/Narnia.png',
+          cover: '/books_images/Narnia.png',
           color: '#F59E0B',
           type: 'book'
         },
@@ -85,8 +101,72 @@ function Home({ onBookSelect, onGoToLibrary }) {
           id: 'the_hobbit',
           book_id: 'the_hobbit',
           title: 'The Hobbit',
-          cover: '/src/assets/books_images/The Hobbits.png',
+          cover: '/books_images/The Hobbits.png',
           color: '#10B981',
+          type: 'book'
+        },
+        {
+          id: 'lotr',
+          book_id: 'lotr',
+          title: 'The Lord of the Rings',
+          cover: '/books_images/LOTR.png',
+          color: '#4F46E5',
+          type: 'book'
+        },
+        {
+          id: 'frankenstein',
+          book_id: 'frankenstein',
+          title: 'Frankenstein',
+          cover: '/books_images/Frankenstein.png',
+          color: '#6366F1',
+          type: 'book'
+        },
+        {
+          id: 'percy_jackson',
+          book_id: 'percy_jackson',
+          title: 'Percy Jackson',
+          cover: '/books_images/Percy Jackson.png',
+          color: '#0EA5E9',
+          type: 'book'
+        },
+        {
+          id: 'dracula',
+          book_id: 'dracula',
+          title: 'Dracula',
+          cover: '/books_images/Dracula.jpg',
+          color: '#DC2626',
+          type: 'book'
+        },
+        {
+          id: 'sherlock_holmes',
+          book_id: 'sherlock_holmes',
+          title: 'Sherlock Holmes',
+          cover: '/books_images/Sherlock Holmes.png',
+          color: '#2563EB',
+          type: 'book'
+        },
+        {
+          id: 'dune',
+          book_id: 'dune',
+          title: 'Dune',
+          cover: '/books_images/Dune.png',
+          color: '#B45309',
+          type: 'book'
+        },
+        {
+          id: 'diary_wimpy_kid',
+          book_id: 'diary_wimpy_kid',
+          title: 'Diary of a Wimpy Kid',
+          cover: '/books_images/Diary of a Wimpy Kid.png',
+          color: '#6D28D9',
+          type: 'book'
+        },
+        {
+          id: 'hunger_games',
+          book_id: 'hunger_games',
+          title: 'The Hunger Games',
+          cover: '/books_images/Hunger Games.png',
+          color: '#EA580C',
           type: 'book'
         }
       ]);

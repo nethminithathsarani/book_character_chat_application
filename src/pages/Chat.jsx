@@ -291,7 +291,32 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
           <div className="chat-sidebar">
             <div className="current-character" style={{ borderColor: book.color }}>
               <div className="character-avatar-large" style={{ background: book.color }}>
-                {selectedCharacter.name.charAt(0)}
+                {(() => {
+                  const characterImages = {
+                    'harry': '/books_images/HP/HP_harry.jpg',
+                    'harry potter': '/books_images/HP/HP_harry.jpg',
+                    'hermione': '/books_images/HP/Harry_hermione.jpg',
+                    'hermione granger': '/books_images/HP/Harry_hermione.jpg',
+                    'ron': '/books_images/HP/Harry_ron.jpg',
+                    'ron weasley': '/books_images/HP/Harry_ron.jpg',
+                    'dumbledore': '/books_images/HP/Harry_dumbledore.jpg',
+                    'albus dumbledore': '/books_images/HP/Harry_dumbledore.jpg',
+                    'hagrid': '/books_images/HP/Harry_hagrid.jpg',
+                    'rubeus hagrid': '/books_images/HP/Harry_hagrid.jpg',
+                    'snape': '/books_images/HP/Harry_snape.jpg',
+                    'severus snape': '/books_images/HP/Harry_snape.jpg',
+                    'sirius': '/books_images/HP/Harry_sirius.jpg',
+                    'sirius black': '/books_images/HP/Harry_sirius.jpg',
+                    'voldemort': '/books_images/HP/Harry_voldermort.jpg',
+                    'lord voldemort': '/books_images/HP/Harry_voldermort.jpg'
+                  };
+                  const characterImage = characterImages[selectedCharacter.name.toLowerCase()];
+                  return characterImage ? (
+                    <img src={characterImage} alt={selectedCharacter.name} className="character-image-large" />
+                  ) : (
+                    selectedCharacter.name.charAt(0)
+                  );
+                })()}
               </div>
               <h3>{selectedCharacter.name}</h3>
               <p className="character-desc">
