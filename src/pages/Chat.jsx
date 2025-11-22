@@ -309,11 +309,16 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
                     'leto': '/books_images/Dune/Du_Duke Leto Atreides.png',
                     'chani': '/books_images/Dune/Du_Chani.png',
                     'duncan': '/books_images/Dune/Du_Duncan Idaho.png',
+                    'idaho': '/books_images/Dune/Du_Duncan Idaho.png',
                     'gurney': '/books_images/Dune/Du_Gurney Halleck.png',
+                    'halleck': '/books_images/Dune/Du_Gurney Halleck.png',
                     'stilgar': '/books_images/Dune/Du_Stilgar.png',
                     'baron': '/books_images/Dune/Du_Baron Vladimir Harkonnen.png',
                     'harkonnen': '/books_images/Dune/Du_Baron Vladimir Harkonnen.png',
+                    'vladimir': '/books_images/Dune/Du_Baron Vladimir Harkonnen.png',
                     'feyd': '/books_images/Dune/Du_Feyd-Rautha.png',
+                    'feyd-rautha': '/books_images/Dune/Du_Feyd-Rautha.png',
+                    'rautha': '/books_images/Dune/Du_Feyd-Rautha.png',
                     
                     // Dracula
                     'dracula': '/books_images/Dracula/D_Count Dracula.png',
@@ -356,18 +361,31 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
                     'frank': '/books_images/Diary of a Wimpy Kid/DWK_Frank & Susan Heffley.png',
                   };
                   
-                  // Smart matching function
+                  // Smart matching function with debug logging
                   const findImage = (name) => {
                     const normalized = name.toLowerCase().trim();
-                    if (characterImages[normalized]) return characterImages[normalized];
+                    console.log('Chat - Looking for:', name, '→', normalized);
+                    
+                    if (characterImages[normalized]) {
+                      console.log('✓ Direct match:', characterImages[normalized]);
+                      return characterImages[normalized];
+                    }
                     
                     const firstName = normalized.split(' ')[0];
-                    if (characterImages[firstName]) return characterImages[firstName];
+                    if (characterImages[firstName]) {
+                      console.log('✓ First name match:', firstName, '→', characterImages[firstName]);
+                      return characterImages[firstName];
+                    }
                     
                     const nameParts = normalized.split(' ');
                     for (const part of nameParts) {
-                      if (characterImages[part]) return characterImages[part];
+                      if (characterImages[part]) {
+                        console.log('✓ Word match:', part, '→', characterImages[part]);
+                        return characterImages[part];
+                      }
                     }
+                    
+                    console.log('✗ No match found');
                     return null;
                   };
                   

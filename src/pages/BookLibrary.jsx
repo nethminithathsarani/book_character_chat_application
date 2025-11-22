@@ -13,32 +13,32 @@ function BookLibrary({ onBookSelect, onBack }) {
 
   // Base color mapping for known books; others will be assigned deterministically
   const bookColors = {
-    'harry_potter': '#8B5CF6',
+    'harry_potter_1': '#8B5CF6',
     'chronicles_narnia': '#F59E0B',
     'the_hobbit': '#10B981',
-    'lotr': '#4F46E5',
+    'lord_of_the_rings': '#4F46E5',
     'frankenstein': '#6366F1',
     'percy_jackson': '#0EA5E9',
     'dracula': '#DC2626',
     'sherlock_holmes': '#2563EB',
     'dune': '#B45309',
-    'diary_wimpy_kid': '#6D28D9',
+    'wimpy_kid': '#6D28D9',
     'hunger_games': '#EA580C'
   };
 
   // Local cover images mapping (only those that exist; others fall back gracefully)
   // Images are served from public/books_images folder
   const localCovers = {
-    'harry_potter': '/books_images/Harry Potter.png',
+    'harry_potter_1': '/books_images/Harry Potter.png',
     'chronicles_narnia': '/books_images/Narnia.png',
     'the_hobbit': '/books_images/The Hobbits.png',
-    'lotr': '/books_images/LOTR.png',
+    'lord_of_the_rings': '/books_images/LOTR.png',
     'frankenstein': '/books_images/Frankenstein.png',
     'percy_jackson': '/books_images/Percy Jackson.png',
     'dracula': '/books_images/Dracula.jpg',
     'sherlock_holmes': '/books_images/Sherlock Holmes.png',
     'dune': '/books_images/Dune.png',
-    'diary_wimpy_kid': '/books_images/Diary of a Wimpy Kid.png',
+    'wimpy_kid': '/books_images/Diary of a Wimpy Kid.png',
     'hunger_games': '/books_images/Hunger Games.png'
   };
 
@@ -61,6 +61,7 @@ function BookLibrary({ onBookSelect, onBack }) {
       const booksWithColors = response.books.map(book => ({
         ...book,
         id: book.book_id,
+        document_id: book.document_id, // Preserve document_id from API
         cover: localCovers[book.book_id] || book.cover_image || '/books_images/placeholder.png',
         color: pickColor(book.book_id)
       }));
@@ -70,8 +71,9 @@ function BookLibrary({ onBookSelect, onBack }) {
       // Fallback to static books
       setAllBooks([
         {
-          id: 'harry_potter',
-          book_id: 'harry_potter',
+          id: 'harry_potter_1',
+          book_id: 'harry_potter_1',
+          document_id: 'default_hp1_doc_001',
           title: 'Harry Potter',
           cover: '/books_images/Harry Potter.png',
           color: '#8B5CF6',
@@ -80,6 +82,7 @@ function BookLibrary({ onBookSelect, onBack }) {
         {
           id: 'chronicles_narnia',
           book_id: 'chronicles_narnia',
+          document_id: 'default_narnia_doc_002',
           title: 'The Chronicles of Narnia',
           cover: '/books_images/Narnia.png',
           color: '#F59E0B',
@@ -88,20 +91,21 @@ function BookLibrary({ onBookSelect, onBack }) {
         {
           id: 'the_hobbit',
           book_id: 'the_hobbit',
+          document_id: 'default_hobbit_doc_003',
           title: 'The Hobbit',
           cover: '/books_images/The Hobbits.png',
           color: '#10B981',
           author: 'J.R.R. Tolkien'
         },
         // Additional defaults (minimal data; update covers if assets added)
-        { id: 'lotr', book_id: 'lotr', title: 'The Lord of the Rings', cover: '/books_images/LOTR.png', color: pickColor('lotr'), author: 'J.R.R. Tolkien' },
-        { id: 'frankenstein', book_id: 'frankenstein', title: 'Frankenstein', cover: '/books_images/Frankenstein.png', color: pickColor('frankenstein'), author: 'Mary Shelley' },
-        { id: 'percy_jackson', book_id: 'percy_jackson', title: 'Percy Jackson', cover: '/books_images/Percy Jackson.png', color: pickColor('percy_jackson'), author: 'Rick Riordan' },
-        { id: 'dracula', book_id: 'dracula', title: 'Dracula', cover: '/books_images/Dracula.jpg', color: pickColor('dracula'), author: 'Bram Stoker' },
-        { id: 'sherlock_holmes', book_id: 'sherlock_holmes', title: 'Sherlock Holmes', cover: '/books_images/Sherlock Holmes.png', color: pickColor('sherlock_holmes'), author: 'Arthur Conan Doyle' },
-        { id: 'dune', book_id: 'dune', title: 'Dune', cover: '/books_images/Dune.png', color: pickColor('dune'), author: 'Frank Herbert' },
-        { id: 'diary_wimpy_kid', book_id: 'diary_wimpy_kid', title: 'Diary of a Wimpy Kid', cover: '/books_images/Diary of a Wimpy Kid.png', color: pickColor('diary_wimpy_kid'), author: 'Jeff Kinney' },
-        { id: 'hunger_games', book_id: 'hunger_games', title: 'The Hunger Games', cover: '/books_images/Hunger Games.png', color: pickColor('hunger_games'), author: 'Suzanne Collins' }
+        { id: 'lord_of_the_rings', book_id: 'lord_of_the_rings', document_id: 'default_lotr_doc_004', title: 'The Lord of the Rings', cover: '/books_images/LOTR.png', color: pickColor('lord_of_the_rings'), author: 'J.R.R. Tolkien' },
+        { id: 'frankenstein', book_id: 'frankenstein', document_id: 'default_frankenstein_doc_005', title: 'Frankenstein', cover: '/books_images/Frankenstein.png', color: pickColor('frankenstein'), author: 'Mary Shelley' },
+        { id: 'percy_jackson', book_id: 'percy_jackson', document_id: 'default_percy_jackson_doc_006', title: 'Percy Jackson', cover: '/books_images/Percy Jackson.png', color: pickColor('percy_jackson'), author: 'Rick Riordan' },
+        { id: 'dracula', book_id: 'dracula', document_id: 'default_dracula_doc_007', title: 'Dracula', cover: '/books_images/Dracula.jpg', color: pickColor('dracula'), author: 'Bram Stoker' },
+        { id: 'sherlock_holmes', book_id: 'sherlock_holmes', document_id: 'default_sherlock_doc_008', title: 'Sherlock Holmes', cover: '/books_images/Sherlock Holmes.png', color: pickColor('sherlock_holmes'), author: 'Arthur Conan Doyle' },
+        { id: 'dune', book_id: 'dune', document_id: 'default_dune_doc_009', title: 'Dune', cover: '/books_images/Dune.png', color: pickColor('dune'), author: 'Frank Herbert' },
+        { id: 'wimpy_kid', book_id: 'wimpy_kid', document_id: 'default_wimpy_kid_doc_010', title: 'Diary of a Wimpy Kid', cover: '/books_images/Diary of a Wimpy Kid.png', color: pickColor('wimpy_kid'), author: 'Jeff Kinney' },
+        { id: 'hunger_games', book_id: 'hunger_games', document_id: 'default_hunger_games_doc_011', title: 'The Hunger Games', cover: '/books_images/Hunger Games.png', color: pickColor('hunger_games'), author: 'Suzanne Collins' }
       ]);
     } finally {
       setLoadingBooks(false);

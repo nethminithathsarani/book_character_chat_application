@@ -19,10 +19,14 @@ const characterImages = {
   'chani': '/books_images/Dune/Du_Chani.png',
   'duncan': '/books_images/Dune/Du_Duncan Idaho.png',
   'gurney': '/books_images/Dune/Du_Gurney Halleck.png',
+  'halleck': '/books_images/Dune/Du_Gurney Halleck.png',
   'stilgar': '/books_images/Dune/Du_Stilgar.png',
   'baron': '/books_images/Dune/Du_Baron Vladimir Harkonnen.png',
   'harkonnen': '/books_images/Dune/Du_Baron Vladimir Harkonnen.png',
+  'vladimir': '/books_images/Dune/Du_Baron Vladimir Harkonnen.png',
   'feyd': '/books_images/Dune/Du_Feyd-Rautha.png',
+  'feyd-rautha': '/books_images/Dune/Du_Feyd-Rautha.png',
+  'rautha': '/books_images/Dune/Du_Feyd-Rautha.png',
   
   // Dracula
   'dracula': '/books_images/Dracula/D_Count Dracula.png',
@@ -32,6 +36,12 @@ const characterImages = {
   'seward': '/books_images/Dracula/D_Dr. Seward.png',
   'arthur': '/books_images/Dracula/D_Arthur Holmwood.png',
   'holmwood': '/books_images/Dracula/D_Arthur Holmwood.png',
+  
+  // Frankenstein
+  'victor': '/books_images/Frankenstein/Victor Frankenstein.png',
+  'frankenstein': '/books_images/Frankenstein/Victor Frankenstein.png',
+  'creature': '/books_images/Frankenstein/The Creature.png',
+  'monster': '/books_images/Frankenstein/The Creature.png',
   
   // Percy Jackson
   'percy': '/books_images/Percy Jackson & The Olympians/PJC_Percy Jackson.png',
@@ -57,6 +67,34 @@ const characterImages = {
   'susan': '/books_images/The Chronicles of Narnia/CN_Susan Pevensie.png',
   'caspian': '/books_images/The Chronicles of Narnia/CN_Prince Caspian.png',
   'witch': '/books_images/The Chronicles of Narnia/CN_The White Witch.png',
+  'telmarines': '/books_images/The Chronicles of Narnia/CN_The Telmarines.png',
+  
+  // Lord of the Rings
+  'frodo': '/books_images/LOTR/Frodo Baggins.jpg',
+  'aragorn': '/books_images/LOTR/Aragorn.jpg',
+  'gandalf': '/books_images/LOTR/Gandalf.png',
+  'samwise': '/books_images/LOTR/Samwise Gamgee.jpg',
+  'sam': '/books_images/LOTR/Samwise Gamgee.jpg',
+  'legolas': '/books_images/LOTR/Legolas.jpg',
+  'gimli': '/books_images/LOTR/Gimli.jpg',
+  'gollum': '/books_images/LOTR/Gollum.png',
+  'saruman': '/books_images/LOTR/Saruman.jpg',
+  'sauron': '/books_images/LOTR/Sauron.jpg',
+  'merry': '/books_images/LOTR/Merry.jpg',
+  'pippin': '/books_images/LOTR/Pippin.jpg',
+  
+  // The Hobbit
+  'bilbo': '/books_images/The Hobbit/Bilbo Baggins.png',
+  'thorin': '/books_images/The Hobbit/Thorin Oakenshield.png',
+  'oakenshield': '/books_images/The Hobbit/Thorin Oakenshield.png',
+  'smaug': '/books_images/The Hobbit/Smaug.png',
+  'balin': '/books_images/The Hobbit/Balin.png',
+  'dwalin': '/books_images/The Hobbit/Dwalin.png',
+  'fíli': '/books_images/The Hobbit/Fíli.png',
+  'fili': '/books_images/The Hobbit/Fíli.png',
+  'kíli': '/books_images/The Hobbit/Kíli.png',
+  'kili': '/books_images/The Hobbit/Kíli.png',
+  'goblin': '/books_images/The Hobbit/Goblin King.png',
   
   // Diary of a Wimpy Kid
   'greg': '/books_images/Diary of a Wimpy Kid/DWK_Greg Heffley.png',
@@ -69,14 +107,19 @@ const characterImages = {
 function findCharacterImage(characterName) {
   const normalizedName = characterName.toLowerCase().trim();
   
+  // Log for debugging
+  console.log('Looking for character image:', characterName, '→ normalized:', normalizedName);
+  
   // Direct match
   if (characterImages[normalizedName]) {
+    console.log('✓ Found direct match:', characterImages[normalizedName]);
     return characterImages[normalizedName];
   }
   
   // Try to find by first word (first name)
   const firstName = normalizedName.split(' ')[0];
   if (characterImages[firstName]) {
+    console.log('✓ Found first name match:', firstName, '→', characterImages[firstName]);
     return characterImages[firstName];
   }
   
@@ -84,10 +127,12 @@ function findCharacterImage(characterName) {
   const nameParts = normalizedName.split(' ');
   for (const part of nameParts) {
     if (characterImages[part]) {
+      console.log('✓ Found word match:', part, '→', characterImages[part]);
       return characterImages[part];
     }
   }
   
+  console.log('✗ No image found for:', characterName);
   return null;
 }
 

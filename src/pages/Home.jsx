@@ -22,13 +22,13 @@ function Home({ onBookSelect, onGoToLibrary }) {
     'harry_potter_1': '#8B5CF6',
     'chronicles_narnia': '#F59E0B',
     'the_hobbit': '#10B981',
-    'lotr': '#4F46E5',
+    'lord_of_the_rings': '#4F46E5',
     'frankenstein': '#6366F1',
     'percy_jackson': '#0EA5E9',
     'dracula': '#DC2626',
     'sherlock_holmes': '#2563EB',
     'dune': '#B45309',
-    'diary_wimpy_kid': '#6D28D9',
+    'wimpy_kid': '#6D28D9',
     'hunger_games': '#EA580C'
   };
 
@@ -37,13 +37,13 @@ function Home({ onBookSelect, onGoToLibrary }) {
     'harry_potter_1': '/books_images/Harry Potter.png',
     'chronicles_narnia': '/books_images/Narnia.png',
     'the_hobbit': '/books_images/The Hobbits.png',
-    'lotr': '/books_images/LOTR.png',
+    'lord_of_the_rings': '/books_images/LOTR.png',
     'frankenstein': '/books_images/Frankenstein.png',
     'percy_jackson': '/books_images/Percy Jackson.png',
     'dracula': '/books_images/Dracula.jpg',
     'sherlock_holmes': '/books_images/Sherlock Holmes.png',
     'dune': '/books_images/Dune.png',
-    'diary_wimpy_kid': '/books_images/Diary of a Wimpy Kid.png',
+    'wimpy_kid': '/books_images/Diary of a Wimpy Kid.png',
     'hunger_games': '/books_images/Hunger Games.png'
   };
 
@@ -72,6 +72,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
       const booksWithColors = response.books.map(book => ({
         ...book,
         id: book.book_id,
+        document_id: book.document_id, // Preserve document_id from API
         cover: localCovers[book.book_id] || book.cover_image,
         color: bookColors[book.book_id] || '#8B5CF6',
         type: 'book'
@@ -84,6 +85,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
         {
           id: 'harry_potter_1',
           book_id: 'harry_potter_1',
+          document_id: 'default_hp1_doc_001',
           title: 'Harry Potter',
           cover: '/books_images/Harry Potter.png',
           color: '#8B5CF6',
@@ -92,6 +94,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
         {
           id: 'chronicles_narnia',
           book_id: 'chronicles_narnia',
+          document_id: 'default_narnia_doc_002',
           title: 'The Chronicles of Narnia',
           cover: '/books_images/Narnia.png',
           color: '#F59E0B',
@@ -100,14 +103,16 @@ function Home({ onBookSelect, onGoToLibrary }) {
         {
           id: 'the_hobbit',
           book_id: 'the_hobbit',
+          document_id: 'default_hobbit_doc_003',
           title: 'The Hobbit',
           cover: '/books_images/The Hobbits.png',
           color: '#10B981',
           type: 'book'
         },
         {
-          id: 'lotr',
-          book_id: 'lotr',
+          id: 'lord_of_the_rings',
+          book_id: 'lord_of_the_rings',
+          document_id: 'default_lotr_doc_004',
           title: 'The Lord of the Rings',
           cover: '/books_images/LOTR.png',
           color: '#4F46E5',
@@ -116,6 +121,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
         {
           id: 'frankenstein',
           book_id: 'frankenstein',
+          document_id: 'default_frankenstein_doc_005',
           title: 'Frankenstein',
           cover: '/books_images/Frankenstein.png',
           color: '#6366F1',
@@ -124,6 +130,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
         {
           id: 'percy_jackson',
           book_id: 'percy_jackson',
+          document_id: 'default_percy_jackson_doc_006',
           title: 'Percy Jackson',
           cover: '/books_images/Percy Jackson.png',
           color: '#0EA5E9',
@@ -132,6 +139,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
         {
           id: 'dracula',
           book_id: 'dracula',
+          document_id: 'default_dracula_doc_007',
           title: 'Dracula',
           cover: '/books_images/Dracula.jpg',
           color: '#DC2626',
@@ -140,6 +148,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
         {
           id: 'sherlock_holmes',
           book_id: 'sherlock_holmes',
+          document_id: 'default_sherlock_doc_008',
           title: 'Sherlock Holmes',
           cover: '/books_images/Sherlock Holmes.png',
           color: '#2563EB',
@@ -148,14 +157,16 @@ function Home({ onBookSelect, onGoToLibrary }) {
         {
           id: 'dune',
           book_id: 'dune',
+          document_id: 'default_dune_doc_009',
           title: 'Dune',
           cover: '/books_images/Dune.png',
           color: '#B45309',
           type: 'book'
         },
         {
-          id: 'diary_wimpy_kid',
-          book_id: 'diary_wimpy_kid',
+          id: 'wimpy_kid',
+          book_id: 'wimpy_kid',
+          document_id: 'default_wimpy_kid_doc_010',
           title: 'Diary of a Wimpy Kid',
           cover: '/books_images/Diary of a Wimpy Kid.png',
           color: '#6D28D9',
@@ -164,6 +175,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
         {
           id: 'hunger_games',
           book_id: 'hunger_games',
+          document_id: 'default_hunger_games_doc_011',
           title: 'The Hunger Games',
           cover: '/books_images/Hunger Games.png',
           color: '#EA580C',
@@ -181,6 +193,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
       const moviesWithColors = response.movies.map(movie => ({
         ...movie,
         id: movie.movie_id,
+        document_id: movie.document_id, // Preserve document_id from API
         cover: movieCovers[movie.movie_id] || movie.cover_image,
         color: movieColors[movie.movie_id] || '#1E3A8A',
         type: 'movie'
