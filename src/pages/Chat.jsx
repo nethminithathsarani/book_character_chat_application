@@ -246,30 +246,48 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   };
 
   return (
-    <div className="chat-container">
-      <div className="chat-header">
+    <div
+      className={`chat-container ${selectedCharacter ? 'with-chat-bg' : (characters.length === 0 && !isDefaultContent ? 'with-characters-bg' : '')}`}
+      style={{ '--book-color': book.color }}
+    >
+      <div className="chat-header" style={{ borderColor: 'rgba(0,0,0,0.04)' }}>
         <button className="back-button" onClick={onBack}>
           ← Back
         </button>
-        <h2 style={{ color: book.color }}>{book.title}</h2>
+
+        <div className="book-info">
+          {book?.cover ? (
+            <img src={book.cover} alt={book.title} className="header-cover" />
+          ) : (
+            <div className="header-cover header-cover-fallback">📚</div>
+          )}
+
+          <div className="book-meta">
+            <h2 className="book-title">{book.title}</h2>
+            <p className="book-subtitle">{book.author || (book.movie_id ? 'Movie' : 'Book')}</p>
+          </div>
+        </div>
+
+        <div className="header-actions">
+          <button className="change-book-btn" onClick={onBack}>Change</button>
+          <button className="clear-chat-btn" onClick={handleClearChat} disabled={!selectedCharacter}>Clear</button>
+        </div>
       </div>
 
       {characters.length === 0 && !isDefaultContent ? (
-        <div className="character-select-screen">
+        <div className="character-select-screen extract-mode">
           <div className="extract-card">
-            <div className="extract-icon">🎭</div>
             <h3>Discover Characters</h3>
-            <p>Extract characters from this book to start chatting</p>
-            {statusMessage && (
-              <p className="status-message">{statusMessage}</p>
-            )}
-            <button 
-              className="extract-button"
-              onClick={handleExtractCharacters}
-              disabled={extracting}
-            >
-              {extracting ? 'Processing...' : 'Extract Characters'}
-            </button>
+            <div className="extract-characters-container">
+              <p>Extract characters from this book to start chatting</p>
+              <button
+                className="extract-characters-btn"
+                onClick={handleExtractCharacters}
+                disabled={!documentId || extracting}
+              >
+                {extracting ? 'Processing...' : 'Extract Characters'}
+              </button>
+            </div>
           </div>
         </div>
       ) : !selectedCharacter ? (
