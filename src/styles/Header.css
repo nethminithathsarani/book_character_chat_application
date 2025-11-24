@@ -1,10 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
 .home-header {
-  background: linear-gradient(135deg, #8B6F47 0%, #A67C52 30%, #C9A9A6 70%, #D4B5A0 100%);
+  background: rgba(0, 0, 0, 0.3);
   padding: 4rem 2rem;
   text-align: center;
   position: relative;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.25),
+    inset 0 2px 8px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  border-top: 3px solid #131109ff;
+  border-bottom: 3px solid #8B7355;
 }
 
 .home-header::before {
@@ -16,12 +23,33 @@
   bottom: 0;
   background: 
     repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(139, 115, 85, 0.03) 3px,
+      rgba(139, 115, 85, 0.03) 6px
+    ),
+    repeating-linear-gradient(
       90deg,
       transparent,
-      transparent 2px,
-      rgba(255, 255, 255, 0.03) 2px,
-      rgba(255, 255, 255, 0.03) 4px
+      transparent 3px,
+      rgba(139, 115, 85, 0.02) 3px,
+      rgba(139, 115, 85, 0.02) 6px
     );
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.home-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(139, 115, 85, 0.06) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -32,14 +60,65 @@
   z-index: 1;
 }
 
+.header-ornament {
+  position: absolute;
+  font-size: 3rem;
+  color: #D4AF37;
+  opacity: 0.4;
+  z-index: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.header-ornament-left {
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%) rotate(-15deg);
+}
+
+.header-ornament-right {
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%) rotate(15deg) scaleX(-1);
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.golden-seal {
+  font-size: 2rem;
+  color: #D4AF37;
+  filter: drop-shadow(0 2px 6px rgba(212, 175, 55, 0.5));
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { 
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
 .title {
   font-size: 3.5rem;
-  color: #fff;
-  margin-bottom: 0.8rem;
+  color: #3E2723;
+  margin: 0;
   font-weight: 700;
-  text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2), 0 0 20px rgba(212, 175, 55, 0.3);
-  letter-spacing: 0.02em;
-  font-family: var(--font-display);
+  text-shadow: 
+    2px 2px 4px rgba(212, 175, 55, 0.3),
+    0 0 15px rgba(255, 255, 255, 0.5),
+    1px 1px 0 rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.05em;
+  font-family: 'Cinzel', serif, var(--font-display);
 }
 
 .book-emoji {
@@ -59,10 +138,39 @@
 
 .subtitle {
   font-size: 1.4rem;
-  color: #fff;
-  opacity: 0.98;
-  font-weight: 400;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-  font-style: italic;
-  letter-spacing: 0.01em;
+  color: #5D4E37;
+  opacity: 0.95;
+  font-weight: 700;
+  text-shadow: 
+    1px 1px 2px rgba(255, 255, 255, 0.5),
+    0 0 8px rgba(212, 175, 55, 0.2);
+  font-style: normal;
+  letter-spacing: 0.02em;
+  font-family: 'Cinzel', serif, var(--font-display);
+}
+
+@media (max-width: 768px) {
+  .header-ornament {
+    font-size: 2rem;
+  }
+  
+  .header-ornament-left {
+    left: 2%;
+  }
+  
+  .header-ornament-right {
+    right: 2%;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .golden-seal {
+    font-size: 1.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1.1rem;
+  }
 }

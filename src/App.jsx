@@ -1,13 +1,13 @@
 
 // src/App.jsx
 import { useState } from 'react';
-import FrontPage from './pages/FontPage'; // Import the existing `FontPage.jsx` file
+import FrontPage from './pages/FontPage';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import BookLibrary from './pages/BookLibrary';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('frontpage'); // Start with FrontPage
+  const [currentPage, setCurrentPage] = useState('frontpage');
   const [selectedBook, setSelectedBook] = useState(null);
   const [documentId, setDocumentId] = useState(null);
   const [preselectedCharacterId, setPreselectedCharacterId] = useState(null);
@@ -20,7 +20,7 @@ function App() {
   };
 
   const handleBackToHome = () => {
-    setCurrentPage('home'); // Go back to Home (book selection)
+    setCurrentPage('home');
     setSelectedBook(null);
     setDocumentId(null);
     setPreselectedCharacterId(null);
@@ -31,14 +31,14 @@ function App() {
   };
 
   const handleGoToHomeFromFront = () => {
-    setCurrentPage('home'); // Navigate from FrontPage to Home on "Explore Books" click
+    setCurrentPage('home');
   };
 
   return (
     <div className="app">
       {currentPage === 'frontpage' && (
-        <FrontPage 
-          onGoToHome={handleGoToHomeFromFront} // New prop for navigation to Home
+        <FrontPage
+          onGoToHome={handleGoToHomeFromFront}
         />
       )}
       {currentPage === 'home' && (

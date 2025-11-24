@@ -164,3 +164,80 @@
     font-size: 1.1rem;
   }
 }
+
+/* When the chat page shows the full background art, let bubbles be very
+   translucent so the art reads through; keep small opaque panels behind
+   the text so messages remain readable. */
+.chat-container.with-chat-bg .message.assistant .message-bubble {
+  /* make bubbles slightly more visible so left-side messages read better */
+  background: linear-gradient(180deg, rgba(255,255,250,0.12), rgba(255,255,245,0.09));
+  background-image: none;
+  background-blend-mode: normal;
+  /* increase border and shadow a bit for separation from background */
+  border: 1px solid rgba(0,0,0,0.06);
+  color: rgba(12,12,12,0.98);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.chat-container.with-chat-bg .message.user .message-bubble {
+  /* make user bubbles extremely translucent so background shows clearly */
+  background: linear-gradient(135deg, rgba(139,74,107,0.06) 0%, rgba(107,58,82,0.05) 100%);
+  background-image: none;
+  background-blend-mode: normal;
+  border: 1px solid rgba(0,0,0,0.02);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.035);
+}
+
+/* Small opaque panels behind message text to preserve legibility */
+.chat-container.with-chat-bg .message.assistant .message-content {
+  /* warm parchment tone (more opaque) so left-side messages are clearly readable */
+  background: rgba(255,245,230,0.88);
+  color: var(--color-ink);
+  padding: 0.4rem 0.75rem;
+  border-radius: 12px;
+  display: inline-block;
+  line-height: 1.55;
+  border: 1px solid rgba(0,0,0,0.05);
+  backdrop-filter: blur(4px);
+}
+
+.chat-container.with-chat-bg .message.user .message-content {
+  /* use a gentle parchment tint instead of a dark/black panel */
+  background: rgba(255,245,230,0.72);
+  color: rgba(12,12,12,0.95);
+  padding: 0.35rem 0.65rem;
+  border-radius: 10px;
+  display: inline-block;
+  line-height: 1.55;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+/* Make the overall bubble transparent when the full chat background is shown
+   so only the small text panels remain visible (removes the white appearance). */
+.chat-container.with-chat-bg .message-bubble {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.6rem 0.9rem; /* keep comfortable spacing around text panels */
+  padding-top: 1.375rem; /* preserve the original top padding for vertical spacing */
+}
+
+/* Keep assistant pointer visible for clarity on the left; hide user pointer */
+.chat-container.with-chat-bg .message.user .message-bubble::after {
+  display: none !important;
+}
+
+/* Make the assistant pointer match the opaque text panel for better visibility */
+.chat-container.with-chat-bg .message.assistant .message-bubble::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  bottom: 4px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 10px 14px 0;
+  border-color: transparent rgba(255,245,230,0.88) transparent transparent;
+  filter: none;
+}
+
