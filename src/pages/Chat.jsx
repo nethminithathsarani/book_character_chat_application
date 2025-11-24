@@ -15,6 +15,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const [chatLoading, setChatLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [loadingHistory, setLoadingHistory] = useState(false);
+  const [progress, setProgress] = useState(null); // numeric percent from backend
 
   // Determine default content: prefer explicit is_default flag, then documentId prefix
   const isDefaultContent = (book?.is_default === true) || documentId?.startsWith('default_');
@@ -63,14 +64,19 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const handleExtractCharacters = async () => {
     setExtracting(true);
     setStatusMessage('Checking document status...');
+    setProgress(null);
     
     try {
       // Wait for document to be ready
       await pollDocumentStatus(documentId, (status) => {
-        setStatusMessage(`Processing: ${status.status} (${status.progress}%)`);
+        // Some backends may return progress as float or string; normalize
+        const pct = typeof status.progress === 'number' ? status.progress : parseFloat(status.progress);
+        setProgress(!isNaN(pct) ? Math.min(Math.max(pct, 0), 100) : null);
+        setStatusMessage(`Processing: ${status.status}`);
       });
       
       setStatusMessage('Extracting characters...');
+      setProgress(null);
       
       // Extract fewer characters to avoid timeout
       const result = await extractCharacters(documentId, 5);
@@ -82,6 +88,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
       setStatusMessage('');
     } finally {
       setExtracting(false);
+      setProgress(null);
     }
   };
 
@@ -280,6 +287,19 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
             <h3>Discover Characters</h3>
             <div className="extract-characters-container">
               <p>Extract characters from this book to start chatting</p>
+              {extracting && (
+                <div className="progress-wrapper">
+                  <div className="progress-bar">
+                    <div className="progress-fill" style={{ width: `${progress ?? 10}%` }} />
+                  </div>
+                  <div className="progress-info">
+                    {progress != null ? `${progress}%` : 'Preparing...'}
+                  </div>
+                </div>
+              )}
+              {statusMessage && (
+                <p className="status-text">{statusMessage}{progress != null ? ` (${progress}%)` : ''}</p>
+              )}
               <button
                 className="extract-characters-btn"
                 onClick={handleExtractCharacters}
