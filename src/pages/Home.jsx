@@ -49,15 +49,23 @@ function Home({ onBookSelect, onGoToLibrary }) {
 
   // Movie color and cover mapping
   const movieColors = {
-    'the_shawshank_redemption': '#2C5F2D',
     'the_godfather': '#8B0000',
-    'inception': '#1E3A8A'
+    'inception': '#1E3A8A',
+    'scooby_doo': '#3B82F6',
+    'scooby_doo_1': '#3B82F6',
+    'pirates_of_the_caribbean': '#92400E',
+    'pirates_caribbean_1': '#92400E',
+    'charlie_and_the_chocolate_factory': '#7C2D12'
   };
 
   const movieCovers = {
-    'the_shawshank_redemption': '/src/assets/movies_images/shawshank.jpg',
-    'the_godfather': '/src/assets/movies_images/godfather.jpg',
-    'inception': '/src/assets/movies_images/inception.jpg'
+    'the_godfather': '/MovieCovers/The_Godfather.png',
+    'inception': '/MovieCovers/Inception.png',
+    'scooby_doo': '/MovieCovers/Scooby_Doo.png',
+    'scooby_doo_1': '/MovieCovers/Scooby_Doo.png',
+    'pirates_of_the_caribbean': '/MovieCovers/Pirates_of_the_Carribean.png',
+    'pirates_caribbean_1': '/MovieCovers/Pirates_of_the_Carribean.png',
+    'charlie_and_the_chocolate_factory': '/MovieCovers/Charlie_and_the_Chocolate__Factory.png'
   };
 
   useEffect(() => {
@@ -190,18 +198,76 @@ function Home({ onBookSelect, onGoToLibrary }) {
   const loadDefaultMovies = async () => {
     try {
       const response = await getDefaultMovies();
-      const moviesWithColors = response.movies.map(movie => ({
-        ...movie,
-        id: movie.movie_id,
-        document_id: movie.document_id, // Preserve document_id from API
-        cover: movieCovers[movie.movie_id] || movie.cover_image,
-        color: movieColors[movie.movie_id] || '#1E3A8A',
-        type: 'movie'
-      }));
+      console.log('🎬 API Response:', response);
+      const moviesWithColors = response.movies.map(movie => {
+        console.log('🎥 Processing movie:', {
+          movie_id: movie.movie_id,
+          title: movie.title,
+          hasCoverInMapping: !!movieCovers[movie.movie_id],
+          coverFromMapping: movieCovers[movie.movie_id],
+          coverFromAPI: movie.cover_image
+        });
+        return {
+          ...movie,
+          id: movie.movie_id,
+          document_id: movie.document_id, // Preserve document_id from API
+          cover: movieCovers[movie.movie_id] || movie.cover_image,
+          color: movieColors[movie.movie_id] || '#1E3A8A',
+          type: 'movie'
+        };
+      });
+      console.log('🎬 Final movies array:', moviesWithColors);
       setFeaturedMovies(moviesWithColors);
     } catch (error) {
       console.error('Failed to load default movies:', error);
-      setFeaturedMovies([]);
+      // Fallback to static movies if API fails
+      setFeaturedMovies([
+        {
+          id: 'the_godfather',
+          movie_id: 'the_godfather',
+          document_id: 'default_godfather_doc_001',
+          title: 'The Godfather',
+          cover: '/MovieCovers/The_Godfather.png',
+          color: '#8B0000',
+          type: 'movie'
+        },
+        {
+          id: 'inception',
+          movie_id: 'inception',
+          document_id: 'default_inception_doc_002',
+          title: 'Inception',
+          cover: '/MovieCovers/Inception.png',
+          color: '#1E3A8A',
+          type: 'movie'
+        },
+        {
+          id: 'scooby_doo',
+          movie_id: 'scooby_doo',
+          document_id: 'default_scooby_doc_003',
+          title: 'Scooby Doo',
+          cover: '/MovieCovers/Scooby_Doo.png',
+          color: '#3B82F6',
+          type: 'movie'
+        },
+        {
+          id: 'pirates_of_the_caribbean',
+          movie_id: 'pirates_of_the_caribbean',
+          document_id: 'default_pirates_doc_004',
+          title: 'Pirates of the Caribbean',
+          cover: '/MovieCovers/Pirates_of_the_Carribean.png',
+          color: '#92400E',
+          type: 'movie'
+        },
+        {
+          id: 'charlie_and_the_chocolate_factory',
+          movie_id: 'charlie_and_the_chocolate_factory',
+          document_id: 'default_charlie_doc_005',
+          title: 'Charlie and the Chocolate Factory',
+          cover: '/MovieCovers/Charlie_and_the_Chocolate__Factory.png',
+          color: '#7C2D12',
+          type: 'movie'
+        }
+      ]);
     } finally {
       setLoadingMovies(false);
     }
