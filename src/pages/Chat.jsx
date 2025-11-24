@@ -397,6 +397,61 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
                     'rowley': '/books_images/Diary of a Wimpy Kid/DWK_Rowley Jefferson.png',
                     'rodrick': '/books_images/Diary of a Wimpy Kid/DWK_Rodrick Heffley.png',
                     'frank': '/books_images/Diary of a Wimpy Kid/DWK_Frank & Susan Heffley.png',
+                    
+                    // Movie: Inception
+                    'cobb': '/Movie/Inception/INS_Cobb.png',
+                    'ariadne': '/Movie/Inception/INS_Ariadne.png',
+                    'eames': '/Movie/Inception/INS_Eames.png',
+                    
+                    // Movie: The Godfather
+                    'don': '/Movie/The Godfather/GOD_Don.png',
+                    'vito': '/Movie/The Godfather/GOD_Don.png',
+                    'corleone': '/Movie/The Godfather/GOD_Don.png',
+                    'michael': '/Movie/The Godfather/GOD_Consigliere.png',
+                    'consigliere': '/Movie/The Godfather/GOD_Consigliere.png',
+                    'santino': '/Movie/The Godfather/GOD_Enforcer.png',
+                    'sonny': '/Movie/The Godfather/GOD_Enforcer.png',
+                    'enforcer': '/Movie/The Godfather/GOD_Enforcer.png',
+                    
+                    // Movie: Scooby-Doo
+                    'scooby': '/Movie/Scooby-Doo/SD_Scooby.png',
+                    'scooby-doo': '/Movie/Scooby-Doo/SD_Scooby.png',
+                    'shaggy': '/Movie/Scooby-Doo/SD_Shaggy.png',
+                    'norville': '/Movie/Scooby-Doo/SD_Shaggy.png',
+                    'rogers': '/Movie/Scooby-Doo/SD_Shaggy.png',
+                    'velma': '/Movie/Scooby-Doo/SD_Velma.png',
+                    'dinkley': '/Movie/Scooby-Doo/SD_Velma.png',
+                    'fred': '/Movie/Scooby-Doo/SD_Fred.png',
+                    'jones': '/Movie/Scooby-Doo/SD_Fred.png',
+                    'daphne': '/Movie/Scooby-Doo/SD_Daphne.png',
+                    'blake': '/Movie/Scooby-Doo/SD_Daphne.png',
+                    
+                    // Movie: Pirates of the Caribbean
+                    'jack': '/Movie/Pirates of the Caribbean/POC_Captain Jack Sparrow.png',
+                    'sparrow': '/Movie/Pirates of the Caribbean/POC_Captain Jack Sparrow.png',
+                    'elizabeth': '/Movie/Pirates of the Caribbean/POC_Elizabeth Swann.png',
+                    'swann': '/Movie/Pirates of the Caribbean/POC_Elizabeth Swann.png',
+                    'will': '/Movie/Pirates of the Caribbean/POC_William Will Turner.png',
+                    'turner': '/Movie/Pirates of the Caribbean/POC_William Will Turner.png',
+                    'william': '/Movie/Pirates of the Caribbean/POC_William Will Turner.png',
+                    'barbossa': '/Movie/Pirates of the Caribbean/POC_Captain Hector Barbossa.png',
+                    'hector': '/Movie/Pirates of the Caribbean/POC_Captain Hector Barbossa.png',
+                    
+                    // Movie: Charlie and the Chocolate Factory
+                    'charlie': '/Movie/Charlie and the Chocolate Factor/CCF_Charlie Bucket.png',
+                    'bucket': '/Movie/Charlie and the Chocolate Factor/CCF_Charlie Bucket.png',
+                    'willy': '/Movie/Charlie and the Chocolate Factor/CCF_Willy Wonka.png',
+                    'wonka': '/Movie/Charlie and the Chocolate Factor/CCF_Willy Wonka.png',
+                    'augustus': '/Movie/Charlie and the Chocolate Factor/CCF_Augustus Gloop.png',
+                    'gloop': '/Movie/Charlie and the Chocolate Factor/CCF_Augustus Gloop.png',
+                    'veruca': '/Movie/Charlie and the Chocolate Factor/CCF_Veruca Salt.png',
+                    'salt': '/Movie/Charlie and the Chocolate Factor/CCF_Veruca Salt.png',
+                    'violet': '/Movie/Charlie and the Chocolate Factor/CCF_Violet Beauregarde.png',
+                    'beauregarde': '/Movie/Charlie and the Chocolate Factor/CCF_Violet Beauregarde.png',
+                    'mike': '/Movie/Charlie and the Chocolate Factor/CCF_Mike Teavee.png',
+                    'teavee': '/Movie/Charlie and the Chocolate Factor/CCF_Mike Teavee.png',
+                    'grandpa': '/Movie/Charlie and the Chocolate Factor/CCF_Grandpa Joe.png',
+                    'joe': '/Movie/Charlie and the Chocolate Factor/CCF_Grandpa Joe.png',
                   };
                   
                   // Smart matching function with debug logging
