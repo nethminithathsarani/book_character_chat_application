@@ -44,15 +44,20 @@
 .chat-container.with-chat-bg .chat-sidebar {
   /* keep the sidebar visually separate from the background art by adding
      a subtle but more opaque parchment overlay so the left area is dimmed */
-  background: linear-gradient(180deg, rgba(255,255,250,0.92), rgba(255,255,248,0.94)) !important;
-  border-right: 1px solid rgba(160,140,115,0.06) !important;
-  box-shadow: 4px 0 18px rgba(35,30,24,0.06) !important;
-  backdrop-filter: blur(2px) !important;
+  /* Strong brown variant for left sidebar (clear brown tone) */
+  background: linear-gradient(180deg, #CBA56F 0%, #8B5E3C 100%) !important;
+  border-right: 2px solid rgba(84,54,36,0.16) !important;
+  box-shadow: 6px 0 28px rgba(35,30,24,0.10) !important;
+  backdrop-filter: blur(1.5px) !important;
 }
 
 .chat-container.with-chat-bg .chat-sidebar::before {
-  /* hide decorative strip so the background art reads fully at the left */
-  display: none !important;
+  /* Decorative strip adapted to brown tone */
+  display: block !important;
+  opacity: 0.28 !important;
+  background-image: none !important;
+  background: linear-gradient(180deg, rgba(203,165,111,0.55), rgba(139,94,60,0.55)) !important;
+  border-right: 1px solid rgba(84,54,36,0.06) !important;
 }
 
 .chat-container.with-chat-bg .chat-sidebar .current-character,
@@ -62,7 +67,8 @@
 .chat-container.with-chat-bg .chat-sidebar .loading-history {
   /* increase panel opacity slightly so text and controls remain legible
      on top of the dimmed-left overlay */
-  background: rgba(255,245,230,0.68) !important;
+  /* Panel background matching brown sidebar */
+  background: rgba(230,200,170,0.92) !important;
   border-radius: 14px;
   border: 1px solid rgba(0,0,0,0.04) !important;
   box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
@@ -424,19 +430,7 @@
   width: 100%;
 }
 
-.chat-sidebar {
-  width: 360px;
-  background: linear-gradient(180deg, var(--color-parchment), rgba(254,251,247,0.96));
-  padding: 2.5rem;
-  box-shadow: 
-    4px 0 24px rgba(35, 30, 24, 0.06),
-    2px 0 12px rgba(35, 30, 24, 0.04);
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid rgba(160,140,115,0.08);
-  backdrop-filter: blur(2.5px);
-  -webkit-backdrop-filter: blur(2.5px);
-}
+
 
 /* Decorative left-side background: a subtle vertical vignette and pattern
    that sits behind sidebar content. Uses a pseudo-element for layering so
@@ -447,49 +441,32 @@
 }
 
 .chat-sidebar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 72px; /* visible left strip */
-  background-image: linear-gradient(180deg, rgba(255,255,250,0.06), rgba(255,245,235,0.02)), url('../assets/backgrounds/sidebar-pattern.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: left center;
-  border-right: 1px solid rgba(160,140,115,0.05);
-  box-shadow: inset -8px 0 24px rgba(35,30,24,0.04);
-  pointer-events: none;
-  z-index: 0;
+  /* removed decorative strip for a cleaner, neater sidebar */
+  display: none; /* keep the layout simpler and less busy */
 }
 
 /* Ensure sidebar content sits above the decorative strip */
-.chat-sidebar > * {
-  position: relative;
-  z-index: 1;
+.chat-sidebar {
+  width: 360px;
+  background: linear-gradient(180deg, #CBA56F 0%, #8B5E3C 100%) !important;
+  padding: 2rem 2rem 2.5rem 2rem;
+  box-shadow: 2px 0 12px rgba(35, 30, 24, 0.06);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(160,140,115,0.06);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
 }
 
-/* When the full chat background is active, make the decorative strip subtler */
-.chat-container.with-chat-bg .chat-sidebar::before {
-  opacity: 0.18;
-  filter: saturate(0.9) brightness(0.98);
-}
-
-/* Hide the decorative strip on narrow viewports so it doesn't consume space */
-@media (max-width: 768px) {
-  .chat-sidebar::before {
-    display: none;
-  }
-}
 
 .current-character {
   text-align: center;
-  padding: 2.5rem 2rem;
-  background: linear-gradient(135deg, var(--color-parchment) 0%, var(--color-cream) 100%);
-  border-radius: 24px;
-  border: 3px solid;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  padding: 2rem 1.5rem;
+  background: linear-gradient(135deg, #EAD6B3 0%, #CBA56F 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.04);
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
 }
@@ -547,48 +524,45 @@
 }
 
 .change-character-btn {
-  background: linear-gradient(135deg, var(--color-warm-beige) 0%, #DDD8CC 100%);
-  border: 2px solid var(--color-warm-beige);
-  color: var(--color-ink);
-  padding: 1.125rem;
-  border-radius: 16px;
+  background: linear-gradient(135deg, #EAD6B3 0%, #D6BD98 100%);
+  border: 1px solid rgba(0,0,0,0.04);
+  color: rgba(27,18,10,0.95);
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-top: auto;
+  transition: transform 160ms ease;
+  margin-top: 1rem;
+  width: 100%;
   font-family: var(--font-sans);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
 }
 
 .change-character-btn:hover {
-  background: linear-gradient(135deg, #DDD8CC 0%, var(--color-warm-beige) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .clear-chat-btn {
-  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
-  color: white;
-  border: none;
-  padding: 1.125rem;
-  border-radius: 16px;
+  background: linear-gradient(135deg, #D6BD98 0%, #CBA56F 100%);
+  color: rgba(27,18,10,0.95);
+  border: 1px solid rgba(0,0,0,0.04);
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 160ms ease;
   margin-top: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+  display: block;
+  width: 100%;
+  text-align: center;
+  box-shadow: none;
   font-family: var(--font-sans);
 }
 
 .clear-chat-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.35);
 }
 
 .loading-history {
@@ -766,4 +740,40 @@
     border-radius: 8px;
     width: 100%;
   }
+}
+
+/* Strong override to ensure left sidebar shows the desired very light yellow-brown color
+   This uses high specificity and !important to override any conflicting rules or caching. */
+.chat-container.with-chat-bg .chat-sidebar,
+.chat-sidebar {
+  background: linear-gradient(180deg, #FBF5E6 0%, #F3E7C9 100%) !important;
+  background-color: #FBF5E6 !important;
+}
+
+/* Final high-specificity override for ChatMessage left-side section
+   Ensures sidebar and its panels use a very light yellow-brown (parchment)
+   tone across all pages and overrides decorative strip if necessary. */
+.chat-screen .chat-sidebar,
+.chat-container .chat-screen .chat-sidebar,
+.chat-container.with-chat-bg .chat-screen .chat-sidebar {
+  background: linear-gradient(180deg, #FBF5E6 0%, #F3E7C9 100%) !important;
+  background-color: #FBF5E6 !important;
+  color: rgba(12,12,12,0.95) !important;
+}
+
+.chat-sidebar::before {
+  /* Make decorative strip subtle and match parchment tone */
+  background-image: none !important;
+  background: linear-gradient(180deg, rgba(250,245,235,0.06), rgba(245,235,210,0.04)) !important;
+  border-right: 1px solid rgba(160,140,115,0.04) !important;
+  box-shadow: inset -8px 0 24px rgba(35,30,24,0.02) !important;
+}
+
+.chat-sidebar .current-character,
+.chat-sidebar .extract-characters-container,
+.chat-sidebar .change-character-btn,
+.chat-sidebar .clear-chat-btn,
+.chat-sidebar .loading-history {
+  background: rgba(250,240,224,0.9) !important;
+  color: rgba(12,12,12,0.95) !important;
 }
