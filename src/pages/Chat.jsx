@@ -15,6 +15,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const [chatLoading, setChatLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [loadingHistory, setLoadingHistory] = useState(false);
+  const [progress, setProgress] = useState(null); // numeric percent from backend
 
   // Determine default content: prefer explicit is_default flag, then documentId prefix
   const isDefaultContent = (book?.is_default === true) || documentId?.startsWith('default_');
@@ -63,14 +64,19 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const handleExtractCharacters = async () => {
     setExtracting(true);
     setStatusMessage('Checking document status...');
+    setProgress(null);
     
     try {
       // Wait for document to be ready
       await pollDocumentStatus(documentId, (status) => {
-        setStatusMessage(`Processing: ${status.status} (${status.progress}%)`);
+        // Some backends may return progress as float or string; normalize
+        const pct = typeof status.progress === 'number' ? status.progress : parseFloat(status.progress);
+        setProgress(!isNaN(pct) ? Math.min(Math.max(pct, 0), 100) : null);
+        setStatusMessage(`Processing: ${status.status}`);
       });
       
       setStatusMessage('Extracting characters...');
+      setProgress(null);
       
       // Extract fewer characters to avoid timeout
       const result = await extractCharacters(documentId, 5);
@@ -82,6 +88,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
       setStatusMessage('');
     } finally {
       setExtracting(false);
+      setProgress(null);
     }
   };
 
@@ -245,6 +252,9 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
     }
   };
 
+  // When there are no characters and content is not default, we're in extract mode
+  const isExtractMode = (characters.length === 0 && !isDefaultContent);
+
   return (
     <div
       className={`chat-container ${selectedCharacter ? 'with-chat-bg' : (characters.length === 0 && !isDefaultContent ? 'with-characters-bg' : '')}`}
@@ -268,10 +278,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
           </div>
         </div>
 
-        <div className="header-actions">
-          <button className="change-book-btn" onClick={onBack}>Change</button>
-          <button className="clear-chat-btn" onClick={handleClearChat} disabled={!selectedCharacter}>Clear</button>
-        </div>
+        {/* Header actions removed: Change / Clear buttons hidden across chat and characters pages */}
       </div>
 
       {characters.length === 0 && !isDefaultContent ? (
@@ -280,6 +287,19 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
             <h3>Discover Characters</h3>
             <div className="extract-characters-container">
               <p>Extract characters from this book to start chatting</p>
+              {extracting && (
+                <div className="progress-wrapper">
+                  <div className="progress-bar">
+                    <div className="progress-fill" style={{ width: `${progress ?? 10}%` }} />
+                  </div>
+                  <div className="progress-info">
+                    {progress != null ? `${progress}%` : 'Preparing...'}
+                  </div>
+                </div>
+              )}
+              {statusMessage && (
+                <p className="status-text">{statusMessage}{progress != null ? ` (${progress}%)` : ''}</p>
+              )}
               <button
                 className="extract-characters-btn"
                 onClick={handleExtractCharacters}
@@ -377,6 +397,61 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
                     'rowley': '/books_images/Diary of a Wimpy Kid/DWK_Rowley Jefferson.png',
                     'rodrick': '/books_images/Diary of a Wimpy Kid/DWK_Rodrick Heffley.png',
                     'frank': '/books_images/Diary of a Wimpy Kid/DWK_Frank & Susan Heffley.png',
+                    
+                    // Movie: Inception
+                    'cobb': '/Movie/Inception/INS_Cobb.png',
+                    'ariadne': '/Movie/Inception/INS_Ariadne.png',
+                    'eames': '/Movie/Inception/INS_Eames.png',
+                    
+                    // Movie: The Godfather
+                    'don': '/Movie/The Godfather/GOD_Don.png',
+                    'vito': '/Movie/The Godfather/GOD_Don.png',
+                    'corleone': '/Movie/The Godfather/GOD_Don.png',
+                    'michael': '/Movie/The Godfather/GOD_Consigliere.png',
+                    'consigliere': '/Movie/The Godfather/GOD_Consigliere.png',
+                    'santino': '/Movie/The Godfather/GOD_Enforcer.png',
+                    'sonny': '/Movie/The Godfather/GOD_Enforcer.png',
+                    'enforcer': '/Movie/The Godfather/GOD_Enforcer.png',
+                    
+                    // Movie: Scooby-Doo
+                    'scooby': '/Movie/Scooby-Doo/SD_Scooby.png',
+                    'scooby-doo': '/Movie/Scooby-Doo/SD_Scooby.png',
+                    'shaggy': '/Movie/Scooby-Doo/SD_Shaggy.png',
+                    'norville': '/Movie/Scooby-Doo/SD_Shaggy.png',
+                    'rogers': '/Movie/Scooby-Doo/SD_Shaggy.png',
+                    'velma': '/Movie/Scooby-Doo/SD_Velma.png',
+                    'dinkley': '/Movie/Scooby-Doo/SD_Velma.png',
+                    'fred': '/Movie/Scooby-Doo/SD_Fred.png',
+                    'jones': '/Movie/Scooby-Doo/SD_Fred.png',
+                    'daphne': '/Movie/Scooby-Doo/SD_Daphne.png',
+                    'blake': '/Movie/Scooby-Doo/SD_Daphne.png',
+                    
+                    // Movie: Pirates of the Caribbean
+                    'jack': '/Movie/Pirates of the Caribbean/POC_Captain Jack Sparrow.png',
+                    'sparrow': '/Movie/Pirates of the Caribbean/POC_Captain Jack Sparrow.png',
+                    'elizabeth': '/Movie/Pirates of the Caribbean/POC_Elizabeth Swann.png',
+                    'swann': '/Movie/Pirates of the Caribbean/POC_Elizabeth Swann.png',
+                    'will': '/Movie/Pirates of the Caribbean/POC_William Will Turner.png',
+                    'turner': '/Movie/Pirates of the Caribbean/POC_William Will Turner.png',
+                    'william': '/Movie/Pirates of the Caribbean/POC_William Will Turner.png',
+                    'barbossa': '/Movie/Pirates of the Caribbean/POC_Captain Hector Barbossa.png',
+                    'hector': '/Movie/Pirates of the Caribbean/POC_Captain Hector Barbossa.png',
+                    
+                    // Movie: Charlie and the Chocolate Factory
+                    'charlie': '/Movie/Charlie and the Chocolate Factor/CCF_Charlie Bucket.png',
+                    'bucket': '/Movie/Charlie and the Chocolate Factor/CCF_Charlie Bucket.png',
+                    'willy': '/Movie/Charlie and the Chocolate Factor/CCF_Willy Wonka.png',
+                    'wonka': '/Movie/Charlie and the Chocolate Factor/CCF_Willy Wonka.png',
+                    'augustus': '/Movie/Charlie and the Chocolate Factor/CCF_Augustus Gloop.png',
+                    'gloop': '/Movie/Charlie and the Chocolate Factor/CCF_Augustus Gloop.png',
+                    'veruca': '/Movie/Charlie and the Chocolate Factor/CCF_Veruca Salt.png',
+                    'salt': '/Movie/Charlie and the Chocolate Factor/CCF_Veruca Salt.png',
+                    'violet': '/Movie/Charlie and the Chocolate Factor/CCF_Violet Beauregarde.png',
+                    'beauregarde': '/Movie/Charlie and the Chocolate Factor/CCF_Violet Beauregarde.png',
+                    'mike': '/Movie/Charlie and the Chocolate Factor/CCF_Mike Teavee.png',
+                    'teavee': '/Movie/Charlie and the Chocolate Factor/CCF_Mike Teavee.png',
+                    'grandpa': '/Movie/Charlie and the Chocolate Factor/CCF_Grandpa Joe.png',
+                    'joe': '/Movie/Charlie and the Chocolate Factor/CCF_Grandpa Joe.png',
                   };
                   
                   // Smart matching function with debug logging
