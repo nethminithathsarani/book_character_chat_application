@@ -245,6 +245,9 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
     }
   };
 
+  // When there are no characters and content is not default, we're in extract mode
+  const isExtractMode = (characters.length === 0 && !isDefaultContent);
+
   return (
     <div
       className={`chat-container ${selectedCharacter ? 'with-chat-bg' : (characters.length === 0 && !isDefaultContent ? 'with-characters-bg' : '')}`}
@@ -268,10 +271,7 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
           </div>
         </div>
 
-        <div className="header-actions">
-          <button className="change-book-btn" onClick={onBack}>Change</button>
-          <button className="clear-chat-btn" onClick={handleClearChat} disabled={!selectedCharacter}>Clear</button>
-        </div>
+        {/* Header actions removed: Change / Clear buttons hidden across chat and characters pages */}
       </div>
 
       {characters.length === 0 && !isDefaultContent ? (
