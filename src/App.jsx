@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import FrontPage from './pages/FontPage';
+import FrontPage from './pages/FrontPage';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import BookLibrary from './pages/BookLibrary';
@@ -28,15 +28,15 @@ function App() {
     setCurrentPage('library');
   };
 
-  const handleGoToHomeFromFront = () => {
+  const handleGoToHome = () => {
     setCurrentPage('home');
   };
 
   return (
     <div className="app">
       {currentPage === 'frontpage' && (
-        <FrontPage
-          onGoToHome={handleGoToHomeFromFront}
+        <FrontPage 
+          onGoToHome={handleGoToHome}
         />
       )}
       {currentPage === 'home' && (

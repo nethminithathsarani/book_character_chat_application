@@ -1,4 +1,4 @@
-/* src/components/frontpage.css */
+/* src/styles/fontpage.css */
 .frontpage {
   margin: 0;
   font-family: 'Georgia', serif;
@@ -10,7 +10,7 @@
 .hero {
   position: relative;
   height: 100vh;
-  background-image: url('../assets/font_images/background.png'); /* path relative to src/styles */
+  background-image: url('../assets/font_images/background.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed; /* Parallax effect for subtle movement */
