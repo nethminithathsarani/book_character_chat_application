@@ -66,20 +66,77 @@ export const getMovieCharacters = async (movieId) => {
   return response.json();
 };
 
-export const uploadBook = async (file) => {
+export const uploadBook = async (file, saveToLibrary = false, title = null) => {
   const formData = new FormData();
   formData.append('file', file);
+  
+  console.log('Upload API called with saveToLibrary:', saveToLibrary);
+  
+  if (saveToLibrary) {
+    formData.append('save_to_library', 'true');
+    // Use provided title or extract from filename
+    const bookTitle = title || file.name.replace('.pdf', '');
+    formData.append('title', bookTitle);
+    console.log('Added save_to_library and title to form data:', bookTitle);
+  }
+
+  console.log('Uploading to:', `${API_BASE_URL}/upload`);
 
   const response = await fetch(`${API_BASE_URL}/upload`, {
     method: 'POST',
     body: formData
   });
 
+  console.log('Upload response status:', response.status);
+
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Upload failed');
+    const errorText = await response.text();
+    console.error('Upload error response:', errorText);
+    try {
+      const error = JSON.parse(errorText);
+      throw new Error(error.detail || 'Upload failed');
+    } catch {
+      throw new Error(`Upload failed: ${errorText}`);
+    }
   }
 
+  return response.json();
+};
+
+// Library Management API
+export const getLibraryBooks = async () => {
+  const response = await fetch(`${API_BASE_URL}/library`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch library books');
+  }
+  return response.json();
+};
+
+export const getLibraryBookCharacters = async (bookId) => {
+  const response = await fetch(`${API_BASE_URL}/library/${bookId}/characters`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch library book characters');
+  }
+  return response.json();
+};
+
+export const toggleFavorite = async (bookId) => {
+  const response = await fetch(`${API_BASE_URL}/library/${bookId}/favorite`, {
+    method: 'POST'
+  });
+  if (!response.ok) {
+    throw new Error('Failed to toggle favorite');
+  }
+  return response.json();
+};
+
+export const removeFromLibrary = async (bookId) => {
+  const response = await fetch(`${API_BASE_URL}/library/${bookId}`, {
+    method: 'DELETE'
+  });
+  if (!response.ok) {
+    throw new Error('Failed to remove from library');
+  }
   return response.json();
 };
 

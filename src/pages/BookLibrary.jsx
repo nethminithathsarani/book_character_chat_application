@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import BookCard from '../components/BookCard';
 import CharacterCard from '../components/CharacterCard';
-import { getDefaultBooks, getBookCharacters } from '../services/api';
+import { getDefaultBooks, getBookCharacters, getLibraryBooks, getLibraryBookCharacters, removeFromLibrary, toggleFavorite } from '../services/api';
 import '../styles/Home.css';
 
 function BookLibrary({ onBookSelect, onBack }) {
@@ -57,15 +57,36 @@ function BookLibrary({ onBookSelect, onBack }) {
 
   const loadBooks = async () => {
     try {
-      const response = await getDefaultBooks();
-      const booksWithColors = response.books.map(book => ({
+      // Fetch both default books and user's library books
+      const [defaultBooksResponse, libraryBooksResponse] = await Promise.all([
+        getDefaultBooks(),
+        getLibraryBooks()
+      ]);
+
+      // Process default books
+      const defaultBooks = defaultBooksResponse.books.map(book => ({
         ...book,
         id: book.book_id,
-        document_id: book.document_id, // Preserve document_id from API
+        document_id: book.document_id,
         cover: localCovers[book.book_id] || book.cover_image || '/books_images/placeholder.png',
-        color: pickColor(book.book_id)
+        color: pickColor(book.book_id),
+        isDefault: true
       }));
-      setAllBooks(booksWithColors);
+
+      // Process library books (user-uploaded)
+      const libraryBooks = libraryBooksResponse.books?.map(book => ({
+        ...book,
+        id: book.book_id || book.id,
+        document_id: book.document_id,
+        cover: book.cover_image || 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=600&fit=crop',
+        color: pickColor(book.book_id || book.id),
+        isLibrary: true,
+        isFavorite: book.is_favorite || false
+      })) || [];
+
+      // Combine: library books first, then default books
+      const allBooks = [...libraryBooks, ...defaultBooks];
+      setAllBooks(allBooks);
     } catch (error) {
       console.error('Failed to load books:', error);
       // Fallback to static books
@@ -116,7 +137,10 @@ function BookLibrary({ onBookSelect, onBack }) {
     setSelectedBook(book);
     setLoadingCharacters(true);
     try {
-      const response = await getBookCharacters(book.book_id);
+      // Use library endpoint for library books, default endpoint for default books
+      const response = book.isLibrary 
+        ? await getLibraryBookCharacters(book.book_id || book.id)
+        : await getBookCharacters(book.book_id);
       setCharacters(response.characters);
     } catch (error) {
       console.error('Failed to load characters:', error);
