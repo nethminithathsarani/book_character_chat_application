@@ -287,6 +287,23 @@ export const listAllCharacters = async () => {
   return response.json();
 };
 
+// Unified Books API - Check if characters are already extracted
+export const checkBookCharacters = async (bookIdentifier) => {
+  const response = await fetch(`${API_BASE_URL}/books/${bookIdentifier}/characters`);
+  
+  if (response.ok) {
+    // Characters exist (200)
+    return { exists: true, data: await response.json() };
+  } else if (response.status === 404) {
+    // Characters not extracted yet (404)
+    return { exists: false, data: null };
+  } else {
+    // Other error
+    const error = await response.json();
+    throw new Error(error.detail || 'Failed to check characters');
+  }
+};
+
 export const pollDocumentStatus = async (documentId, onProgress, maxAttempts = 60) => {
   let attempts = 0;
   
