@@ -237,6 +237,16 @@
   padding-top: 2rem;
 }
 
+/* Character selection background for library page - same as default book character page */
+.home-container.library-page.with-characters-bg {
+  background: var(--color-cream);
+  background-image: url('../assets/backgrounds/bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
 .library-header {
   background: linear-gradient(135deg, #8B6F47 0%, #A67C52 30%, #C9A9A6 70%, #D4B5A0 100%);
   padding: 3.5rem 2rem;

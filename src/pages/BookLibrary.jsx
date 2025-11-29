@@ -257,7 +257,7 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
   }
 
   return (
-    <div className="home-container library-page">
+    <div className={`home-container library-page ${selectedBook && !loadingCharacters ? 'with-characters-bg' : ''}`}>
       <div className="home-content">
         <div className="books-section">
           {!selectedBook ? (
