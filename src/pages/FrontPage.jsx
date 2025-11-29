@@ -9,20 +9,41 @@ function FrontPage({ onGoToHome }) {
     new URL('../assets/font_images/image2.png', import.meta.url).href,
     new URL('../assets/font_images/image3.png', import.meta.url).href,
     new URL('../assets/font_images/image4.png', import.meta.url).href,
-    new URL('../assets/font_images/image5.png', import.meta.url).href
+    new URL('../assets/font_images/image5.png', import.meta.url).href,
+    new URL('../assets/font_images/image6.png', import.meta.url).href
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const visibleImages = 3; // Show 3 images at a time
-  const autoAdvanceInterval = 2000; // 2 seconds timer for moving to next
+  const autoAdvanceInterval = 3000; // 3 seconds timer for moving to next
+
+  // Create extended array for seamless infinite loop
+  const extendedImages = [...images, ...images.slice(0, visibleImages)];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setIsTransitioning(true);
+      setCurrentIndex((prevIndex) => prevIndex + 1);
     }, autoAdvanceInterval);
 
     return () => clearInterval(interval);
-  }, [images.length, autoAdvanceInterval]);
+  }, []);
+
+  // Handle loop reset
+  useEffect(() => {
+    if (currentIndex === images.length) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(0);
+      }, 500); // Match transition duration
+    }
+  }, [currentIndex, images.length]);
+
+  const handleIndicatorClick = (index) => {
+    setIsTransitioning(true);
+    setCurrentIndex(index);
+  };
 
   return (
     <div className="frontpage">
@@ -46,12 +67,13 @@ function FrontPage({ onGoToHome }) {
           <div
             className="carousel-track"
             style={{
-              transform: `translateX(-${(currentIndex * 100) / visibleImages}%)`
+              transform: `translateX(-${currentIndex * 33.333}%)`,
+              transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
             }}
           >
-            {images.map((image, index) => (
+            {extendedImages.map((image, index) => (
               <div key={index} className="carousel-slide">
-                <img src={image} alt={`Map ${index + 1}`} className="map-image" />
+                <img src={image} alt={`Map ${(index % images.length) + 1}`} className="map-image" />
               </div>
             ))}
           </div>
@@ -60,10 +82,9 @@ function FrontPage({ onGoToHome }) {
             {images.map((_, index) => (
               <button
                 key={index}
-                className={index === currentIndex ? 'active' : ''}
-                onClick={() => setCurrentIndex(index)}
+                className={index === (currentIndex % images.length) ? 'active' : ''}
+                onClick={() => handleIndicatorClick(index)}
               >
-                {index + 1}
               </button>
             ))}
           </div>

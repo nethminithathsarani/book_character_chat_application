@@ -7,10 +7,9 @@ function Header() {
       <div className="header-ornament header-ornament-right" aria-hidden="true"></div>
       <div className="header-content">
         <div className="title-wrapper">
-          <span className="golden-seal" aria-hidden="true"></span>
+          
           <h1 className="title">
-            <span className="book-emoji" aria-hidden="true">📚</span>
-            Storybook Chat
+            Aedora
           </h1>
         </div>
         <p className="subtitle">Chat with your favorite book characters!</p>

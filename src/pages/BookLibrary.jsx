@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import BookCard from '../components/BookCard';
 import CharacterCard from '../components/CharacterCard';
 import { getDefaultBooks, getBookCharacters, getLibraryBooks, getLibraryBookCharacters, removeFromLibrary, toggleFavorite, checkBookCharacters } from '../services/api';
+import defaultBookImage from '../assets/default_book.png';
 import '../styles/Home.css';
 
-function BookLibrary({ onBookSelect, onBack }) {
+function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
   const [allBooks, setAllBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
   const [characters, setCharacters] = useState([]);
@@ -13,7 +14,7 @@ function BookLibrary({ onBookSelect, onBack }) {
 
   // Base color mapping for known books; others will be assigned deterministically
   const bookColors = {
-    'harry_potter_1': '#8B5CF6',
+    'harry_potter_1': '#402e04ff',
     'chronicles_narnia': '#F59E0B',
     'the_hobbit': '#10B981',
     'lord_of_the_rings': '#4F46E5',
@@ -43,7 +44,7 @@ function BookLibrary({ onBookSelect, onBack }) {
   };
 
   // Deterministic color generator for any future book IDs not in the map
-  const palette = ['#8B5CF6','#F59E0B','#10B981','#4F46E5','#6366F1','#0EA5E9','#DC2626','#2563EB','#B45309','#6D28D9','#EA580C'];
+  const palette = ['#5c390bff','#F59E0B','#10B981','#4F46E5','#6366F1','#0EA5E9','#DC2626','#2563EB','#B45309','#6D28D9','#EA580C'];
   const pickColor = (id) => {
     if (bookColors[id]) return bookColors[id];
     let hash = 0;
@@ -57,77 +58,58 @@ function BookLibrary({ onBookSelect, onBack }) {
 
   const loadBooks = async () => {
     try {
-      // Fetch both default books and user's library books
-      const [defaultBooksResponse, libraryBooksResponse] = await Promise.all([
-        getDefaultBooks(),
-        getLibraryBooks()
-      ]);
+      if (showOnlyLibrary) {
+        // Fetch only user's library books (uploaded books)
+        const libraryBooksResponse = await getLibraryBooks();
 
-      // Process default books
-      const defaultBooks = defaultBooksResponse.books.map(book => ({
-        ...book,
-        id: book.book_id,
-        document_id: book.document_id,
-        cover: localCovers[book.book_id] || book.cover_image || '/books_images/placeholder.png',
-        color: pickColor(book.book_id),
-        isDefault: true
-      }));
+        // Process library books (user-uploaded)
+        const libraryBooks = libraryBooksResponse.books?.map(book => ({
+          ...book,
+          id: book.book_id || book.id,
+          document_id: book.document_id,
+          cover: book.cover_image || defaultBookImage,
+          color: '#3E2723',
+          isLibrary: true,
+          isFavorite: book.is_favorite || false
+        })) || [];
 
-      // Process library books (user-uploaded)
-      const libraryBooks = libraryBooksResponse.books?.map(book => ({
-        ...book,
-        id: book.book_id || book.id,
-        document_id: book.document_id,
-        cover: book.cover_image || 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=600&fit=crop',
-        color: pickColor(book.book_id || book.id),
-        isLibrary: true,
-        isFavorite: book.is_favorite || false
-      })) || [];
+        setAllBooks(libraryBooks);
+      } else {
+        // Fetch both default books and user's library books
+        const [defaultBooksResponse, libraryBooksResponse] = await Promise.all([
+          getDefaultBooks(),
+          getLibraryBooks()
+        ]);
 
-      // Combine: library books first, then default books
-      const allBooks = [...libraryBooks, ...defaultBooks];
-      setAllBooks(allBooks);
+        // Process default books
+        const defaultBooks = defaultBooksResponse.books.map(book => ({
+          ...book,
+          id: book.book_id,
+          document_id: book.document_id,
+          cover: localCovers[book.book_id] || book.cover_image || '/books_images/placeholder.png',
+          color: '#3E2723',
+          isDefault: true
+        }));
+
+        // Process library books (user-uploaded)
+        const libraryBooks = libraryBooksResponse.books?.map(book => ({
+          ...book,
+          id: book.book_id || book.id,
+          document_id: book.document_id,
+          cover: book.cover_image || defaultBookImage,
+          color: '#3E2723',
+          isLibrary: true,
+          isFavorite: book.is_favorite || false
+        })) || [];
+
+        // Combine: library books first, then default books
+        const allBooks = [...libraryBooks, ...defaultBooks];
+        setAllBooks(allBooks);
+      }
     } catch (error) {
       console.error('Failed to load books:', error);
-      // Fallback to static books
-      setAllBooks([
-        {
-          id: 'harry_potter_1',
-          book_id: 'harry_potter_1',
-          document_id: 'default_hp1_doc_001',
-          title: 'Harry Potter',
-          cover: '/books_images/Harry Potter.png',
-          color: '#8B5CF6',
-          author: 'J.K. Rowling'
-        },
-        {
-          id: 'chronicles_narnia',
-          book_id: 'chronicles_narnia',
-          document_id: 'default_narnia_doc_002',
-          title: 'The Chronicles of Narnia',
-          cover: '/books_images/Narnia.png',
-          color: '#F59E0B',
-          author: 'C.S. Lewis'
-        },
-        {
-          id: 'the_hobbit',
-          book_id: 'the_hobbit',
-          document_id: 'default_hobbit_doc_003',
-          title: 'The Hobbit',
-          cover: '/books_images/The Hobbits.png',
-          color: '#10B981',
-          author: 'J.R.R. Tolkien'
-        },
-        // Additional defaults (minimal data; update covers if assets added)
-        { id: 'lord_of_the_rings', book_id: 'lord_of_the_rings', document_id: 'default_lotr_doc_004', title: 'The Lord of the Rings', cover: '/books_images/LOTR.png', color: pickColor('lord_of_the_rings'), author: 'J.R.R. Tolkien' },
-        { id: 'frankenstein', book_id: 'frankenstein', document_id: 'default_frankenstein_doc_005', title: 'Frankenstein', cover: '/books_images/Frankenstein.png', color: pickColor('frankenstein'), author: 'Mary Shelley' },
-        { id: 'percy_jackson', book_id: 'percy_jackson', document_id: 'default_percy_jackson_doc_006', title: 'Percy Jackson', cover: '/books_images/Percy Jackson.png', color: pickColor('percy_jackson'), author: 'Rick Riordan' },
-        { id: 'dracula', book_id: 'dracula', document_id: 'default_dracula_doc_007', title: 'Dracula', cover: '/books_images/Dracula.jpg', color: pickColor('dracula'), author: 'Bram Stoker' },
-        { id: 'sherlock_holmes', book_id: 'sherlock_holmes', document_id: 'default_sherlock_doc_008', title: 'Sherlock Holmes', cover: '/books_images/Sherlock Holmes.png', color: pickColor('sherlock_holmes'), author: 'Arthur Conan Doyle' },
-        { id: 'dune', book_id: 'dune', document_id: 'default_dune_doc_009', title: 'Dune', cover: '/books_images/Dune.png', color: pickColor('dune'), author: 'Frank Herbert' },
-        { id: 'wimpy_kid', book_id: 'wimpy_kid', document_id: 'default_wimpy_kid_doc_010', title: 'Diary of a Wimpy Kid', cover: '/books_images/Diary of a Wimpy Kid.png', color: pickColor('wimpy_kid'), author: 'Jeff Kinney' },
-        { id: 'hunger_games', book_id: 'hunger_games', document_id: 'default_hunger_games_doc_011', title: 'The Hunger Games', cover: '/books_images/Hunger Games.png', color: pickColor('hunger_games'), author: 'Suzanne Collins' }
-      ]);
+      // Show empty library on error
+      setAllBooks([]);
     } finally {
       setLoadingBooks(false);
     }
@@ -238,8 +220,8 @@ function BookLibrary({ onBookSelect, onBack }) {
             ← Back to Home
           </button>
           <h1 className="library-title">
-            <span className="book-emoji">📚</span>
-            Book Library
+            <span className="book-emoji">{showOnlyLibrary ? '📖' : '📚'}</span>
+            {showOnlyLibrary ? 'My Library' : 'All Books'}
           </h1>
         </div>
         <div className="home-content">
@@ -253,29 +235,40 @@ function BookLibrary({ onBookSelect, onBack }) {
     <div className="home-container library-page">
       <div className="library-header">
         <button className="back-button" onClick={selectedBook ? handleBackToBooks : onBack}>
-          ← {selectedBook ? 'Back to Library' : 'Back to Home'}
+          ← {selectedBook ? `Back to ${showOnlyLibrary ? 'My Library' : 'All Books'}` : 'Back to Home'}
         </button>
         <h1 className="library-title">
-          <span className="book-emoji">📚</span>
-          {selectedBook ? selectedBook.title : 'Book Library'}
+          <span className="book-emoji">{showOnlyLibrary ? '📖' : '📚'}</span>
+          {selectedBook ? selectedBook.title : (showOnlyLibrary ? 'My Library' : 'All Books')}
         </h1>
         <p className="library-subtitle">
-          {selectedBook ? 'Choose a character to chat with' : 'Choose a book and start chatting with characters'}
+          {selectedBook ? 'Choose a character to chat with' : (showOnlyLibrary ? 'Your uploaded books' : 'Browse all available books')}
         </p>
       </div>
 
       <div className="home-content">
         <div className="books-section">
           {!selectedBook ? (
-            <div className="books-grid">
-              {allBooks.map((book) => (
-                <BookCard 
-                  key={book.id} 
-                  book={book}
-                  onClick={() => handleBookClick(book)}
-                />
-              ))}
-            </div>
+            allBooks.length > 0 ? (
+              <div className="books-grid">
+                {allBooks.map((book) => (
+                  <BookCard 
+                    key={book.id} 
+                    book={book}
+                    onClick={() => handleBookClick(book)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="empty-library">
+                <div className="empty-library-icon">📚</div>
+                <h3>Your Library is Empty</h3>
+                <p>Upload books from the home page to add them to your library</p>
+                <button className="back-button" onClick={onBack}>
+                  ← Go to Home
+                </button>
+              </div>
+            )
           ) : loadingCharacters ? (
             <div className="loading-state">Loading characters...</div>
           ) : (

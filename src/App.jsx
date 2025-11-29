@@ -30,6 +30,10 @@ function App() {
     setCurrentPage('library');
   };
 
+  const handleGoToAllBooks = () => {
+    setCurrentPage('allbooks');
+  };
+
   const handleGoToHome = () => {
     setCurrentPage('home');
   };
@@ -45,12 +49,21 @@ function App() {
         <Home 
           onBookSelect={handleBookSelect}
           onGoToLibrary={handleGoToLibrary}
+          onGoToAllBooks={handleGoToAllBooks}
         />
       )}
       {currentPage === 'library' && (
         <BookLibrary 
           onBookSelect={handleBookSelect}
           onBack={handleBackToHome}
+          showOnlyLibrary={true}
+        />
+      )}
+      {currentPage === 'allbooks' && (
+        <BookLibrary 
+          onBookSelect={handleBookSelect}
+          onBack={handleBackToHome}
+          showOnlyLibrary={false}
         />
       )}
       {currentPage === 'chat' && (
