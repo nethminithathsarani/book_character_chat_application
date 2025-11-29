@@ -1,8 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
 
 .home-header {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 4rem 2rem;
+  /* parchment background image with subtle vignette and overlay */
+  background-image: 
+    linear-gradient(rgba(245,238,226,0.58), rgba(232,215,190,0.58)),
+    url('/Header Background.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 5rem 2rem;
   text-align: center;
   position: relative;
   box-shadow: 
@@ -15,29 +21,16 @@
 }
 
 .home-header::before {
+  /* subtle paper texture overlay to blend image with UI colors */
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 3px,
-      rgba(139, 115, 85, 0.03) 3px,
-      rgba(139, 115, 85, 0.03) 6px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 3px,
-      rgba(139, 115, 85, 0.02) 3px,
-      rgba(139, 115, 85, 0.02) 6px
-    );
+  background: linear-gradient(rgba(0,0,0,0.06), rgba(0,0,0,0.04));
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.9;
 }
 
 .home-header::after {
@@ -72,17 +65,29 @@
 
 .header-ornament-left {
   top: 50%;
-  left: 5%;
-  transform: translateY(-50%) rotate(-15deg);
+  left: 4%;
+  transform: translateY(-50%) rotate(-12deg);
+  width: 128px;
+  height: 128px;
+  background-image: url('/Header Background.png');
+  background-size: 220px auto;
+  background-position: left center;
+  opacity: 0.28;
 }
 
 .header-ornament-right {
   top: 50%;
-  right: 5%;
-  transform: translateY(-50%) rotate(15deg) scaleX(-1);
+  right: 4%;
+  transform: translateY(-50%) rotate(12deg) scaleX(-1);
+  width: 128px;
+  height: 128px;
+  background-image: url('/Header Background.png');
+  background-size: 220px auto;
+  background-position: right center;
+  opacity: 0.28;
 }
 
-.title-container {
+.title-container, .title-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
