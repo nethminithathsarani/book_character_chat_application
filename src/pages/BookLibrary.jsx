@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import BookCard from '../components/BookCard';
 import CharacterCard from '../components/CharacterCard';
 import { getDefaultBooks, getBookCharacters, getLibraryBooks, getLibraryBookCharacters, removeFromLibrary, toggleFavorite, checkBookCharacters } from '../services/api';
+import defaultBookImage from '../assets/default_book.png';
 import '../styles/Home.css';
 
 function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
@@ -66,7 +67,7 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
           ...book,
           id: book.book_id || book.id,
           document_id: book.document_id,
-          cover: book.cover_image || 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=600&fit=crop',
+          cover: book.cover_image || defaultBookImage,
           color: pickColor(book.book_id || book.id),
           isLibrary: true,
           isFavorite: book.is_favorite || false
@@ -95,7 +96,7 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
           ...book,
           id: book.book_id || book.id,
           document_id: book.document_id,
-          cover: book.cover_image || 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=600&fit=crop',
+          cover: book.cover_image || defaultBookImage,
           color: pickColor(book.book_id || book.id),
           isLibrary: true,
           isFavorite: book.is_favorite || false
