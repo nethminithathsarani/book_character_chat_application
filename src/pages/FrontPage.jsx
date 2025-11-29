@@ -85,7 +85,6 @@ function FrontPage({ onGoToHome }) {
                 className={index === (currentIndex % images.length) ? 'active' : ''}
                 onClick={() => handleIndicatorClick(index)}
               >
-                {index + 1}
               </button>
             ))}
           </div>
