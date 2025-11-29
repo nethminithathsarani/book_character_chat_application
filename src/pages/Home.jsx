@@ -280,7 +280,14 @@ function Home({ onBookSelect, onGoToLibrary }) {
       const response = item.type === 'movie' 
         ? await getMovieCharacters(item.movie_id || item.id)
         : await getBookCharacters(item.book_id || item.id);
-      setCharacters(response.characters);
+      // Filter out unwanted characters
+      const filteredCharacters = response.characters.filter(
+        char => !char.name.includes('Company of Dwarves') && 
+               !char.name.includes('Meriadoc Brandybuck') && 
+               !char.name.includes('Peregrin Took') &&
+               !char.name.includes('Frank & Susan Heffley')
+      );
+      setCharacters(filteredCharacters);
     } catch (error) {
       console.error('Failed to load characters:', error);
       alert('Failed to load characters. Please try again.');

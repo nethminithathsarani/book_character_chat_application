@@ -36,6 +36,8 @@ const characterImages = {
   'seward': '/books_images/Dracula/D_Dr. Seward.png',
   'arthur': '/books_images/Dracula/D_Arthur Holmwood.png',
   'holmwood': '/books_images/Dracula/D_Arthur Holmwood.png',
+  'quincey': '/books_images/Dracula/Quincey Morris.png',
+  'morris': '/books_images/Dracula/Quincey Morris.png',
   
   // Frankenstein
   'victor': '/books_images/Frankenstein/Victor Frankenstein.png',
@@ -77,6 +79,7 @@ const characterImages = {
   'sam': '/books_images/LOTR/Samwise Gamgee.jpg',
   'legolas': '/books_images/LOTR/Legolas.jpg',
   'gimli': '/books_images/LOTR/Gimli.jpg',
+  'boromir': '/books_images/LOTR/Boromir.png',
   'gollum': '/books_images/LOTR/Gollum.png',
   'saruman': '/books_images/LOTR/Saruman.jpg',
   'sauron': '/books_images/LOTR/Sauron.jpg',
@@ -101,6 +104,24 @@ const characterImages = {
   'rowley': '/books_images/Diary of a Wimpy Kid/DWK_Rowley Jefferson.png',
   'rodrick': '/books_images/Diary of a Wimpy Kid/DWK_Rodrick Heffley.png',
   'frank': '/books_images/Diary of a Wimpy Kid/DWK_Frank & Susan Heffley.png',
+  'manny': '/books_images/Diary of a Wimpy Kid/Manny Heffley.png',
+  
+  // Hunger Games
+  'katniss': '/books_images/Hunger games/Katniss Everdeen.png',
+  'everdeen': '/books_images/Hunger games/Katniss Everdeen.png',
+  'peeta': '/books_images/Hunger games/Peeta Mellark.png',
+  'mellark': '/books_images/Hunger games/Peeta Mellark.png',
+  'gale': '/books_images/Hunger games/Gale Hawthorne.png',
+  'hawthorne': '/books_images/Hunger games/Gale Hawthorne.png',
+  'haymitch': '/books_images/Hunger games/Haymitch Abernathy.png',
+  'abernathy': '/books_images/Hunger games/Haymitch Abernathy.png',
+  'primrose': '/books_images/Hunger games/Primrose Everdeen.png',
+  'prim': '/books_images/Hunger games/Primrose Everdeen.png',
+  'effie': '/books_images/Hunger games/effie trinket.png',
+  'trinket': '/books_images/Hunger games/effie trinket.png',
+  'snow': '/books_images/Hunger games/President Snow.png',
+  'capitol': '/books_images/Hunger games/Capitol Government (Generic Capitol Enforcer).png',
+  'enforcer': '/books_images/Hunger games/Capitol Government (Generic Capitol Enforcer).png',
   
   // Movie: Inception
   'cobb': '/Movie/Inception/INS_Cobb.png',
