@@ -21,17 +21,24 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const isDefaultContent = (book?.is_default === true) || documentId?.startsWith('default_');
   const isDefaultMovie = isDefaultContent && !!book?.movie_id;
   const isDefaultBook = isDefaultContent && !!book?.book_id && !book?.movie_id;
+  const isLibraryBook = book?.isLibrary === true;
 
   useEffect(() => {
-    // If it's default content, load characters from API
+    // Load characters based on content type
     if (isDefaultContent) {
       if (isDefaultMovie && book.movie_id) {
         loadDefaultMovieCharacters();
       } else if (isDefaultBook && book.book_id) {
         loadDefaultBookCharacters();
       }
+    } else if (isLibraryBook && book?.book_id) {
+      // Load library book characters
+      loadLibraryBookCharacters();
+    } else if (documentId) {
+      // Try to load characters for uploaded book
+      loadUploadedBookCharacters();
     }
-  }, [book, documentId, isDefaultContent, isDefaultMovie, isDefaultBook]);
+  }, [book, documentId, isDefaultContent, isDefaultMovie, isDefaultBook, isLibraryBook]);
 
   useEffect(() => {
     // If a character is preselected, auto-select it
@@ -72,6 +79,47 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
       setCharacters(filteredCharacters);
     } catch (error) {
       console.error('Failed to load default movie characters:', error);
+    }
+  };
+
+  const loadLibraryBookCharacters = async () => {
+    try {
+      console.log('📚 Loading library book characters for:', book.book_id);
+      const bookIdentifier = `library_${book.book_id}`;
+      const response = await fetch(`${API_BASE_URL}/books/${bookIdentifier}/characters`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ Loaded library characters:', data.characters.length);
+        setCharacters(data.characters);
+      } else {
+        console.log('❌ Characters not found for library book');
+        // Characters not extracted yet - will show extract UI
+        setCharacters([]);
+      }
+    } catch (error) {
+      console.error('Failed to load library book characters:', error);
+      setCharacters([]);
+    }
+  };
+
+  const loadUploadedBookCharacters = async () => {
+    try {
+      console.log('📄 Loading uploaded book characters for:', documentId);
+      const response = await fetch(`${API_BASE_URL}/books/${documentId}/characters`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ Loaded uploaded book characters:', data.characters.length);
+        setCharacters(data.characters);
+      } else {
+        console.log('❌ Characters not found for uploaded book');
+        // Characters not extracted yet - will show extract UI
+        setCharacters([]);
+      }
+    } catch (error) {
+      console.error('Failed to load uploaded book characters:', error);
+      setCharacters([]);
     }
   };
 

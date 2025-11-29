@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import BookCard from '../components/BookCard';
 import CharacterCard from '../components/CharacterCard';
-import { getDefaultBooks, getBookCharacters } from '../services/api';
+import { getDefaultBooks, getBookCharacters, getLibraryBooks, getLibraryBookCharacters, removeFromLibrary, toggleFavorite, checkBookCharacters } from '../services/api';
 import '../styles/Home.css';
 
 function BookLibrary({ onBookSelect, onBack }) {
@@ -57,15 +57,36 @@ function BookLibrary({ onBookSelect, onBack }) {
 
   const loadBooks = async () => {
     try {
-      const response = await getDefaultBooks();
-      const booksWithColors = response.books.map(book => ({
+      // Fetch both default books and user's library books
+      const [defaultBooksResponse, libraryBooksResponse] = await Promise.all([
+        getDefaultBooks(),
+        getLibraryBooks()
+      ]);
+
+      // Process default books
+      const defaultBooks = defaultBooksResponse.books.map(book => ({
         ...book,
         id: book.book_id,
-        document_id: book.document_id, // Preserve document_id from API
+        document_id: book.document_id,
         cover: localCovers[book.book_id] || book.cover_image || '/books_images/placeholder.png',
-        color: pickColor(book.book_id)
+        color: pickColor(book.book_id),
+        isDefault: true
       }));
-      setAllBooks(booksWithColors);
+
+      // Process library books (user-uploaded)
+      const libraryBooks = libraryBooksResponse.books?.map(book => ({
+        ...book,
+        id: book.book_id || book.id,
+        document_id: book.document_id,
+        cover: book.cover_image || 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=600&fit=crop',
+        color: pickColor(book.book_id || book.id),
+        isLibrary: true,
+        isFavorite: book.is_favorite || false
+      })) || [];
+
+      // Combine: library books first, then default books
+      const allBooks = [...libraryBooks, ...defaultBooks];
+      setAllBooks(allBooks);
     } catch (error) {
       console.error('Failed to load books:', error);
       // Fallback to static books
@@ -116,17 +137,72 @@ function BookLibrary({ onBookSelect, onBack }) {
     setSelectedBook(book);
     setLoadingCharacters(true);
     try {
-      const response = await getBookCharacters(book.book_id);
-      // Filter out unwanted characters
-      const filteredCharacters = response.characters.filter(
-        char => !char.name.includes('Company of Dwarves') && 
-               !char.name.includes('Meriadoc Brandybuck') && 
-               !char.name.includes('Peregrin Took') &&
-               !char.name.includes('Frank & Susan Heffley')
-      );
-      setCharacters(filteredCharacters);
+      // Determine the correct book identifier for the unified API
+      // Priority: 
+      // 1. For library books: library_{book_id}
+      // 2. For uploaded books with document_id: document_id directly
+      // 3. For default books: book_id
+      let bookIdentifier;
+      if (book.isLibrary) {
+        bookIdentifier = `library_${book.book_id || book.id}`;
+      } else if (book.document_id && !book.isDefault) {
+        // Uploaded book - use document_id directly
+        bookIdentifier = book.document_id;
+      } else {
+        // Default book - use book_id
+        bookIdentifier = book.book_id;
+      }
+
+      console.log('📚 Checking characters for book:', book.title);
+      console.log('🔑 Book identifier:', bookIdentifier);
+      console.log('📋 Book type:', book.isLibrary ? 'Library' : book.isDefault ? 'Default' : 'Uploaded');
+
+      // Check if characters are already extracted using unified API
+      const { exists, data } = await checkBookCharacters(bookIdentifier);
+      
+      if (exists) {
+        // Characters already extracted - show them
+        console.log('✅ Characters already extracted:', data.characters.length);
+        // Filter out unwanted characters
+        const filteredCharacters = data.characters.filter(
+          char => !char.name.includes('Company of Dwarves') && 
+                 !char.name.includes('Meriadoc Brandybuck') && 
+                 !char.name.includes('Peregrin Took') &&
+                 !char.name.includes('Frank & Susan Heffley')
+        );
+        setCharacters(filteredCharacters);
+      } else {
+        // Characters not extracted yet - trigger extraction
+        console.log('❌ Characters not extracted yet - need to extract');
+        
+        // For library books, try to extract characters
+        if (book.isLibrary) {
+          console.log('🔄 Attempting to extract characters for library book...');
+          try {
+            const response = await getLibraryBookCharacters(book.book_id || book.id);
+            // Filter out unwanted characters
+            const filteredCharacters = response.characters.filter(
+              char => !char.name.includes('Company of Dwarves') && 
+                     !char.name.includes('Meriadoc Brandybuck') && 
+                     !char.name.includes('Peregrin Took') &&
+                     !char.name.includes('Frank & Susan Heffley')
+            );
+            setCharacters(filteredCharacters);
+            console.log('✅ Characters extracted successfully:', filteredCharacters.length);
+          } catch (extractError) {
+            console.error('❌ Failed to extract characters:', extractError);
+            alert('Failed to extract characters. Please try again.');
+            setSelectedBook(null);
+          }
+        } else {
+          // Default books should always have characters
+          console.error('❌ Default book missing characters - this should not happen');
+          alert('Failed to load characters for this book.');
+          setSelectedBook(null);
+        }
+      }
     } catch (error) {
-      console.error('Failed to load characters:', error);
+      console.error('Failed to check/load characters:', error);
       alert('Failed to load characters. Please try again.');
       setSelectedBook(null);
     } finally {
@@ -136,13 +212,16 @@ function BookLibrary({ onBookSelect, onBack }) {
 
   const handleCharacterClick = (character) => {
     const documentId = selectedBook.document_id;
-    // Default (preloaded) documents go straight to chat with preselected character
-    if ((documentId && documentId.startsWith('default_')) || selectedBook.is_default) {
-      onBookSelect(selectedBook, documentId, character.character_id);
-      return;
-    }
-    // Uploaded (non-default) documents still follow existing flow (would normally go to extract)
-    // If an extract-characters page is added later, redirect there instead.
+    
+    console.log('🎯 Character clicked:', character.name, character.character_id);
+    console.log('📖 Book:', selectedBook.title);
+    console.log('📄 Document ID:', documentId);
+    console.log('📚 Is Library:', selectedBook.isLibrary);
+    console.log('✨ Is Default:', selectedBook.isDefault);
+    
+    // Characters are already extracted (we loaded them successfully)
+    // Navigate directly to chat page for ALL books (default, library, uploaded)
+    console.log('✅ Characters already extracted - navigating to chat');
     onBookSelect(selectedBook, documentId, character.character_id);
   };
 

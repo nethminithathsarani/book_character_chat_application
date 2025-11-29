@@ -1,3 +1,5 @@
+
+// src/App.jsx
 import { useState } from 'react';
 import FrontPage from './pages/FrontPage';
 import Home from './pages/Home';

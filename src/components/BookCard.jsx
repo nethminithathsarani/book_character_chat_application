@@ -12,6 +12,8 @@ function BookCard({ book, onClick }) {
       onClick={onClick}
       style={{ '--book-color': book.color }}
     >
+      {book.isLibrary && <div className="library-badge">📚 My Library</div>}
+      {book.isFavorite && <div className="favorite-badge">⭐</div>}
       <div className="book-cover">
         <img 
           src={coverSrc} 
