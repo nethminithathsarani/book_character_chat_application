@@ -82,7 +82,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
         id: book.book_id,
         document_id: book.document_id, // Preserve document_id from API
         cover: localCovers[book.book_id] || book.cover_image,
-        color: bookColors[book.book_id] || '#8B5CF6',
+        color: '#3E2723',
         type: 'book'
       }));
       setFeaturedBooks(booksWithColors);
@@ -96,7 +96,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_hp1_doc_001',
           title: 'Harry Potter',
           cover: '/books_images/Harry Potter.png',
-          color: '#8B5CF6',
+          color: '#3E2723',
           type: 'book'
         },
         {
@@ -105,7 +105,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_narnia_doc_002',
           title: 'The Chronicles of Narnia',
           cover: '/books_images/Narnia.png',
-          color: '#F59E0B',
+          color: '#3E2723',
           type: 'book'
         },
         {
@@ -114,7 +114,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_hobbit_doc_003',
           title: 'The Hobbit',
           cover: '/books_images/The Hobbits.png',
-          color: '#10B981',
+          color: '#3E2723',
           type: 'book'
         },
         {
@@ -123,7 +123,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_lotr_doc_004',
           title: 'The Lord of the Rings',
           cover: '/books_images/LOTR.png',
-          color: '#4F46E5',
+          color: '#3E2723',
           type: 'book'
         },
         {
@@ -132,7 +132,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_frankenstein_doc_005',
           title: 'Frankenstein',
           cover: '/books_images/Frankenstein.png',
-          color: '#6366F1',
+          color: '#3E2723',
           type: 'book'
         },
         {
@@ -141,7 +141,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_percy_jackson_doc_006',
           title: 'Percy Jackson',
           cover: '/books_images/Percy Jackson.png',
-          color: '#0EA5E9',
+          color: '#3E2723',
           type: 'book'
         },
         {
@@ -150,7 +150,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_dracula_doc_007',
           title: 'Dracula',
           cover: '/books_images/Dracula.jpg',
-          color: '#DC2626',
+          color: '#3E2723',
           type: 'book'
         },
         {
@@ -159,7 +159,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_sherlock_doc_008',
           title: 'Sherlock Holmes',
           cover: '/books_images/Sherlock Holmes.png',
-          color: '#2563EB',
+          color: '#3E2723',
           type: 'book'
         },
         {
@@ -168,7 +168,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_dune_doc_009',
           title: 'Dune',
           cover: '/books_images/Dune.png',
-          color: '#B45309',
+          color: '#3E2723',
           type: 'book'
         },
         {
@@ -177,7 +177,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_wimpy_kid_doc_010',
           title: 'Diary of a Wimpy Kid',
           cover: '/books_images/Diary of a Wimpy Kid.png',
-          color: '#6D28D9',
+          color: '#3E2723',
           type: 'book'
         },
         {
@@ -186,7 +186,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_hunger_games_doc_011',
           title: 'The Hunger Games',
           cover: '/books_images/Hunger Games.png',
-          color: '#EA580C',
+          color: '#3E2723',
           type: 'book'
         }
       ]);
@@ -212,7 +212,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           id: movie.movie_id,
           document_id: movie.document_id, // Preserve document_id from API
           cover: movieCovers[movie.movie_id] || movie.cover_image,
-          color: movieColors[movie.movie_id] || '#1E3A8A',
+          color: '#3E2723',
           type: 'movie'
         };
       });
@@ -228,7 +228,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_godfather_doc_001',
           title: 'The Godfather',
           cover: '/MovieCovers/The_Godfather.png',
-          color: '#8B0000',
+          color: '#3E2723',
           type: 'movie'
         },
         {
@@ -237,7 +237,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_inception_doc_002',
           title: 'Inception',
           cover: '/MovieCovers/Inception.png',
-          color: '#1E3A8A',
+          color: '#3E2723',
           type: 'movie'
         },
         {
@@ -246,7 +246,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_scooby_doc_003',
           title: 'Scooby Doo',
           cover: '/MovieCovers/Scooby_Doo.png',
-          color: '#3B82F6',
+          color: '#3E2723',
           type: 'movie'
         },
         {
@@ -255,7 +255,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_pirates_doc_004',
           title: 'Pirates of the Caribbean',
           cover: '/MovieCovers/Pirates_of_the_Carribean.png',
-          color: '#92400E',
+          color: '#3E2723',
           type: 'movie'
         },
         {
@@ -264,7 +264,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
           document_id: 'default_charlie_doc_005',
           title: 'Charlie and the Chocolate Factory',
           cover: '/MovieCovers/Charlie_and_the_Chocolate__Factory.png',
-          color: '#7C2D12',
+          color: '#3E2723',
           type: 'movie'
         }
       ]);
@@ -397,7 +397,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
               <button className="back-button" onClick={handleBackToBooks}>
                 ← Back to {activeTab === 'books' ? 'Books' : 'Movies'}
               </button>
-              <h2 className="section-title" style={{ color: selectedItem.color }}>
+              <h2 className="section-title">
                 {selectedItem.title}
               </h2>
             </div>

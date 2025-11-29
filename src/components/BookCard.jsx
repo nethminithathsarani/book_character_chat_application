@@ -39,7 +39,7 @@ function BookCard({ book, onClick, onDelete }) {
         <div className="book-overlay"></div>
       </div>
       <div className="book-info">
-        <h3>{cleanTitle}</h3>
+        <h3 style={{ color: '#3E2723' }}>{cleanTitle}</h3>
         {cleanAuthor && <p className="book-author">{cleanAuthor}</p>}
       </div>
     </div>

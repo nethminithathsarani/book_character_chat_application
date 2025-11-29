@@ -29,7 +29,7 @@ function MovieCard({ movie, onClick }) {
         />
       </div>
       <div className="movie-info">
-        <h3>{movie.title}</h3>
+        <h3 style={{ color: '#3E2723' }}>{movie.title}</h3>
         {movie.director && <p className="movie-director">Directed by {movie.director}</p>}
         {movie.year && <p className="movie-year">{movie.year}</p>}
       </div>

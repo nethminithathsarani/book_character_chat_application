@@ -14,7 +14,7 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
 
   // Base color mapping for known books; others will be assigned deterministically
   const bookColors = {
-    'harry_potter_1': '#8B5CF6',
+    'harry_potter_1': '#402e04ff',
     'chronicles_narnia': '#F59E0B',
     'the_hobbit': '#10B981',
     'lord_of_the_rings': '#4F46E5',
@@ -44,7 +44,7 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
   };
 
   // Deterministic color generator for any future book IDs not in the map
-  const palette = ['#8B5CF6','#F59E0B','#10B981','#4F46E5','#6366F1','#0EA5E9','#DC2626','#2563EB','#B45309','#6D28D9','#EA580C'];
+  const palette = ['#5c390bff','#F59E0B','#10B981','#4F46E5','#6366F1','#0EA5E9','#DC2626','#2563EB','#B45309','#6D28D9','#EA580C'];
   const pickColor = (id) => {
     if (bookColors[id]) return bookColors[id];
     let hash = 0;
@@ -68,7 +68,7 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
           id: book.book_id || book.id,
           document_id: book.document_id,
           cover: book.cover_image || defaultBookImage,
-          color: pickColor(book.book_id || book.id),
+          color: '#3E2723',
           isLibrary: true,
           isFavorite: book.is_favorite || false
         })) || [];
@@ -87,7 +87,7 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
           id: book.book_id,
           document_id: book.document_id,
           cover: localCovers[book.book_id] || book.cover_image || '/books_images/placeholder.png',
-          color: pickColor(book.book_id),
+          color: '#3E2723',
           isDefault: true
         }));
 
@@ -97,7 +97,7 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
           id: book.book_id || book.id,
           document_id: book.document_id,
           cover: book.cover_image || defaultBookImage,
-          color: pickColor(book.book_id || book.id),
+          color: '#3E2723',
           isLibrary: true,
           isFavorite: book.is_favorite || false
         })) || [];

@@ -1,19 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
 
 .home-header {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 4rem 2rem;
+  /* Magical grimoire-themed header with cosmic elements */
+  background: 
+    linear-gradient(135deg, 
+      rgba(88, 71, 122, 0.15) 0%,
+      rgba(139, 90, 43, 0.08) 30%,
+      rgba(212, 175, 55, 0.05) 50%,
+      rgba(88, 71, 122, 0.08) 70%,
+      rgba(62, 39, 35, 0.12) 100%
+    ),
+    linear-gradient(90deg,
+      #f5e6d3 0%,
+      #e8d4b8 25%,
+      #f0e2cc 50%,
+      #e8d4b8 75%,
+      #f5e6d3 100%
+    );
+  padding: 3rem 1rem;
   text-align: center;
   position: relative;
   box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.25),
-    inset 0 2px 8px rgba(255, 255, 255, 0.3),
-    inset 0 -2px 8px rgba(0, 0, 0, 0.1);
+    0 8px 32px rgba(62, 39, 35, 0.2),
+    0 2px 8px rgba(88, 71, 122, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(139, 90, 43, 0.2);
   overflow: hidden;
-  border-top: 3px solid #131109ff;
-  border-bottom: 3px solid #8B7355;
+  border-top: 2px solid rgba(212, 175, 55, 0.3);
+  border-bottom: 2px solid rgba(139, 90, 43, 0.25);
+  background-image: 
+    repeating-linear-gradient(0deg, rgba(139, 90, 43, 0.02) 0px, transparent 1px, transparent 2px, rgba(139, 90, 43, 0.02) 3px),
+    repeating-linear-gradient(90deg, rgba(139, 90, 43, 0.02) 0px, transparent 1px, transparent 2px, rgba(139, 90, 43, 0.02) 3px);
 }
 
+/* Soft vignette edges */
 .home-header::before {
   content: '';
   position: absolute;
@@ -22,67 +42,36 @@
   right: 0;
   bottom: 0;
   background: 
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 3px,
-      rgba(139, 115, 85, 0.03) 3px,
-      rgba(139, 115, 85, 0.03) 6px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 3px,
-      rgba(139, 115, 85, 0.02) 3px,
-      rgba(139, 115, 85, 0.02) 6px
-    );
+    radial-gradient(ellipse at center, transparent 0%, rgba(62, 39, 35, 0.08) 100%),
+    radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 25%),
+    radial-gradient(circle at 80% 70%, rgba(88, 71, 122, 0.06) 0%, transparent 25%);
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 1;
+  z-index: 1;
 }
 
-.home-header::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(139, 115, 85, 0.06) 0%, transparent 50%);
-  pointer-events: none;
-}
+
 
 .header-content {
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-.header-ornament {
-  position: absolute;
-  font-size: 3rem;
-  color: #D4AF37;
-  opacity: 0.4;
-  z-index: 0;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-}
-
-.header-ornament-left {
-  top: 50%;
-  left: 5%;
-  transform: translateY(-50%) rotate(-15deg);
-}
-
+.header-ornament,
+.header-ornament-left,
 .header-ornament-right {
-  top: 50%;
-  right: 5%;
-  transform: translateY(-50%) rotate(15deg) scaleX(-1);
+  display: none;
 }
 
-.title-container {
+
+
+.scroll-shadow {
+  display: none;
+}
+
+.title-container, .title-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,32 +82,29 @@
 .golden-seal {
   font-size: 2rem;
   color: #D4AF37;
-  filter: drop-shadow(0 2px 6px rgba(212, 175, 55, 0.5));
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0%, 100% { 
-    opacity: 0.8;
-    transform: scale(1);
-  }
-  50% { 
-    opacity: 1;
-    transform: scale(1.1);
-  }
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
 }
 
 .title {
   font-size: 3.5rem;
-  color: #3E2723;
+  background: linear-gradient(135deg, 
+    #3E2723 0%,
+    #5D4E37 30%,
+    #8B7355 50%,
+    #5D4E37 70%,
+    #3E2723 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0;
   font-weight: 700;
-  text-shadow: 
-    2px 2px 4px rgba(212, 175, 55, 0.3),
-    0 0 15px rgba(255, 255, 255, 0.5),
-    1px 1px 0 rgba(255, 255, 255, 0.4);
-  letter-spacing: 0.05em;
+  text-shadow: none;
+  letter-spacing: 0.08em;
   font-family: 'Cinzel', serif, var(--font-display);
+  position: relative;
+  filter: drop-shadow(2px 2px 4px rgba(212, 175, 55, 0.25))
+          drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
 }
 
 .book-emoji {
@@ -138,16 +124,25 @@
 
 .subtitle {
   font-size: 1.4rem;
-  color: #5D4E37;
+  background: linear-gradient(135deg, 
+    #5D4E37 0%,
+    #8B7355 50%,
+    #5D4E37 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   opacity: 0.95;
-  font-weight: 700;
-  text-shadow: 
-    1px 1px 2px rgba(255, 255, 255, 0.5),
-    0 0 8px rgba(212, 175, 55, 0.2);
-  font-style: normal;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.03em;
   font-family: 'Cinzel', serif, var(--font-display);
+  position: relative;
+  filter: drop-shadow(1px 1px 2px rgba(255, 255, 255, 0.4))
+          drop-shadow(0 0 8px rgba(212, 175, 55, 0.15));
 }
+
+
 
 @media (max-width: 768px) {
   .header-ornament {
