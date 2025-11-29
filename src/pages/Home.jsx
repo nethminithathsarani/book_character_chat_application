@@ -7,7 +7,7 @@ import CharacterCard from '../components/CharacterCard';
 import { getDefaultBooks, getBookCharacters, getDefaultMovies, getMovieCharacters } from '../services/api';
 import '../styles/Home.css';
 
-function Home({ onBookSelect, onGoToLibrary }) {
+function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
   const [featuredBooks, setFeaturedBooks] = useState([]);
   const [featuredMovies, setFeaturedMovies] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null); // Can be book or movie
@@ -333,6 +333,12 @@ function Home({ onBookSelect, onGoToLibrary }) {
               >
                 🎬 Movies
               </button>
+              <button 
+                className="tab-button library-button"
+                onClick={onGoToLibrary}
+              >
+                📖 My Library
+              </button>
             </div>
 
             {activeTab === 'books' ? (
@@ -342,7 +348,7 @@ function Home({ onBookSelect, onGoToLibrary }) {
                     <span className="sparkle">⭐</span>
                     Featured Books
                   </h2>
-                  <button className="view-all-btn" onClick={onGoToLibrary}>
+                  <button className="view-all-btn" onClick={onGoToAllBooks}>
                     View All →
                   </button>
                 </div>
