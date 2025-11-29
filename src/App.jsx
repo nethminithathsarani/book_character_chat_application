@@ -1,6 +1,4 @@
-
-// src/App.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FrontPage from './pages/FrontPage';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
@@ -18,6 +16,12 @@ function App() {
     setPreselectedCharacterId(characterId);
     setCurrentPage('chat');
   };
+
+  // Ensure navigation starts at top of the page
+  useEffect(() => {
+    // Scroll to top whenever page changes
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }, [currentPage]);
 
   const handleBackToHome = () => {
     setCurrentPage('home');

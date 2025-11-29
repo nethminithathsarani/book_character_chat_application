@@ -223,6 +223,12 @@
   animation: twinkle 2s ease-in-out infinite;
 }
 
+/* Adjust favorite badge position when delete button is present */
+.book-card:has(.delete-button) .favorite-badge {
+  top: 56px;
+  right: 12px;
+}
+
 @keyframes twinkle {
   0%, 100% { 
     transform: scale(1); 
@@ -232,4 +238,46 @@
     transform: scale(1.1); 
     opacity: 0.8;
   }
+}
+
+/* Delete Button */
+.delete-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+  transition: all 0.3s ease;
+  opacity: 0.9;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.delete-button:hover {
+  background: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.6);
+  opacity: 1;
+}
+
+.delete-button:active {
+  transform: scale(0.98);
+}
+
+/* Adjust favorite badge position when delete button is present */
+.book-card:has(.delete-button) .favorite-badge {
+  top: 56px;
+  right: 12px;
 }

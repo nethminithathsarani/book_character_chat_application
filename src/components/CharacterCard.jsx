@@ -136,7 +136,6 @@ const characterImages = {
   'consigliere': '/Movie/The Godfather/GOD_Consigliere.png',
   'santino': '/Movie/The Godfather/GOD_Enforcer.png',
   'sonny': '/Movie/The Godfather/GOD_Enforcer.png',
-  'enforcer': '/Movie/The Godfather/GOD_Enforcer.png',
   
   // Movie: Scooby-Doo
   'scooby': '/Movie/Scooby-Doo/SD_Scooby.png',

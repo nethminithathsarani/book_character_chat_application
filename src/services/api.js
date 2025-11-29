@@ -130,13 +130,116 @@ export const toggleFavorite = async (bookId) => {
   return response.json();
 };
 
-export const removeFromLibrary = async (bookId) => {
-  const response = await fetch(`${API_BASE_URL}/library/${bookId}`, {
-    method: 'DELETE'
+export const removeFromLibrary = async (bookId, deleteFiles = false) => {
+  const url = `${API_BASE_URL}/library/${bookId}${deleteFiles ? '?delete_files=true' : ''}`;
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
   });
+  
   if (!response.ok) {
-    throw new Error('Failed to remove from library');
+    let errorMessage = 'Failed to remove from library';
+    try {
+      const error = await response.json();
+      errorMessage = error.detail || error.message || errorMessage;
+    } catch {
+      const errorText = await response.text();
+      errorMessage = errorText || errorMessage;
+    }
+    throw new Error(errorMessage);
   }
+  
+  return response.json();
+};
+
+export const saveToLibrary = async (documentId, title, metadata = {}) => {
+  // According to API spec: POST /api/library expects JSON with required fields:
+  // document_id, title, file_path, file_size
+  // Optional: author, description, cover_image, page_count
+  
+  // Try to get file_size from document info if not provided
+  let fileSize = metadata.file_size;
+  if (!fileSize && documentId) {
+    try {
+      const docStatus = await getDocumentStatus(documentId);
+      fileSize = docStatus.file_size || 0;
+    } catch (error) {
+      console.warn('Could not fetch document status for file_size:', error);
+      fileSize = 0; // Default fallback
+    }
+  }
+  
+  const requestBody = {
+    document_id: documentId,
+    title: title,
+    file_path: metadata.file_path || `data/uploads/${documentId}.pdf`,
+    file_size: fileSize,
+    author: metadata.author || null,
+    description: metadata.description || null,
+    cover_image: metadata.cover_image || null,
+    page_count: metadata.page_count || null
+  };
+  
+  console.log('Saving to library with request body:', requestBody);
+  
+  const response = await fetch(`${API_BASE_URL}/library`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestBody)
+  });
+  
+  if (!response.ok) {
+    let errorMessage = 'Failed to save to library';
+    
+    try {
+      const error = await response.json();
+      console.error('Save to library error response:', error);
+      
+      // Handle different error response formats
+      if (Array.isArray(error)) {
+        // If error is an array, extract messages from each item
+        errorMessage = error.map(err => {
+          if (typeof err === 'object' && err.msg) {
+            return `${err.loc ? err.loc.join('.') + ': ' : ''}${err.msg}`;
+          } else if (typeof err === 'string') {
+            return err;
+          } else {
+            return JSON.stringify(err);
+          }
+        }).join(', ');
+      } else if (error.detail) {
+        // Handle FastAPI detail format (could be string or array)
+        if (Array.isArray(error.detail)) {
+          errorMessage = error.detail.map(err => {
+            if (typeof err === 'object' && err.msg) {
+              return `${err.loc ? err.loc.join('.') + ': ' : ''}${err.msg}`;
+            } else if (typeof err === 'string') {
+              return err;
+            } else {
+              return JSON.stringify(err);
+            }
+          }).join(', ');
+        } else {
+          errorMessage = error.detail;
+        }
+      } else if (error.message) {
+        errorMessage = error.message;
+      } else {
+        errorMessage = JSON.stringify(error);
+      }
+    } catch {
+      // If response is not JSON, try to get text
+      const errorText = await response.text();
+      errorMessage = errorText || errorMessage;
+    }
+    
+    throw new Error(errorMessage);
+  }
+  
   return response.json();
 };
 

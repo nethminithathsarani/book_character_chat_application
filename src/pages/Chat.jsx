@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CharacterCard from '../components/CharacterCard';
 import ChatMessage from '../components/ChatMessage';
-import { extractCharacters, getCharacterGreeting, sendChatMessageStream, pollDocumentStatus, getBookCharacters, getMovieCharacters, getChatHistory, clearChatHistory } from '../services/api';
+import { extractCharacters, getCharacterGreeting, sendChatMessageStream, pollDocumentStatus, getBookCharacters, getMovieCharacters, getChatHistory, clearChatHistory, saveToLibrary, removeFromLibrary } from '../services/api';
 import '../styles/Chat.css';
 
 const API_BASE_URL = 'http://localhost:8000/api/v1';
 
 function Chat({ book, documentId, preselectedCharacterId, onBack }) {
+  // Top-level debug: log props received by Chat
+  console.log('🔔 Chat props:', { book, documentId, preselectedCharacterId });
+
   const [characters, setCharacters] = useState([]);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -16,12 +19,57 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const [statusMessage, setStatusMessage] = useState('');
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [progress, setProgress] = useState(null); // numeric percent from backend
+  const [savingToLibrary, setSavingToLibrary] = useState(false);
+  const [savedToLibrary, setSavedToLibrary] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deletingFromLibrary, setDeletingFromLibrary] = useState(false);
+  const [deleteFiles, setDeleteFiles] = useState(false);
+  const [isLibraryBook, setIsLibraryBook] = useState(false);
+  const messagesEndRef = useRef(null);
+  const topRef = useRef(null);
+  const characterSelectRef = useRef(null);
+
+  // Auto-scroll to latest message when messages change
+  useEffect(() => {
+    // Slight timeout ensures DOM update completes before scrolling
+    const t = setTimeout(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    }, 0);
+    return () => clearTimeout(t);
+  }, [messages, chatLoading]);
 
   // Determine default content: prefer explicit is_default flag, then documentId prefix
   const isDefaultContent = (book?.is_default === true) || documentId?.startsWith('default_');
   const isDefaultMovie = isDefaultContent && !!book?.movie_id;
   const isDefaultBook = isDefaultContent && !!book?.book_id && !book?.movie_id;
-  const isLibraryBook = book?.isLibrary === true;
+  
+  // Update isLibraryBook state when book changes
+  useEffect(() => {
+    setIsLibraryBook(book?.isLibrary === true);
+  }, [book?.isLibrary]);
+
+  // Debug: Log book object to check structure
+  useEffect(() => {
+    if (book) {
+      console.log('📚 Book object in Chat:', {
+        title: book.title,
+        isLibrary: book.isLibrary,
+        book_id: book.book_id,
+        id: book.id,
+        document_id: book.document_id,
+        isDefault: book.isDefault,
+        isDefaultContent,
+        isLibraryBook,
+        fullBook: book
+      });
+      console.log('🔍 DELETE BUTTON CHECK:', {
+        'isLibraryBook': isLibraryBook,
+        'Should show delete button': isLibraryBook ? 'YES ✅' : 'NO ❌'
+      });
+    }
+  }, [book, isDefaultContent, isLibraryBook]);
 
   useEffect(() => {
     // Load characters based on content type
@@ -39,6 +87,24 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
       loadUploadedBookCharacters();
     }
   }, [book, documentId, isDefaultContent, isDefaultMovie, isDefaultBook, isLibraryBook]);
+
+  // Ensure we start at the top when entering character select
+  useEffect(() => {
+    if (!selectedCharacter) {
+      // Force both document and body scroll to top for robustness
+      try {
+        document.documentElement?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        document.body?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      } catch (_) {
+        window.scrollTo(0, 0);
+      }
+
+      // Also align the character selection container to the viewport top
+      if (characterSelectRef.current) {
+        characterSelectRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }
+    }
+  }, [characters, selectedCharacter]);
 
   useEffect(() => {
     // If a character is preselected, auto-select it
@@ -242,6 +308,67 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
     }
   };
 
+  const handleSaveToLibrary = async () => {
+    if (!documentId || !book?.title) return;
+    
+    setSavingToLibrary(true);
+    try {
+      const result = await saveToLibrary(documentId, book.title);
+      setSavedToLibrary(true);
+      
+      // Update book object with library information
+      if (result && result.id) {
+        book.isLibrary = true;
+        book.book_id = result.id;
+        book.id = result.id;
+        setIsLibraryBook(true); // Update state to show delete button
+      }
+      
+      alert('Book saved to library successfully!');
+    } catch (error) {
+      console.error('Error saving to library:', error);
+      alert('Failed to save to library: ' + error.message);
+    } finally {
+      setSavingToLibrary(false);
+    }
+  };
+
+  const handleDeleteFromLibrary = async () => {
+    if (!isLibraryBook) {
+      console.error('Cannot delete: not a library book');
+      return;
+    }
+    
+    // Get book ID - try multiple possible fields
+    const bookId = book?.book_id || book?.id || book?.library_book_id;
+    
+    if (!bookId) {
+      console.error('Cannot delete: no book ID found', book);
+      alert('Error: Could not find book ID. Please try again.');
+      return;
+    }
+    
+    console.log('🗑️ Deleting book with ID:', bookId);
+    
+    setDeletingFromLibrary(true);
+    try {
+      await removeFromLibrary(bookId, deleteFiles);
+      alert(`"${book.title}" has been removed from your library`);
+      
+      // Navigate back after successful deletion
+      if (onBack) {
+        onBack();
+      }
+    } catch (error) {
+      console.error('Error deleting from library:', error);
+      alert('Failed to delete book: ' + error.message);
+    } finally {
+      setDeletingFromLibrary(false);
+      setShowDeleteConfirm(false);
+      setDeleteFiles(false);
+    }
+  };
+
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || chatLoading) return;
 
@@ -329,26 +456,29 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
       className={`chat-container ${selectedCharacter ? 'with-chat-bg' : (characters.length === 0 && !isDefaultContent ? 'with-characters-bg' : '')}`}
       style={{ '--book-color': book.color }}
     >
-      <div className="chat-header" style={{ borderColor: 'rgba(0,0,0,0.04)' }}>
-        <button className="back-button" onClick={onBack}>
-          ← Back
-        </button>
+      <div ref={topRef} />
+      
+      {/* Header only shown in active chat - hidden on character selection */}
+      {selectedCharacter && (
+        <div className="chat-header" style={{ borderColor: 'rgba(0,0,0,0.04)' }}>
+          <button className="back-button" onClick={onBack}>
+            ← Back
+          </button>
 
-        <div className="book-info">
-          {book?.cover ? (
-            <img src={book.cover} alt={book.title} className="header-cover" />
-          ) : (
-            <div className="header-cover header-cover-fallback">📚</div>
-          )}
+          <div className="book-info">
+            {book?.cover ? (
+              <img src={book.cover} alt={book.title} className="header-cover" />
+            ) : (
+              <div className="header-cover header-cover-fallback">📚</div>
+            )}
 
-          <div className="book-meta">
-            <h2 className="book-title">{book.title}</h2>
-            <p className="book-subtitle">{book.author || (book.movie_id ? 'Movie' : 'Book')}</p>
+            <div className="book-meta">
+              <h2 className="book-title">{book.title}</h2>
+              <p className="book-subtitle">{book.author || (book.movie_id ? 'Movie' : 'Book')}</p>
+            </div>
           </div>
         </div>
-
-        {/* Header actions removed: Change / Clear buttons hidden across chat and characters pages */}
-      </div>
+      )}
 
       {characters.length === 0 && !isDefaultContent ? (
         <div className="character-select-screen extract-mode">
@@ -380,8 +510,12 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
           </div>
         </div>
       ) : !selectedCharacter ? (
-        <div className="character-select-screen">
-          <h3 className="select-title">Choose a Character</h3>
+        <div className="character-select-screen" ref={characterSelectRef}>
+          <button className="back-button-inline" onClick={onBack}>
+            ← Back to Books
+          </button>
+          <h2 className="book-title-large">{book.title}</h2>
+          <h3 className="select-title">Choose a Character to Chat With</h3>
           <div className="characters-grid">
             {characters.map((char) => (
               <CharacterCard 
@@ -392,6 +526,92 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
               />
             ))}
           </div>
+          
+          {/* Action buttons container */}
+          <div className="book-actions-container">
+            {/* Save to Library button - only show for uploaded books (not default content) after characters are extracted */}
+            {!isDefaultContent && documentId && characters.length > 0 && !isLibraryBook && (
+              <div className="save-to-library-container">
+                <button
+                  className="save-to-library-btn"
+                  onClick={handleSaveToLibrary}
+                  disabled={savingToLibrary || savedToLibrary}
+                  style={{ 
+                    background: savedToLibrary ? '#10B981' : book.color,
+                    opacity: savingToLibrary ? 0.7 : 1
+                  }}
+                >
+                  {savingToLibrary ? (
+                    <>⏳ Saving...</>
+                  ) : savedToLibrary ? (
+                    <>✅ Saved to Library</>
+                  ) : (
+                    <>📚 Save to Library</>
+                  )}
+                </button>
+                {!savedToLibrary && (
+                  <p className="save-hint">Save this book to access it anytime from your library</p>
+                )}
+              </div>
+            )}
+            
+            {/* Delete from Library button - ONLY show when revisiting a saved library book */}
+            {isLibraryBook && (
+              <div className="delete-from-library-container">
+                <button
+                  className="delete-from-library-btn"
+                  onClick={() => {
+                    console.log('🗑️ Delete button clicked for book:', book);
+                    setShowDeleteConfirm(true);
+                  }}
+                  disabled={deletingFromLibrary}
+                >
+                  🗑️ Delete from Library
+                </button>
+              </div>
+            )}
+          </div>
+          
+          {/* Delete Confirmation Modal */}
+          {showDeleteConfirm && (
+            <div className="delete-confirm-modal">
+              <div className="modal-content">
+                <h3>Delete Book?</h3>
+                <p>Are you sure you want to remove <strong>"{book.title}"</strong> from your library?</p>
+                
+                <label className="checkbox-label">
+                  <input 
+                    type="checkbox" 
+                    checked={deleteFiles}
+                    onChange={(e) => setDeleteFiles(e.target.checked)}
+                    disabled={deletingFromLibrary}
+                  />
+                  <span>Also delete PDF file from server</span>
+                </label>
+                
+                <div className="modal-actions">
+                  <button 
+                    onClick={handleDeleteFromLibrary}
+                    disabled={deletingFromLibrary}
+                    className="btn-confirm-delete"
+                  >
+                    {deletingFromLibrary ? 'Deleting...' : 'Yes, Delete'}
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      setShowDeleteConfirm(false);
+                      setDeleteFiles(false);
+                    }}
+                    disabled={deletingFromLibrary}
+                    className="btn-cancel"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="chat-screen">
@@ -534,7 +754,6 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
                     'consigliere': '/Movie/The Godfather/GOD_Consigliere.png',
                     'santino': '/Movie/The Godfather/GOD_Enforcer.png',
                     'sonny': '/Movie/The Godfather/GOD_Enforcer.png',
-                    'enforcer': '/Movie/The Godfather/GOD_Enforcer.png',
                     
                     // Movie: Scooby-Doo
                     'scooby': '/Movie/Scooby-Doo/SD_Scooby.png',
@@ -652,6 +871,8 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
                       isTyping={chatLoading && idx === messages.length - 1 && msg.role === 'assistant' && !msg.content}
                     />
                   ))}
+                  {/* Anchor div to scroll into view */}
+                  <div ref={messagesEndRef} />
                 </div>
 
                 <div className="input-area">

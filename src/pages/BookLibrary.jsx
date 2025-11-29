@@ -202,9 +202,14 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
     console.log('✨ Is Default:', selectedBook.isDefault);
     
     // Characters are already extracted (we loaded them successfully)
+    // Ensure isLibrary flag is set for library books
+    const bookToSend = { ...selectedBook };
+    if (!bookToSend.isLibrary && showOnlyLibrary) {
+      bookToSend.isLibrary = true;
+    }
     // Navigate directly to chat page for ALL books (default, library, uploaded)
     console.log('✅ Characters already extracted - navigating to chat');
-    onBookSelect(selectedBook, documentId, character.character_id);
+    onBookSelect(bookToSend, documentId, character.character_id);
   };
 
   const handleBackToBooks = () => {
@@ -212,20 +217,40 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
     setCharacters([]);
   };
 
+  const handleDeleteBook = async (book) => {
+    try {
+      const bookId = book.book_id || book.id;
+      console.log('Deleting book:', bookId);
+      
+      // Call the API to remove from library
+      await removeFromLibrary(bookId, true); // true = delete files as well
+      
+      // Reload the books list
+      await loadBooks();
+      
+      // If the deleted book was selected, clear the selection
+      if (selectedBook && (selectedBook.book_id === bookId || selectedBook.id === bookId)) {
+        setSelectedBook(null);
+        setCharacters([]);
+      }
+    } catch (error) {
+      console.error('Failed to delete book:', error);
+      alert(`Failed to delete book: ${error.message}`);
+    }
+  };
+
   if (loadingBooks) {
     return (
       <div className="home-container library-page">
-        <div className="library-header">
-          <button className="back-button" onClick={onBack}>
-            ← Back to Home
-          </button>
-          <h1 className="library-title">
-            <span className="book-emoji">{showOnlyLibrary ? '📖' : '📚'}</span>
-            {showOnlyLibrary ? 'My Library' : 'All Books'}
-          </h1>
-        </div>
         <div className="home-content">
-          <div className="loading-state">Loading books...</div>
+          <div className="books-section">
+            <div className="section-header">
+              <button className="back-button" onClick={onBack}>
+                ← Back to Home
+              </button>
+            </div>
+            <div className="loading-state">Loading books...</div>
+          </div>
         </div>
       </div>
     );
@@ -233,55 +258,65 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
 
   return (
     <div className="home-container library-page">
-      <div className="library-header">
-        <button className="back-button" onClick={selectedBook ? handleBackToBooks : onBack}>
-          ← {selectedBook ? `Back to ${showOnlyLibrary ? 'My Library' : 'All Books'}` : 'Back to Home'}
-        </button>
-        <h1 className="library-title">
-          <span className="book-emoji">{showOnlyLibrary ? '📖' : '📚'}</span>
-          {selectedBook ? selectedBook.title : (showOnlyLibrary ? 'My Library' : 'All Books')}
-        </h1>
-        <p className="library-subtitle">
-          {selectedBook ? 'Choose a character to chat with' : (showOnlyLibrary ? 'Your uploaded books' : 'Browse all available books')}
-        </p>
-      </div>
-
       <div className="home-content">
         <div className="books-section">
           {!selectedBook ? (
-            allBooks.length > 0 ? (
-              <div className="books-grid">
-                {allBooks.map((book) => (
-                  <BookCard 
-                    key={book.id} 
-                    book={book}
-                    onClick={() => handleBookClick(book)}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="empty-library">
-                <div className="empty-library-icon">📚</div>
-                <h3>Your Library is Empty</h3>
-                <p>Upload books from the home page to add them to your library</p>
+            <>
+              <div className="section-header">
                 <button className="back-button" onClick={onBack}>
-                  ← Go to Home
+                  ← Back to Home
                 </button>
               </div>
-            )
-          ) : loadingCharacters ? (
-            <div className="loading-state">Loading characters...</div>
+              {allBooks.length > 0 ? (
+                <div className="books-grid">
+                  {allBooks.map((book) => (
+                    <BookCard 
+                      key={book.id} 
+                      book={book}
+                      onClick={() => handleBookClick(book)}
+                      onDelete={showOnlyLibrary ? handleDeleteBook : undefined}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="empty-library">
+                  <div className="empty-library-icon">📚</div>
+                  <h3>Your Library is Empty</h3>
+                  <p>Upload books from the home page to add them to your library</p>
+                  <button className="back-button" onClick={onBack}>
+                    ← Go to Home
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
-            <div className="characters-grid">
-              {characters.map((char) => (
-                <CharacterCard 
-                  key={char.character_id} 
-                  character={char}
-                  bookColor={selectedBook.color}
-                  onClick={() => handleCharacterClick(char)}
-                />
-              ))}
-            </div>
+            <>
+              <div className="section-header">
+                <button className="back-button" onClick={handleBackToBooks}>
+                  ← Back to {showOnlyLibrary ? 'My Library' : 'All Books'}
+                </button>
+                <h2 className="section-title" style={{ color: selectedBook.color }}>
+                  {selectedBook.title}
+                </h2>
+              </div>
+              {loadingCharacters ? (
+                <div className="loading-state">Loading characters...</div>
+              ) : (
+                <>
+                  <h3 className="select-title">Choose a Character to Chat With</h3>
+                  <div className="characters-grid">
+                    {characters.map((char) => (
+                      <CharacterCard 
+                        key={char.character_id} 
+                        character={char}
+                        bookColor={selectedBook.color}
+                        onClick={() => handleCharacterClick(char)}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </>
           )}
         </div>
       </div>

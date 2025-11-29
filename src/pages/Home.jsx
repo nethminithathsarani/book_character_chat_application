@@ -320,7 +320,7 @@ function Home({ onBookSelect, onGoToLibrary, onGoToAllBooks }) {
 
   return (
     <div className="home-container">
-      <Header />
+      {!selectedItem && <Header />}
       
       <div className="home-content">
         {!selectedItem && <UploadSection onBookSelect={onBookSelect} />}

@@ -1,10 +1,17 @@
 import '../styles/BookCard.css';
 
-function BookCard({ book, onClick }) {
+function BookCard({ book, onClick, onDelete }) {
   // Remove cloud emoji from title and author
   const cleanTitle = book.title ? book.title.replace(/☁️|☁/g, '').trim() : '';
   const cleanAuthor = book.author ? book.author.replace(/☁️|☁/g, '').trim() : '';
   const coverSrc = book.cover || '/books_images/placeholder.png';
+  
+  const handleDeleteClick = (e) => {
+    e.stopPropagation(); // Prevent triggering the card's onClick
+    if (onDelete && window.confirm(`Are you sure you want to delete "${cleanTitle}" from your library?`)) {
+      onDelete(book);
+    }
+  };
   
   return (
     <div 
@@ -14,6 +21,15 @@ function BookCard({ book, onClick }) {
     >
       {book.isLibrary && <div className="library-badge">📚 My Library</div>}
       {book.isFavorite && <div className="favorite-badge">⭐</div>}
+      {book.isLibrary && onDelete && (
+        <button 
+          className="delete-button"
+          onClick={handleDeleteClick}
+          title="Delete from library"
+        >
+          Delete
+        </button>
+      )}
       <div className="book-cover">
         <img 
           src={coverSrc} 
