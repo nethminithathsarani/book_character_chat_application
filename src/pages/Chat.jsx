@@ -53,7 +53,14 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const loadDefaultBookCharacters = async () => {
     try {
       const response = await getBookCharacters(book.book_id);
-      setCharacters(response.characters);
+      // Filter out unwanted characters
+      const filteredCharacters = response.characters.filter(
+        char => !char.name.includes('Company of Dwarves') && 
+               !char.name.includes('Meriadoc Brandybuck') && 
+               !char.name.includes('Peregrin Took') &&
+               !char.name.includes('Frank & Susan Heffley')
+      );
+      setCharacters(filteredCharacters);
     } catch (error) {
       console.error('Failed to load default book characters:', error);
     }
@@ -62,7 +69,14 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
   const loadDefaultMovieCharacters = async () => {
     try {
       const response = await getMovieCharacters(book.movie_id);
-      setCharacters(response.characters);
+      // Filter out unwanted characters
+      const filteredCharacters = response.characters.filter(
+        char => !char.name.includes('Company of Dwarves') && 
+               !char.name.includes('Meriadoc Brandybuck') && 
+               !char.name.includes('Peregrin Took') &&
+               !char.name.includes('Frank & Susan Heffley')
+      );
+      setCharacters(filteredCharacters);
     } catch (error) {
       console.error('Failed to load default movie characters:', error);
     }
@@ -128,7 +142,14 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
       
       // Extract fewer characters to avoid timeout
       const result = await extractCharacters(documentId, 5);
-      setCharacters(result.characters);
+      // Filter out unwanted characters
+      const filteredCharacters = result.characters.filter(
+        char => !char.name.includes('Company of Dwarves') && 
+               !char.name.includes('Meriadoc Brandybuck') && 
+               !char.name.includes('Peregrin Took') &&
+               !char.name.includes('Frank & Susan Heffley')
+      );
+      setCharacters(filteredCharacters);
       setStatusMessage('');
     } catch (error) {
       console.error('Character extraction failed:', error);
@@ -414,6 +435,8 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
                     'seward': '/books_images/Dracula/D_Dr. Seward.png',
                     'arthur': '/books_images/Dracula/D_Arthur Holmwood.png',
                     'holmwood': '/books_images/Dracula/D_Arthur Holmwood.png',
+                    'quincey': '/books_images/Dracula/Quincey Morris.png',
+                    'morris': '/books_images/Dracula/Quincey Morris.png',
                     
                     // Percy Jackson
                     'percy': '/books_images/Percy Jackson & The Olympians/PJC_Percy Jackson.png',
@@ -445,6 +468,58 @@ function Chat({ book, documentId, preselectedCharacterId, onBack }) {
                     'rowley': '/books_images/Diary of a Wimpy Kid/DWK_Rowley Jefferson.png',
                     'rodrick': '/books_images/Diary of a Wimpy Kid/DWK_Rodrick Heffley.png',
                     'frank': '/books_images/Diary of a Wimpy Kid/DWK_Frank & Susan Heffley.png',
+                    'manny': '/books_images/Diary of a Wimpy Kid/Manny Heffley.png',
+                    
+                    // Hunger Games
+                    'katniss': '/books_images/Hunger games/Katniss Everdeen.png',
+                    'everdeen': '/books_images/Hunger games/Katniss Everdeen.png',
+                    'peeta': '/books_images/Hunger games/Peeta Mellark.png',
+                    'mellark': '/books_images/Hunger games/Peeta Mellark.png',
+                    'gale': '/books_images/Hunger games/Gale Hawthorne.png',
+                    'hawthorne': '/books_images/Hunger games/Gale Hawthorne.png',
+                    'haymitch': '/books_images/Hunger games/Haymitch Abernathy.png',
+                    'abernathy': '/books_images/Hunger games/Haymitch Abernathy.png',
+                    'primrose': '/books_images/Hunger games/Primrose Everdeen.png',
+                    'prim': '/books_images/Hunger games/Primrose Everdeen.png',
+                    'effie': '/books_images/Hunger games/effie trinket.png',
+                    'trinket': '/books_images/Hunger games/effie trinket.png',
+                    'snow': '/books_images/Hunger games/President Snow.png',
+                    'capitol': '/books_images/Hunger games/Capitol Government (Generic Capitol Enforcer).png',
+                    'enforcer': '/books_images/Hunger games/Capitol Government (Generic Capitol Enforcer).png',
+                    
+                    // Lord of the Rings
+                    'frodo': '/books_images/LOTR/Frodo Baggins.jpg',
+                    'aragorn': '/books_images/LOTR/Aragorn.jpg',
+                    'gandalf': '/books_images/LOTR/Gandalf.png',
+                    'samwise': '/books_images/LOTR/Samwise Gamgee.jpg',
+                    'sam': '/books_images/LOTR/Samwise Gamgee.jpg',
+                    'legolas': '/books_images/LOTR/Legolas.jpg',
+                    'gimli': '/books_images/LOTR/Gimli.jpg',
+                    'boromir': '/books_images/LOTR/Boromir.png',
+                    'gollum': '/books_images/LOTR/Gollum.png',
+                    'saruman': '/books_images/LOTR/Saruman.jpg',
+                    'sauron': '/books_images/LOTR/Sauron.jpg',
+                    'merry': '/books_images/LOTR/Merry.jpg',
+                    'pippin': '/books_images/LOTR/Pippin.jpg',
+                    
+                    // The Hobbit
+                    'bilbo': '/books_images/The Hobbit/Bilbo Baggins.png',
+                    'thorin': '/books_images/The Hobbit/Thorin Oakenshield.png',
+                    'oakenshield': '/books_images/The Hobbit/Thorin Oakenshield.png',
+                    'smaug': '/books_images/The Hobbit/Smaug.png',
+                    'balin': '/books_images/The Hobbit/Balin.png',
+                    'dwalin': '/books_images/The Hobbit/Dwalin.png',
+                    'fíli': '/books_images/The Hobbit/Fíli.png',
+                    'fili': '/books_images/The Hobbit/Fíli.png',
+                    'kíli': '/books_images/The Hobbit/Kíli.png',
+                    'kili': '/books_images/The Hobbit/Kíli.png',
+                    'goblin': '/books_images/The Hobbit/Goblin King.png',
+                    
+                    // Frankenstein
+                    'victor': '/books_images/Frankenstein/Victor Frankenstein.png',
+                    'frankenstein': '/books_images/Frankenstein/Victor Frankenstein.png',
+                    'creature': '/books_images/Frankenstein/The Creature.png',
+                    'monster': '/books_images/Frankenstein/The Creature.png',
                     
                     // Movie: Inception
                     'cobb': '/Movie/Inception/INS_Cobb.png',

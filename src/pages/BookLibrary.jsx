@@ -144,7 +144,14 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
       if (exists) {
         // Characters already extracted - show them
         console.log('✅ Characters already extracted:', data.characters.length);
-        setCharacters(data.characters);
+        // Filter out unwanted characters
+        const filteredCharacters = data.characters.filter(
+          char => !char.name.includes('Company of Dwarves') && 
+                 !char.name.includes('Meriadoc Brandybuck') && 
+                 !char.name.includes('Peregrin Took') &&
+                 !char.name.includes('Frank & Susan Heffley')
+        );
+        setCharacters(filteredCharacters);
       } else {
         // Characters not extracted yet - trigger extraction
         console.log('❌ Characters not extracted yet - need to extract');
@@ -154,8 +161,15 @@ function BookLibrary({ onBookSelect, onBack, showOnlyLibrary = true }) {
           console.log('🔄 Attempting to extract characters for library book...');
           try {
             const response = await getLibraryBookCharacters(book.book_id || book.id);
-            setCharacters(response.characters);
-            console.log('✅ Characters extracted successfully:', response.characters.length);
+            // Filter out unwanted characters
+            const filteredCharacters = response.characters.filter(
+              char => !char.name.includes('Company of Dwarves') && 
+                     !char.name.includes('Meriadoc Brandybuck') && 
+                     !char.name.includes('Peregrin Took') &&
+                     !char.name.includes('Frank & Susan Heffley')
+            );
+            setCharacters(filteredCharacters);
+            console.log('✅ Characters extracted successfully:', filteredCharacters.length);
           } catch (extractError) {
             console.error('❌ Failed to extract characters:', extractError);
             alert('Failed to extract characters. Please try again.');
