@@ -71,12 +71,31 @@
   display: none;
 }
 
+
 .title-container, .title-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
+  justify-content: center; /* centers the whole group */
+  gap: 1.2rem;
   margin-bottom: 0.8rem;
+  height: 110px; /* keep header height stable while logo overflows */
+  overflow: visible; /* allow big logo to overflow without affecting height */
+}
+
+.aedora-logo {
+  width: 350px;   /* requested size */
+  height: 350px;
+  object-fit: contain;
+  margin-right: 0.5rem;
+  display: inline-block;
+}
+
+.title-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* text block sits right of image */
+  text-align: left;
+  gap: 0.25rem;
 }
 
 .golden-seal {
