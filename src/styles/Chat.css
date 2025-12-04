@@ -19,13 +19,91 @@
 }
 /* No external cursive fonts — use the site's display font only */
 
-/* Clean parchment background for character selection (no header text) */
+/* Premium golden old-book background for character selection */
 .chat-container:not(.with-chat-bg):not(.with-characters-bg) {
-  background: linear-gradient(
-    180deg,
-    rgba(250, 245, 235, 0.98) 0%,
-    rgba(245, 240, 230, 0.96) 100%
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(212, 175, 55, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(184, 134, 11, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 30% 70%, rgba(218, 165, 32, 0.18) 0%, transparent 45%),
+    linear-gradient(
+      135deg,
+      #f5e6d3 0%,
+      #e8d4b8 15%,
+      #d9c3a1 30%,
+      #e8d4b8 50%,
+      #d9c3a1 70%,
+      #e8d4b8 85%,
+      #f5e6d3 100%
+    );
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  position: relative;
+  animation: subtleGoldenShine 8s ease-in-out infinite;
+}
+
+@keyframes subtleGoldenShine {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.05);
+  }
+}
+
+.chat-container:not(.with-chat-bg):not(.with-characters-bg)::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(212, 175, 55, 0.04) 10px,
+      rgba(212, 175, 55, 0.04) 20px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 10px,
+      rgba(184, 134, 11, 0.03) 10px,
+      rgba(184, 134, 11, 0.03) 20px
+    );
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+.chat-container:not(.with-chat-bg):not(.with-characters-bg)::after {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 215, 0, 0.12) 0%,
+    transparent 40%
   );
+  animation: goldenGlow 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes goldenGlow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(10%, 10%) scale(1.1);
+    opacity: 0.5;
+  }
 }
 
 /* When user is on the extract-characters selection, show a full-bleed background */
@@ -40,7 +118,6 @@
   background-position: center top;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  /*background: rgba(237, 172, 75, 0.08);*/
 }
 
 /* Full-page background for the active chat view */
@@ -285,61 +362,80 @@
   }
 }
 
-/* Colorful theme removed per user request */
-
 .back-button {
-  background: rgba(139, 74, 107, 0.08);
-  border: 2px solid var(--color-burgundy);
-  color: var(--color-burgundy);
+  background: linear-gradient(135deg, #b8860b 0%, #d4af37 50%, #b8860b 100%);
+  border: 2px solid rgba(139, 90, 43, 0.3);
+  color: #2d1810;
   padding: 0.75rem 1.75rem;
   border-radius: 50px;
   cursor: pointer;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: var(--font-sans);
+  font-family: 'Cinzel', var(--font-display);
+  box-shadow: 
+    0 6px 20px rgba(184, 134, 11, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  background-size: 200% 100%;
+  background-position: left center;
 }
 
 .back-button:hover {
-  background: var(--color-burgundy);
-  color: white;
+  background-position: right center;
+  box-shadow: 
+    0 8px 24px rgba(184, 134, 11, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
   transform: translateX(-4px);
-  box-shadow: 0 4px 12px rgba(139, 74, 107, 0.25);
+  border-color: rgba(139, 90, 43, 0.5);
 }
 
 .back-button-inline {
   position: absolute;
   top: 2rem;
   left: 2rem;
-  background: rgba(139, 74, 107, 0.08);
-  border: 2px solid var(--color-burgundy);
-  color: var(--color-burgundy);
+  background: linear-gradient(135deg, #b8860b 0%, #d4af37 50%, #b8860b 100%);
+  border: 2px solid rgba(139, 90, 43, 0.3);
+  color: #2d1810;
   padding: 0.75rem 1.75rem;
   border-radius: 50px;
   cursor: pointer;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: var(--font-sans);
+  font-family: 'Cinzel', var(--font-display);
   z-index: 10;
+  box-shadow: 
+    0 6px 20px rgba(184, 134, 11, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  background-size: 200% 100%;
+  background-position: left center;
 }
 
 .back-button-inline:hover {
-  background: var(--color-burgundy);
-  color: white;
+  background-position: right center;
+  box-shadow: 
+    0 8px 24px rgba(184, 134, 11, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
   transform: translateX(-4px);
-  box-shadow: 0 4px 12px rgba(139, 74, 107, 0.25);
+  border-color: rgba(139, 90, 43, 0.5);
 }
 
 .book-title-large {
   font-size: 2.5rem;
-  color: #4a5eb8;
+  color: #2d1810;
   margin-bottom: 1rem;
   text-align: center;
-  font-family: var(--font-display);
+  font-family: 'Cinzel', var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  text-shadow: 0 2px 8px rgba(74, 94, 184, 0.15);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-shadow: 
+    0 2px 4px rgba(212, 175, 55, 0.3),
+    0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .chat-header h2 {
@@ -360,90 +456,108 @@
   justify-content: flex-start;
   min-height: 100vh;
   position: relative;
+  z-index: 1;
 }
 
 /* When we're showing the single extract card, pin it near the bottom */
 .character-select-screen.extract-mode {
   justify-content: flex-end;
-  padding-bottom: 6rem; /* provide breathing room above footer/header */
+  padding-bottom: 6rem;
 }
 
 .character-select-screen.extract-mode .extract-card {
-  margin-bottom: 0; /* remove auto margin so bottom alignment is tight */
+  margin-bottom: 0;
 }
 
 .extract-card {
-  /* warm yellow-brown parchment background to match page art */
   background: linear-gradient(
-    180deg,
-    rgba(244, 214, 143, 0.98),
-    rgba(226, 181, 101, 0.95)
+    135deg,
+    rgba(245, 230, 211, 0.65) 0%,
+    rgba(232, 212, 184, 0.6) 100%
   );
-  border-radius: 28px;
-  /* reduce top padding so the box sits closer to the top of the viewport */
-  padding: 2rem 4rem 4rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 32px;
+  padding: 5rem 4rem;
   text-align: center;
-  max-width: 650px;
+  max-width: 700px;
   margin: 0 auto;
-  box-shadow: 0 10px 36px rgba(115, 75, 35, 0.08),
-    0 6px 20px rgba(115, 75, 35, 0.05);
-  border: 1px solid rgba(140, 103, 49, 0.12);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 
+    0 12px 40px rgba(80, 52, 35, 0.25),
+    0 6px 16px rgba(80, 52, 35, 0.15),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 0 rgba(139, 90, 43, 0.1);
+  border: 3px solid transparent;
+  background-image: 
+    linear-gradient(rgba(245, 230, 211, 0.65), rgba(232, 212, 184, 0.6)),
+    linear-gradient(135deg, #d4af37 0%, #b8860b 25%, #d4af37 50%, #b8860b 75%, #d4af37 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
 }
 
-/* `.extract-icon` removed (icon element deleted). If you later add an icon,
-   reintroduce styles here. */
+.extract-card::before {
+  content: '✦';
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  color: rgba(212, 175, 55, 0.6);
+  pointer-events: none;
+  z-index: 1;
+}
 
-@keyframes gentleFloat {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(5deg);
-  }
+.extract-card::after {
+  content: '';
+  position: absolute;
+  top: 3.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.5) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
 .extract-card h3 {
-  font-size: 2.25rem;
-  color: var(--color-ink);
-  margin-bottom: 1.25rem;
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  color: #2d1810;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+  font-family: 'Cinzel', var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(139, 90, 43, 0.15);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  position: relative;
+  z-index: 2;
 }
 
-/* Use the imported decorative font for the extract card title */
-.extract-card h3 {
-  /* Use site display font (no cursive) */
-  font-family: var(--font-display), serif;
-  font-weight: 600;
-  font-size: 2.6rem;
-  color: #3a260f;
-  letter-spacing: 0em;
-  line-height: 1.02;
-  text-shadow: 0 4px 14px rgba(58, 38, 18, 0.05);
-  margin-bottom: 1rem;
-  display: inline-block;
-  padding: 0 0.2rem;
-}
-
-/* Remove skew on small screens to preserve readability */
 @media (max-width: 640px) {
   .extract-card h3 {
-    transform: none;
-    font-size: 2.2rem;
+    font-size: 1.8rem;
   }
 }
 
 .extract-card p {
-  color: var(--color-ink-light);
-  font-size: 1.25rem;
+  color: #6b5a47;
   margin-bottom: 2.5rem;
+  font-size: 1.15rem;
   font-family: var(--font-serif);
   font-style: italic;
   line-height: 1.6;
+  opacity: 0.9;
+  position: relative;
+  z-index: 2;
 }
 
 .status-message {
@@ -480,58 +594,76 @@
   transform: none;
 }
 
-/* Advanced look for the Extract Characters button used on the extract card */
+/* Vintage Extract Characters Button */
 .extract-characters-btn {
   appearance: none;
   -webkit-appearance: none;
   display: inline-block;
-  background: linear-gradient(135deg, #f7d08a 0%, #d1a15a 45%, #b57a38 100%);
-  color: #2b1600;
-  border: none;
-  padding: 0.9rem 1.6rem;
-  border-radius: 999px;
-  font-size: 1rem;
+  background: linear-gradient(135deg, #b8860b 0%, #d4af37 50%, #b8860b 100%);
+  color: #2d1810;
+  padding: 1.125rem 3.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(149, 95, 42, 0.2),
-    inset 0 -6px 18px rgba(255, 255, 255, 0.12);
-  transition: transform 240ms cubic-bezier(0.2, 0.9, 0.2, 1),
-    box-shadow 240ms ease, filter 240ms ease;
+  border: 2px solid rgba(139, 90, 43, 0.3);
+  box-shadow: 
+    0 8px 24px rgba(184, 134, 11, 0.4),
+    0 4px 12px rgba(139, 90, 43, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'Cinzel', var(--font-display);
   position: relative;
   overflow: hidden;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background-size: 200% 100%;
+  background-position: left center;
 }
 
 .extract-characters-btn::before {
-  /* subtle glossy sheen */
-  content: "";
+  content: '';
   position: absolute;
-  top: -40%;
-  left: -30%;
-  width: 160%;
-  height: 80%;
-  background: rgba(255, 255, 255, 0.14);
-  transform: rotate(-18deg);
-  transition: transform 400ms ease, opacity 240ms ease;
-  opacity: 0.9;
-  pointer-events: none;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  animation: buttonShimmer 3s ease-in-out infinite;
+}
+
+@keyframes buttonShimmer {
+  0%, 100% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  50% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
 }
 
 .extract-characters-btn:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 16px 40px rgba(149, 95, 42, 0.28),
-    inset 0 -6px 18px rgba(255, 255, 255, 0.14);
+  background-position: right center;
+  box-shadow: 
+    0 10px 32px rgba(184, 134, 11, 0.5),
+    0 6px 16px rgba(139, 90, 43, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(139, 90, 43, 0.5);
 }
 
 .extract-characters-btn:hover::before {
-  transform: translateX(6%) rotate(-18deg);
-  opacity: 0.7;
+  /* Keep shimmer animation running */
 }
 
 .extract-characters-btn:active {
-  transform: translateY(-1px) scale(0.995);
-  box-shadow: 0 8px 22px rgba(115, 64, 26, 0.18),
-    inset 0 -3px 8px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px) scale(1);
 }
 
 .extract-characters-btn:focus {
@@ -540,20 +672,26 @@
 }
 
 .extract-characters-btn:disabled {
-  opacity: 0.55;
+  opacity: 0.4;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+  background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
 .select-title {
   font-size: 2.25rem;
-  color: var(--color-ink);
+  color: #2d1810;
   margin-bottom: 3rem;
   text-align: center;
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-family: 'Cinzel', var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-shadow: 
+    0 2px 4px rgba(212, 175, 55, 0.3),
+    0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .characters-grid {
@@ -706,13 +844,34 @@
 
 .loading-history {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.5rem;
   height: 100%;
-  color: var(--color-ink-light);
+  color: #5d4a3a;
   font-size: 1.2rem;
   font-style: italic;
-  font-family: var(--font-serif);
+  font-family: 'Cormorant Garamond', var(--font-serif);
+}
+
+.loading-history::before {
+  content: '✦';
+  font-size: 2.5rem;
+  color: #d4af37;
+  animation: goldenFloat 2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.5));
+}
+
+@keyframes goldenFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-12px) rotate(180deg);
+    opacity: 0.7;
+  }
 }
 
 .chat-main {
@@ -859,24 +1018,27 @@
 }
 
 .extract-characters-container {
-  /* Use the existing image in the project and add a dark overlay for text contrast */
-  background: linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.22)),
-    url("../assets/backgrounds/characters-bg.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 18px;
-  border-radius: 10px;
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(1.5px);
-  min-width: 320px;
-  min-height: 110px;
+  background: transparent;
+  padding: 2rem;
+  border-radius: 16px;
+  color: #3d2817;
+  min-width: 400px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  gap: 1.5rem;
+}
+
+.extract-characters-container p {
+  margin: 0;
+  line-height: 1.7;
+  font-size: 1.15rem;
+  font-family: 'Cormorant Garamond', var(--font-serif);
+  font-style: italic;
+  color: #5d4a3a;
+  letter-spacing: 0.01em;
 }
 
 /* Extraction progress UI */
@@ -891,40 +1053,77 @@
 
 .progress-bar {
   width: 100%;
-  height: 14px;
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 8px;
+  height: 16px;
+  background: linear-gradient(135deg, rgba(232, 212, 184, 0.5) 0%, rgba(217, 195, 161, 0.5) 100%);
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  border-radius: 50px;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(1px);
+  box-shadow: 
+    inset 0 2px 4px rgba(139, 90, 43, 0.2),
+    0 2px 8px rgba(212, 175, 55, 0.15);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #8b4a6b 0%, #c27ba0 100%);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  background: linear-gradient(90deg, #b8860b 0%, #d4af37 50%, #b8860b 100%);
+  background-size: 200% 100%;
+  animation: progressShine 2s linear infinite;
+  box-shadow: 
+    0 0 12px rgba(212, 175, 55, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
   transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  animation: progressSlide 1.5s linear infinite;
+}
+
+@keyframes progressShine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes progressSlide {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
 }
 
 .progress-info {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 700;
   letter-spacing: 0.5px;
-  font-family: var(--font-sans);
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-family: 'Cinzel', var(--font-display);
+  color: #2d1810;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .status-text {
   margin-top: 0.75rem;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-style: italic;
-  color: #f5f1e8;
-  font-family: var(--font-serif);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  color: #5d4a3a;
+  font-family: 'Cormorant Garamond', var(--font-serif);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 @media (prefers-reduced-motion: reduce) {
