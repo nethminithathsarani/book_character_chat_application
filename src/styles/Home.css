@@ -189,9 +189,37 @@
   text-align: center;
   padding: 4rem;
   font-size: 1.3rem;
-  color: var(--color-ink-light);
+  color: #5d4a3a;
   font-style: italic;
-  font-family: var(--font-serif);
+  font-family: 'Cormorant Garamond', var(--font-serif);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.loading-state::before {
+  content: '✦';
+  font-size: 3rem;
+  color: #d4af37;
+  animation: goldenSpin 2s linear infinite;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.5));
+}
+
+@keyframes goldenSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 1;
+  }
 }
 
 /* Characters Grid */
