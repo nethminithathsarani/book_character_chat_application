@@ -1,12 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Flyhayer&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Flyhayer&display=swap");
 
 .chat-container {
   min-height: 100vh;
   width: 100vw;
   background: var(--color-cream);
-  background-image: 
-    radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(201, 169, 166, 0.04) 0%, transparent 50%);
+  background-image: radial-gradient(
+      circle at 20% 30%,
+      rgba(212, 175, 55, 0.04) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(201, 169, 166, 0.04) 0%,
+      transparent 50%
+    );
   display: flex;
   flex-direction: column;
 }
@@ -14,15 +21,21 @@
 
 /* Clean parchment background for character selection (no header text) */
 .chat-container:not(.with-chat-bg):not(.with-characters-bg) {
-  background: linear-gradient(180deg, 
-    rgba(250, 245, 235, 0.98) 0%, 
-    rgba(245, 240, 230, 0.96) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(250, 245, 235, 0.98) 0%,
+    rgba(245, 240, 230, 0.96) 100%
+  );
 }
 
 /* When user is on the extract-characters selection, show a full-bleed background */
 .chat-container.with-characters-bg {
   /* reduced overlay so the background art is more visible */
-  background: linear-gradient(rgba(255,255,250,0.12), rgba(255,255,250,0.06)), url('../assets/backgrounds/characters-bg.png');
+  background: linear-gradient(
+      rgba(255, 255, 250, 0.12),
+      rgba(255, 255, 250, 0.06)
+    ),
+    url("../assets/backgrounds/characters-bg.png");
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -33,7 +46,11 @@
 /* Full-page background for the active chat view */
 .chat-container.with-chat-bg {
   /* subtle parchment overlay on top of the art for good contrast */
-  background: linear-gradient(rgba(255,255,250,0.06), rgba(255,255,250,0.04)), url('../assets/backgrounds/chat.png');
+  background: linear-gradient(
+      rgba(255, 255, 250, 0.06),
+      rgba(255, 255, 250, 0.04)
+    ),
+    url("../assets/backgrounds/chat.png");
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -44,7 +61,11 @@
 .chat-container.with-chat-bg .chat-main {
   /* reduce overlay opacity so background art is visible through the pane */
   /* made much more transparent so chat-main shows the background art */
-  background: linear-gradient(180deg, rgba(255,255,250,0.12), rgba(255,255,250,0.06)) !important;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 250, 0.12),
+    rgba(255, 255, 250, 0.06)
+  ) !important;
 }
 
 /* Let the full-page chat background extend beneath the left sidebar so
@@ -54,9 +75,9 @@
   /* keep the sidebar visually separate from the background art by adding
      a subtle but more opaque parchment overlay so the left area is dimmed */
   /* Strong brown variant for left sidebar (clear brown tone) */
-  background: linear-gradient(180deg, #CBA56F 0%, #8B5E3C 100%) !important;
-  border-right: 2px solid rgba(84,54,36,0.16) !important;
-  box-shadow: 6px 0 28px rgba(35,30,24,0.10) !important;
+  background: linear-gradient(180deg, #cba56f 0%, #8b5e3c 100%) !important;
+  border-right: 2px solid rgba(84, 54, 36, 0.16) !important;
+  box-shadow: 6px 0 28px rgba(35, 30, 24, 0.1) !important;
   backdrop-filter: blur(1.5px) !important;
 }
 
@@ -65,8 +86,12 @@
   display: block !important;
   opacity: 0.28 !important;
   background-image: none !important;
-  background: linear-gradient(180deg, rgba(203,165,111,0.55), rgba(139,94,60,0.55)) !important;
-  border-right: 1px solid rgba(84,54,36,0.06) !important;
+  background: linear-gradient(
+    180deg,
+    rgba(203, 165, 111, 0.55),
+    rgba(139, 94, 60, 0.55)
+  ) !important;
+  border-right: 1px solid rgba(84, 54, 36, 0.06) !important;
 }
 
 .chat-container.with-chat-bg .chat-sidebar .current-character,
@@ -77,39 +102,42 @@
   /* increase panel opacity slightly so text and controls remain legible
      on top of the dimmed-left overlay */
   /* Panel background matching brown sidebar */
-  background: rgba(230,200,170,0.92) !important;
+  background: rgba(230, 200, 170, 0.92) !important;
   border-radius: 14px;
-  border: 1px solid rgba(0,0,0,0.04) !important;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+  border: 1px solid rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06) !important;
   padding: 1rem !important;
 }
 
 /* Slightly reduce text contrast in sidebar so it reads over background art */
 .chat-container.with-chat-bg .chat-sidebar,
 .chat-container.with-chat-bg .chat-sidebar * {
-  color: rgba(12,12,12,0.95);
+  color: rgba(12, 12, 12, 0.95);
 }
-
 
 .chat-header {
   /* compact warm parchment header for better use of space */
-  background: linear-gradient(180deg, rgba(255,246,225,0.98) 0%, rgba(242,218,176,0.98) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 246, 225, 0.98) 0%,
+    rgba(242, 218, 176, 0.98) 100%
+  );
   padding: 0.9rem 1.5rem; /* reduced vertical padding */
   display: flex;
   align-items: center;
   gap: 1rem; /* tighter gap between items */
-  border-bottom: 1px solid rgba(160,140,115,0.08);
+  border-bottom: 1px solid rgba(160, 140, 115, 0.08);
   position: relative;
   z-index: 60;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
   min-height: 56px; /* ensure a reasonable minimum */
 }
 
 /* Enhanced header layout when `--book-color` is provided */
 .chat-header {
-  --accent: var(--book-color, #8B5CF6);
+  --accent: var(--book-color, #8b5cf6);
   /* do not override the explicit header background so the parchment color remains visible */
 }
 
@@ -120,13 +148,56 @@
   flex: 1 1 auto;
 }
 
+.voice-toggle-button {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #4a7c7e 0%, #366466 100%);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(74, 124, 126, 0.3);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.voice-toggle-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(74, 124, 126, 0.4);
+}
+
+.voice-toggle-button.active {
+  background: linear-gradient(135deg, var(--color-gold) 0%, #b8860b 100%);
+  box-shadow: 0 3px 10px rgba(212, 175, 55, 0.4);
+  animation: voicePulse 2s ease-in-out infinite;
+}
+
+.voice-toggle-button.active:hover {
+  box-shadow: 0 5px 16px rgba(212, 175, 55, 0.5);
+}
+
+@keyframes voicePulse {
+  0%,
+  100% {
+    box-shadow: 0 3px 10px rgba(212, 175, 55, 0.4);
+  }
+  50% {
+    box-shadow: 0 3px 15px rgba(212, 175, 55, 0.6),
+      0 0 20px rgba(212, 175, 55, 0.3);
+  }
+}
+
 .header-cover {
   width: 48px; /* smaller cover to reduce header height */
   height: 68px;
   object-fit: cover;
   border-radius: 6px;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.10);
-  border: 2px solid rgba(255,255,255,0.6);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.6);
 }
 
 .header-cover-fallback {
@@ -135,7 +206,7 @@
   justify-content: center;
   width: 48px;
   height: 68px;
-  background: linear-gradient(135deg, rgba(0,0,0,0.06), rgba(0,0,0,0.02));
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.02));
   border-radius: 6px;
   font-size: 1rem;
 }
@@ -157,7 +228,7 @@
 .book-subtitle {
   margin: 0.125rem 0 0;
   font-size: 0.95rem;
-  color: rgba(12,12,12,0.65);
+  color: rgba(12, 12, 12, 0.65);
   font-family: var(--font-sans);
 }
 
@@ -169,9 +240,9 @@
 
 .header-actions .change-book-btn,
 .header-actions .clear-chat-btn {
-  background: rgba(255,255,255,0.94);
-  border: 1px solid rgba(0,0,0,0.06);
-  color: rgba(24,24,24,0.95);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: rgba(24, 24, 24, 0.95);
   padding: 0.5rem 0.9rem;
   border-radius: 10px;
   font-weight: 600;
@@ -179,21 +250,39 @@
 }
 
 .header-actions .change-book-btn:hover {
-  background: linear-gradient(90deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(255, 255, 255, 0.95)
+  );
   transform: translateY(-2px);
 }
 
 .header-actions .clear-chat-btn {
-  border-color: rgba(0,0,0,0.08);
-  background: linear-gradient(90deg, rgba(255,255,255,0.96), rgba(255,245,245,0.96));
+  border-color: rgba(0, 0, 0, 0.08);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(255, 245, 245, 0.96)
+  );
   color: var(--accent);
 }
 
 @media (max-width: 768px) {
-  .header-cover { width: 48px; height: 68px; }
-  .book-title { font-size: 1.1rem; }
-  .chat-header { padding: 1rem; gap: 1rem; }
-  .header-actions { gap: 0.5rem; }
+  .header-cover {
+    width: 48px;
+    height: 68px;
+  }
+  .book-title {
+    font-size: 1.1rem;
+  }
+  .chat-header {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  .header-actions {
+    gap: 0.5rem;
+  }
 }
 
 /* Colorful theme removed per user request */
@@ -244,7 +333,7 @@
 
 .book-title-large {
   font-size: 2.5rem;
-  color: #4A5EB8;
+  color: #4a5eb8;
   margin-bottom: 1rem;
   text-align: center;
   font-family: var(--font-display);
@@ -285,15 +374,18 @@
 
 .extract-card {
   /* warm yellow-brown parchment background to match page art */
-  background: linear-gradient(180deg, rgba(244,214,143,0.98), rgba(226,181,101,0.95));
+  background: linear-gradient(
+    180deg,
+    rgba(244, 214, 143, 0.98),
+    rgba(226, 181, 101, 0.95)
+  );
   border-radius: 28px;
   /* reduce top padding so the box sits closer to the top of the viewport */
   padding: 2rem 4rem 4rem;
   text-align: center;
   max-width: 650px;
   margin: 0 auto;
-  box-shadow: 
-    0 10px 36px rgba(115, 75, 35, 0.08),
+  box-shadow: 0 10px 36px rgba(115, 75, 35, 0.08),
     0 6px 20px rgba(115, 75, 35, 0.05);
   border: 1px solid rgba(140, 103, 49, 0.12);
   backdrop-filter: blur(4px);
@@ -304,11 +396,12 @@
    reintroduce styles here. */
 
 @keyframes gentleFloat {
-  0%, 100% { 
-    transform: translateY(0) rotate(0deg); 
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
   }
-  50% { 
-    transform: translateY(-8px) rotate(5deg); 
+  50% {
+    transform: translateY(-8px) rotate(5deg);
   }
 }
 
@@ -330,7 +423,7 @@
   color: #3a260f;
   letter-spacing: 0em;
   line-height: 1.02;
-  text-shadow: 0 4px 14px rgba(58,38,18,0.05);
+  text-shadow: 0 4px 14px rgba(58, 38, 18, 0.05);
   margin-bottom: 1rem;
   display: inline-block;
   padding: 0 0.2rem;
@@ -361,7 +454,7 @@
 }
 
 .extract-button {
-  background: linear-gradient(135deg, var(--color-burgundy) 0%, #6B3A52 100%);
+  background: linear-gradient(135deg, var(--color-burgundy) 0%, #6b3a52 100%);
   color: rgb(165, 107, 25);
   border: none;
   padding: 1.25rem 3.5rem;
@@ -370,16 +463,14 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 6px 20px rgba(139, 74, 107, 0.3),
+  box-shadow: 0 6px 20px rgba(139, 74, 107, 0.3),
     0 2px 8px rgba(139, 74, 107, 0.2);
   letter-spacing: 0.01em;
 }
 
 .extract-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 
-    0 8px 28px rgba(139, 74, 107, 0.4),
+  box-shadow: 0 8px 28px rgba(139, 74, 107, 0.4),
     0 4px 12px rgba(139, 74, 107, 0.3);
 }
 
@@ -403,21 +494,23 @@
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(149, 95, 42, 0.20), inset 0 -6px 18px rgba(255,255,255,0.12);
-  transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms ease, filter 240ms ease;
+  box-shadow: 0 10px 30px rgba(149, 95, 42, 0.2),
+    inset 0 -6px 18px rgba(255, 255, 255, 0.12);
+  transition: transform 240ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    box-shadow 240ms ease, filter 240ms ease;
   position: relative;
   overflow: hidden;
 }
 
 .extract-characters-btn::before {
   /* subtle glossy sheen */
-  content: '';
+  content: "";
   position: absolute;
   top: -40%;
   left: -30%;
   width: 160%;
   height: 80%;
-  background: rgba(255,255,255,0.14);
+  background: rgba(255, 255, 255, 0.14);
   transform: rotate(-18deg);
   transition: transform 400ms ease, opacity 240ms ease;
   opacity: 0.9;
@@ -426,7 +519,8 @@
 
 .extract-characters-btn:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 16px 40px rgba(149, 95, 42, 0.28), inset 0 -6px 18px rgba(255,255,255,0.14);
+  box-shadow: 0 16px 40px rgba(149, 95, 42, 0.28),
+    inset 0 -6px 18px rgba(255, 255, 255, 0.14);
 }
 
 .extract-characters-btn:hover::before {
@@ -436,11 +530,12 @@
 
 .extract-characters-btn:active {
   transform: translateY(-1px) scale(0.995);
-  box-shadow: 0 8px 22px rgba(115, 64, 26, 0.18), inset 0 -3px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 22px rgba(115, 64, 26, 0.18),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.06);
 }
 
 .extract-characters-btn:focus {
-  outline: 3px solid rgba(213,150,61,0.24);
+  outline: 3px solid rgba(213, 150, 61, 0.24);
   outline-offset: 4px;
 }
 
@@ -474,8 +569,6 @@
   width: 100%;
 }
 
-
-
 /* Decorative left-side background: a subtle vertical vignette and pattern
    that sits behind sidebar content. Uses a pseudo-element for layering so
    content and shadows remain intact. */
@@ -492,23 +585,22 @@
 /* Ensure sidebar content sits above the decorative strip */
 .chat-sidebar {
   width: 360px;
-  background: linear-gradient(180deg, #CBA56F 0%, #8B5E3C 100%) !important;
+  background: linear-gradient(180deg, #cba56f 0%, #8b5e3c 100%) !important;
   padding: 2rem 2rem 2.5rem 2rem;
   box-shadow: 2px 0 12px rgba(35, 30, 24, 0.06);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(160,140,115,0.06);
+  border-right: 1px solid rgba(160, 140, 115, 0.06);
   backdrop-filter: blur(1.5px);
   -webkit-backdrop-filter: blur(1.5px);
 }
 
-
 .current-character {
   text-align: center;
   padding: 2rem 1.5rem;
-  background: linear-gradient(135deg, #EAD6B3 0%, #CBA56F 100%);
+  background: linear-gradient(135deg, #ead6b3 0%, #cba56f 100%);
   border-radius: 16px;
-  border: 1px solid rgba(0,0,0,0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   margin-bottom: 1.25rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   position: relative;
@@ -516,13 +608,18 @@
 }
 
 .current-character::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 0, 0, 0.1),
+    transparent
+  );
 }
 
 .character-avatar-large {
@@ -536,9 +633,7 @@
   font-weight: 700;
   color: white;
   margin: 0 auto 1.25rem;
-  box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.2),
-    0 4px 12px rgba(0, 0, 0, 0.15),
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15),
     inset 0 2px 4px rgba(255, 255, 255, 0.2);
   overflow: hidden;
 }
@@ -568,9 +663,9 @@
 }
 
 .change-character-btn {
-  background: linear-gradient(135deg, #EAD6B3 0%, #D6BD98 100%);
-  border: 1px solid rgba(0,0,0,0.04);
-  color: rgba(27,18,10,0.95);
+  background: linear-gradient(135deg, #ead6b3 0%, #d6bd98 100%);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  color: rgba(27, 18, 10, 0.95);
   padding: 0.9rem 1rem;
   border-radius: 12px;
   cursor: pointer;
@@ -588,9 +683,9 @@
 }
 
 .clear-chat-btn {
-  background: linear-gradient(135deg, #D6BD98 0%, #CBA56F 100%);
-  color: rgba(27,18,10,0.95);
-  border: 1px solid rgba(0,0,0,0.04);
+  background: linear-gradient(135deg, #d6bd98 0%, #cba56f 100%);
+  color: rgba(27, 18, 10, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   padding: 0.9rem 1rem;
   border-radius: 12px;
   cursor: pointer;
@@ -661,13 +756,16 @@
   display: flex;
   gap: 1.25rem;
   padding: 1.75rem 2rem;
-  background: linear-gradient(180deg, rgba(245,241,232,0.98), rgba(254,251,247,0.96));
+  background: linear-gradient(
+    180deg,
+    rgba(245, 241, 232, 0.98),
+    rgba(254, 251, 247, 0.96)
+  );
   border-radius: 24px;
-  box-shadow: 
-    0 -4px 24px rgba(35, 30, 24, 0.06),
+  box-shadow: 0 -4px 24px rgba(35, 30, 24, 0.06),
     0 -2px 12px rgba(35, 30, 24, 0.04);
   margin-top: 1.5rem;
-  border: 1px solid rgba(160,140,115,0.08);
+  border: 1px solid rgba(160, 140, 115, 0.08);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
 }
@@ -675,7 +773,7 @@
 .input-area input {
   flex: 1;
   padding: 1.125rem 1.75rem;
-  border: 2px solid rgba(160,140,115,0.08);
+  border: 2px solid rgba(160, 140, 115, 0.08);
   border-radius: 50px;
   font-size: 1.05rem;
   outline: none;
@@ -687,7 +785,7 @@
 
 .input-area input:focus {
   border-color: var(--color-burgundy);
-  background: rgba(255,255,255,0.98);
+  background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 0 0 4px rgba(139, 74, 107, 0.08);
 }
 
@@ -700,18 +798,14 @@
   font-size: 1.05rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.2),
-    0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.15);
   font-family: var(--font-sans);
   letter-spacing: 0.01em;
 }
 
 .send-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 
-    0 8px 28px rgba(0, 0, 0, 0.25),
-    0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .send-button:disabled {
@@ -720,16 +814,61 @@
   transform: none;
 }
 
+/* Microphone button for voice input */
+.mic-button {
+  padding: 1.125rem 1.5rem;
+  border: 2px solid rgba(139, 74, 107, 0.3);
+  border-radius: 50px;
+  background: white;
+  color: #8b4a6b;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: var(--font-sans);
+  margin: 0 0.5rem;
+}
+
+.mic-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  border-color: #8b4a6b;
+  background: rgba(139, 74, 107, 0.05);
+}
+
+.mic-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mic-button.recording {
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  border-color: #cc0000;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(255, 68, 68, 0);
+  }
+}
+
 .extract-characters-container {
   /* Use the existing image in the project and add a dark overlay for text contrast */
-  background: linear-gradient(rgba(0,0,0,0.32), rgba(0,0,0,0.22)), url('../assets/backgrounds/characters-bg.png');
+  background: linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.22)),
+    url("../assets/backgrounds/characters-bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   padding: 18px;
   border-radius: 10px;
   color: #fff;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(1.5px);
   min-width: 320px;
   min-height: 110px;
@@ -753,21 +892,21 @@
 .progress-bar {
   width: 100%;
   height: 14px;
-  background: rgba(255,255,255,0.35);
-  border: 1px solid rgba(255,255,255,0.45);
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 8px;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(1px);
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg,#8B4A6B 0%, #C27BA0 100%);
-  box-shadow: 0 0 6px rgba(255,255,255,0.4);
-  transition: width .45s cubic-bezier(.4,0,.2,1);
+  background: linear-gradient(90deg, #8b4a6b 0%, #c27ba0 100%);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .progress-info {
@@ -776,7 +915,7 @@
   letter-spacing: 0.5px;
   font-family: var(--font-sans);
   color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .status-text {
@@ -785,19 +924,20 @@
   font-style: italic;
   color: #f5f1e8;
   font-family: var(--font-serif);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .progress-fill { transition: none; }
+  .progress-fill {
+    transition: none;
+  }
 }
-
 
 @media (max-width: 768px) {
   .chat-screen {
     flex-direction: column;
   }
-  
+
   .chat-sidebar {
     width: 100%;
     height: auto;
@@ -842,8 +982,8 @@
    This uses high specificity and !important to override any conflicting rules or caching. */
 .chat-container.with-chat-bg .chat-sidebar,
 .chat-sidebar {
-  background: linear-gradient(180deg, #FBF5E6 0%, #F3E7C9 100%) !important;
-  background-color: #FBF5E6 !important;
+  background: linear-gradient(180deg, #fbf5e6 0%, #f3e7c9 100%) !important;
+  background-color: #fbf5e6 !important;
 }
 
 /* Final high-specificity override for ChatMessage left-side section
@@ -852,17 +992,21 @@
 .chat-screen .chat-sidebar,
 .chat-container .chat-screen .chat-sidebar,
 .chat-container.with-chat-bg .chat-screen .chat-sidebar {
-  background: linear-gradient(180deg, #FBF5E6 0%, #F3E7C9 100%) !important;
-  background-color: #FBF5E6 !important;
-  color: rgba(12,12,12,0.95) !important;
+  background: linear-gradient(180deg, #fbf5e6 0%, #f3e7c9 100%) !important;
+  background-color: #fbf5e6 !important;
+  color: rgba(12, 12, 12, 0.95) !important;
 }
 
 .chat-sidebar::before {
   /* Make decorative strip subtle and match parchment tone */
   background-image: none !important;
-  background: linear-gradient(180deg, rgba(250,245,235,0.06), rgba(245,235,210,0.04)) !important;
-  border-right: 1px solid rgba(160,140,115,0.04) !important;
-  box-shadow: inset -8px 0 24px rgba(35,30,24,0.02) !important;
+  background: linear-gradient(
+    180deg,
+    rgba(250, 245, 235, 0.06),
+    rgba(245, 235, 210, 0.04)
+  ) !important;
+  border-right: 1px solid rgba(160, 140, 115, 0.04) !important;
+  box-shadow: inset -8px 0 24px rgba(35, 30, 24, 0.02) !important;
 }
 
 .chat-sidebar .current-character,
@@ -870,8 +1014,8 @@
 .chat-sidebar .change-character-btn,
 .chat-sidebar .clear-chat-btn,
 .chat-sidebar .loading-history {
-  background: rgba(250,240,224,0.9) !important;
-  color: rgba(12,12,12,0.95) !important;
+  background: rgba(250, 240, 224, 0.9) !important;
+  color: rgba(12, 12, 12, 0.95) !important;
 }
 
 /* Save to Library button styling */
@@ -882,14 +1026,22 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(250,240,224,0.95) 0%, rgba(245,235,210,0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(250, 240, 224, 0.95) 0%,
+    rgba(245, 235, 210, 0.95) 100%
+  );
   border-radius: 16px;
-  border: 1px solid rgba(0,0,0,0.04);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 .save-to-library-btn {
-  background: linear-gradient(135deg, var(--book-color, #EC4899) 0%, #C2185B 100%);
+  background: linear-gradient(
+    135deg,
+    var(--book-color, #ec4899) 0%,
+    #c2185b 100%
+  );
   color: white;
   border: none;
   padding: 1rem 2.5rem;
@@ -898,9 +1050,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.2),
-    0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.15);
   font-family: var(--font-sans);
   letter-spacing: 0.01em;
   min-width: 200px;
@@ -908,9 +1058,7 @@
 
 .save-to-library-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 
-    0 8px 28px rgba(0, 0, 0, 0.25),
-    0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .save-to-library-btn:disabled {
@@ -934,7 +1082,7 @@
     margin-top: 2rem;
     padding: 1.25rem;
   }
-  
+
   .save-to-library-btn {
     font-size: 1rem;
     padding: 0.9rem 2rem;
@@ -959,10 +1107,14 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(250,240,224,0.95) 0%, rgba(245,235,210,0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(250, 240, 224, 0.95) 0%,
+    rgba(245, 235, 210, 0.95) 100%
+  );
   border-radius: 16px;
-  border: 1px solid rgba(0,0,0,0.04);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 .delete-from-library-btn {
@@ -975,8 +1127,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 6px 20px rgba(220, 53, 69, 0.3),
+  box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3),
     0 2px 8px rgba(220, 53, 69, 0.2);
   font-family: var(--font-sans);
   letter-spacing: 0.01em;
@@ -985,8 +1136,7 @@
 
 .delete-from-library-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 
-    0 8px 28px rgba(220, 53, 69, 0.4),
+  box-shadow: 0 8px 28px rgba(220, 53, 69, 0.4),
     0 4px 12px rgba(220, 53, 69, 0.3);
 }
 
@@ -1013,15 +1163,17 @@
 }
 
 .delete-confirm-modal .modal-content {
-  background: linear-gradient(180deg, rgba(255,246,225,0.98) 0%, rgba(242,218,176,0.98) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 246, 225, 0.98) 0%,
+    rgba(242, 218, 176, 0.98) 100%
+  );
   padding: 2rem;
   border-radius: 16px;
   max-width: 450px;
   width: 90%;
-  box-shadow: 
-    0 10px 40px rgba(0, 0, 0, 0.2),
-    0 4px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(160,140,115,0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(160, 140, 115, 0.2);
 }
 
 .delete-confirm-modal .modal-content h3 {
@@ -1123,16 +1275,16 @@
     padding: 1.5rem;
     max-width: 90%;
   }
-  
+
   .delete-confirm-modal .modal-actions {
     flex-direction: column;
   }
-  
+
   .delete-confirm-modal .btn-confirm-delete,
   .delete-confirm-modal .btn-cancel {
     width: 100%;
   }
-  
+
   .delete-from-library-btn {
     font-size: 1rem;
     padding: 0.9rem 2rem;
@@ -1166,7 +1318,11 @@
 }
 
 .save-prompt-modal {
-  background: linear-gradient(180deg, rgba(250, 245, 235, 0.98) 0%, rgba(245, 240, 230, 0.96) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(250, 245, 235, 0.98) 0%,
+    rgba(245, 240, 230, 0.96) 100%
+  );
   border-radius: 20px;
   padding: 2.5rem;
   max-width: 500px;
@@ -1236,7 +1392,7 @@
 }
 
 .save-prompt-modal .save-yes-btn {
-  background: linear-gradient(135deg, var(--color-burgundy) 0%, #6B3A52 100%);
+  background: linear-gradient(135deg, var(--color-burgundy) 0%, #6b3a52 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(139, 74, 107, 0.3);
 }
@@ -1252,7 +1408,7 @@
 }
 
 .save-prompt-modal .save-no-btn {
-  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
